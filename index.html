@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 1: Biología, Cuerpo Humano y Salud - Ciencias</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 15px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto 0;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        #live-score {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #2c3e50;
+            color: white;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-around;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .score-item {
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        .score-corr { background: #27ae60; }
+        .score-lost { background: #c0392b; }
+        
+        .header {
+            text-align: center;
+            background-color: #34495e;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header h2 { margin: 5px 0 0; font-size: 18px; color: #ecf0f1; font-weight: normal; }
+        
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 6px;
+            background: #f8f9fa;
+            transition: background 0.2s;
+            border: 1px solid transparent;
+        }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .text-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .text-input:focus { border-color: #3498db; outline: none; }
+        
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover { background-color: #2471a3; }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            font-size: 15px;
+        }
+        .feedback.show { display: block; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        
+        .explanation-text { margin-top: 10px; font-style: italic; color: #444; }
+        .final-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 2000;
+            text-align: center;
+            border: 4px solid #3498db;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1500;
+        }
+    </style>
+</head>
+<body>
+
+<div id="live-score">
+    <div>Preguntas: <span id="s-tot">0</span></div>
+    <div class="score-item score-corr">✅ Correctas: <span id="s-corr">0</span></div>
+    <div class="score-item score-lost">❌ Perdidas: <span id="s-lost">0</span></div>
+    <div>Faltan: <span id="s-pend">0</span></div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Escuela Viento Fresco</h1>
+        <h2>Práctica 1: Biología, Cuerpo Humano y Salud</h2>
+        <p>Profesora: Hillary Molina | I y II Ciclo</p>
+    </div>
+    
+    <p><strong>Instrucciones:</strong> Tienes 2 intentos por pregunta. Revisa tus respuestas haciendo clic en "Calificar". Tu puntaje se actualiza en la barra superior. Si pierdes tus 2 intentos, la pregunta se bloqueará y te mostrará la respuesta correcta.</p>
+
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Calificar Respuestas Actuales</button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="final-modal" id="final-modal">
+    <h1 style="margin-top:0; color: #2c3e50;">¡Prueba Completada!</h1>
+    <h2 id="final-percent" style="font-size: 48px; color: #27ae60; margin: 10px 0;">100%</h2>
+    <p id="final-details" style="font-size: 18px;"></p>
+    <button class="btn-submit" onclick="location.reload()" style="background-color: #27ae60;">Repetir Práctica</button>
+</div>
+
+<script>
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Qué estructura celular contiene el ADN con la información genética?", "opciones": {"a": "Citoplasma", "b": "Membrana", "c": "Núcleo", "d": "Mitocondria"}, "correcta": "c", "explicacion": "El núcleo es el centro de control de la célula y protege el material genético (ADN)."}, {"id": "q2", "type": "mc", "pregunta": "Sistema encargado de recibir los estímulos del medio y convertirlos en impulsos nerviosos:", "opciones": {"a": "Nervioso", "b": "Circulatorio", "c": "Endocrino", "d": "Respiratorio"}, "correcta": "a", "explicacion": "El sistema nervioso utiliza las neuronas para captar estímulos y enviar señales por todo el cuerpo."}, {"id": "q3", "type": "text", "pregunta": "Escribe el nombre del sistema encargado de filtrar la sangre y eliminar toxinas mediante la orina:", "keywords": ["urinario", "excretor"], "explicacion": "El sistema urinario (compuesto por riñones, vejiga, etc.) limpia nuestra sangre de desechos."}, {"id": "q4", "type": "mc", "pregunta": "Enfermedad infecciosa que inflama las membranas que rodean el cerebro y la médula espinal:", "opciones": {"a": "Alzheimer", "b": "Meningitis", "c": "Anemia", "d": "Parkinson"}, "correcta": "b", "explicacion": "La meningitis afecta las meninges (membranas del cerebro), usualmente por virus o bacterias."}, {"id": "q5", "type": "mc", "pregunta": "¿Qué nombre reciben las sustancias producidas en el sistema endocrino que regulan funciones del organismo?", "opciones": {"a": "Glóbulos blancos", "b": "Anticuerpos", "c": "Neuronas", "d": "Hormonas"}, "correcta": "d", "explicacion": "Las hormonas son los mensajeros químicos del sistema endocrino."}, {"id": "q6", "type": "mc", "pregunta": "Las lágrimas, mucosidad de la nariz y el ácido del estómago son ejemplos de:", "opciones": {"a": "Inmunidad adquirida", "b": "Inmunidad innata", "c": "Antígenos", "d": "Enzimas digestivas"}, "correcta": "b", "explicacion": "La inmunidad innata o natural son aquellas barreras con las que nacemos para defendernos."}, {"id": "q7", "type": "text", "pregunta": "Célula especializada del sistema nervioso que tiene un cuerpo, axón y dendritas:", "keywords": ["neurona", "neuronas"], "explicacion": "Las neuronas son las células que transmiten los impulsos eléctricos."}, {"id": "q8", "type": "mc", "pregunta": "¿Cuál glándula pertenece al sistema endocrino?", "opciones": {"a": "Corazón", "b": "Pulmón", "c": "Tiroides", "d": "Vejiga"}, "correcta": "c", "explicacion": "La glándula tiroides secreta hormonas que controlan el metabolismo."}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál hormona femenina prepara al útero para el óvulo fecundado?", "opciones": {"a": "Testosterona", "b": "Progesterona", "c": "Insulina", "d": "Adrenalina"}, "correcta": "b", "explicacion": "La progesterona es vital durante el ciclo menstrual y para el mantenimiento del embarazo."}, {"id": "q10", "type": "mc", "pregunta": "¿Qué órgano produce los espermatozoides en el sistema reproductor masculino?", "opciones": {"a": "Próstata", "b": "Vesícula seminal", "c": "Epidídimo", "d": "Testículos"}, "correcta": "d", "explicacion": "Los testículos son las glándulas encargadas de generar las células sexuales masculinas."}, {"id": "q11", "type": "text", "pregunta": "Preparación de gérmenes muertos destinada a generar inmunidad y producción de anticuerpos:", "keywords": ["vacuna", "vacunas"], "explicacion": "Las vacunas entrenan a nuestro cuerpo de forma segura generando inmunidad adquirida."}, {"id": "q12", "type": "mc", "pregunta": "El sistema circulatorio está estrechamente ligado al sistema respiratorio porque:", "opciones": {"a": "Ambos filtran la orina", "b": "Transportan el oxígeno y el dióxido de carbono por los tejidos", "c": "Producen hormonas", "d": "Digieren los alimentos"}, "correcta": "b", "explicacion": "Los pulmones (respiratorio) ingresan el oxígeno, y la sangre (circulatorio) lo reparte."}, {"id": "q13", "type": "mc", "pregunta": "¿Cuál es un hábito de cuidado esencial para el sistema urinario?", "opciones": {"a": "Tomar de 6 a 8 vasos de agua al día", "b": "Retener la orina mucho tiempo", "c": "Consumir mucha sal", "d": "Dormir menos de 5 horas"}, "correcta": "a", "explicacion": "La hidratación permite a los riñones filtrar y expulsar las toxinas adecuadamente."}, {"id": "q14", "type": "mc", "pregunta": "Estructura encargada de permitir el intercambio de sustancias entre la célula y su medio exterior:", "opciones": {"a": "Núcleo", "b": "Membrana plasmática", "c": "Citoplasma", "d": "Mitocondria"}, "correcta": "b", "explicacion": "La membrana funciona como una 'puerta' selectiva que protege la célula."}, {"id": "q15", "type": "text", "pregunta": "Nombre de los órganos con forma de frijol que filtran la sangre en el sistema urinario:", "keywords": ["riñon", "riñones", "rinon", "rinones"], "explicacion": "Los riñones son el principal filtro biológico del cuerpo."}, {"id": "q16", "type": "mc", "pregunta": "Los ovarios en la mujer cumplen una función equivalente a ¿qué órgano en el hombre?", "opciones": {"a": "Próstata", "b": "Testículos", "c": "Conducto deferente", "d": "Uretra"}, "correcta": "b", "explicacion": "Ambos son gónadas: producen hormonas y células sexuales (óvulos y espermatozoides)."}, {"id": "q17", "type": "mc", "pregunta": "Es un cambio exclusivo de la pubertad en las mujeres:", "opciones": {"a": "Aumento de estatura", "b": "Crecimiento de vello", "c": "Periodo de menstruación", "d": "Modificación de cuerdas vocales"}, "correcta": "c", "explicacion": "La menstruación es el proceso cíclico propio del sistema reproductor femenino."}, {"id": "q18", "type": "mc", "pregunta": "Parte del sistema nervioso encargada de funciones involuntarias como los latidos y la respiración:", "opciones": {"a": "Cerebro", "b": "Bulbo raquídeo", "c": "Médula espinal", "d": "Cerebelo"}, "correcta": "b", "explicacion": "El bulbo raquídeo conecta el encéfalo con la médula y regula signos vitales automáticos."}, {"id": "q19", "type": "text", "pregunta": "El hígado y el riñón procesan desechos que son transportados hasta ellos gracias al sistema...", "keywords": ["circulatorio"], "explicacion": "La sangre (sistema circulatorio) es el vehículo que recoge desechos y los lleva a filtrar."}, {"id": "q20", "type": "mc", "pregunta": "¿Qué avance tecnológico permite visualizar el útero en embarazadas sin usar radiación perjudicial?", "opciones": {"a": "Rayos X", "b": "Resonancia Magnética", "c": "Ultrasonido", "d": "Tomografía"}, "correcta": "c", "explicacion": "El ultrasonido usa ondas sonoras de alta frecuencia, siendo completamente seguro para el feto."}];
+    let intentosPorPregunta = {};
+    let totalPreguntas = dbPreguntas.length;
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        
+        document.getElementById('s-tot').innerText = totalPreguntas;
+        document.getElementById('s-pend').innerText = totalPreguntas;
+
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key}) ${value}</label>`;
+                }
+                html += `</div>`;
+            } else if (q.type === 'text') {
+                html += `<input type="text" id="${q.id}" class="text-input" placeholder="Escribe tu respuesta...">`;
+            }
+
+            html += `<div id="feedback-${q.id}" class="feedback"></div>
+                     </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function normalizarTexto(texto) {
+        return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+    }
+
+    function calificarPrueba() {
+        let correctas = 0;
+        let perdidas = 0;
+        let pendientes = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const feedback = document.getElementById(`feedback-${q.id}`);
+
+            if (block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) correctas++;
+                else perdidas++;
+                return;
+            }
+
+            let respondida = false;
+            let esCorrecta = false;
+
+            if (q.type === 'mc') {
+                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                if (seleccion) {
+                    respondida = true;
+                    if (seleccion.value === q.correcta) esCorrecta = true;
+                }
+            } else if (q.type === 'text') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim() !== '') {
+                    respondida = true;
+                    const resUsuario = normalizarTexto(input.value);
+                    const keywordsNormalizadas = q.keywords.map(normalizarTexto);
+                    if (keywordsNormalizadas.some(kw => resUsuario.includes(kw))) esCorrecta = true;
+                }
+            }
+
+            if (!respondida) {
+                pendientes++;
+                return;
+            }
+
+            if (esCorrecta) {
+                block.classList.add('locked', 'correct');
+                feedback.className = 'feedback show feedback-correct';
+                feedback.innerHTML = '✅ ¡Excelente! Respuesta correcta.';
+                deshabilitarPregunta(q);
+                correctas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    let respCorrectaVisual = q.type === 'mc' ? q.opciones[q.correcta] : q.keywords[0];
+                    feedback.className = 'feedback show feedback-error';
+                    feedback.innerHTML = `❌ Incorrecto. Agotaste tus intentos.<br><div class="explanation-text"><strong>Respuesta correcta:</strong> ${respCorrectaVisual}<br>${q.explicacion}</div>`;
+                    
+                    if (q.type === 'mc') {
+                        const correctLabel = document.getElementById(`lbl-${q.id}-${q.correcta}`);
+                        correctLabel.style.backgroundColor = '#d4edda';
+                        correctLabel.style.border = '2px solid #28a745';
+                    }
+                    deshabilitarPregunta(q);
+                    perdidas++;
+                } else {
+                    pendientes++;
+                    feedback.className = 'feedback show feedback-warning';
+                    feedback.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        // Actualizar UI del Header
+        document.getElementById('s-corr').innerText = correctas;
+        document.getElementById('s-lost').innerText = perdidas;
+        document.getElementById('s-pend').innerText = pendientes;
+
+        if (pendientes === 0) {
+            mostrarNotaFinal(correctas, totalPreguntas);
+        }
+    }
+
+    function deshabilitarPregunta(q) {
+        if (q.type === 'mc') {
+            const radios = document.querySelectorAll(`input[name="${q.id}"]`);
+            radios.forEach(r => r.disabled = true);
+        } else {
+            document.getElementById(q.id).disabled = true;
+        }
+    }
+
+    function mostrarNotaFinal(correctas, total) {
+        const percent = Math.round((correctas / total) * 100);
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('final-modal').style.display = 'block';
+        
+        const percentEl = document.getElementById('final-percent');
+        percentEl.innerText = percent + '%';
+        percentEl.style.color = percent >= 65 ? '#27ae60' : '#c0392b';
+        
+        document.getElementById('final-details').innerHTML = `Lograste <strong>${correctas}</strong> correctas y perdiste <strong>${total - correctas}</strong> puntos.`;
+        document.getElementById('btn-grade').style.display = 'none';
+    }
+
+    window.onload = renderizarExamen;
+</script>
+
+</body>
+</html>
