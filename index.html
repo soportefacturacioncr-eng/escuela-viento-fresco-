@@ -42,6 +42,7 @@
         .btn { flex: 1; text-align: center; padding: 10px 0; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 13px; color: white; }
         .btn-practice { background-color: #2980b9; }
         .btn-study { background-color: #27ae60; }
+        .empty-msg { font-size: 14px; color: #95a5a6; font-style: italic; margin: 0; }
     </style>
 </head>
 <body>
@@ -97,41 +98,52 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN: Aquí pones cuántas prácticas has subido de cada materia
-        const config = {
-            ciencias: 100,
-            mate: 100,
-            espanol: 100,
-            sociales: 100
-        };
-
-        // Función para generar las tarjetas automáticamente
-        function generarBotones() {
+        // Función asíncrona que autodetecta los archivos en Vercel
+        async function generarBotonesDinamicos() {
             const materias = ['ciencias', 'mate', 'espanol', 'sociales'];
             
-            materias.forEach(m => {
+            for (const m of materias) {
                 const container = document.getElementById(`lista-${m}`);
-                const cantidad = config[m];
-                
-                if (cantidad === 0) {
-                    container.innerHTML = '<p style="color:#999; font-style:italic;">Próximamente más prácticas...</p>';
-                    return;
+                let i = 1;
+                let encontradas = 0;
+
+                // Mensaje mientras la página revisa Vercel
+                container.innerHTML = '<p class="empty-msg">Buscando prácticas disponibles...</p>';
+
+                while (true) {
+                    try {
+                        // El método HEAD comprueba si el archivo existe sin tener que descargarlo completo (muy rápido)
+                        const response = await fetch(`practica-${m}-${i}.html`, { method: 'HEAD' });
+                        
+                        if (response.ok) {
+                            if (i === 1) container.innerHTML = ''; // Limpiar el mensaje de "Buscando..."
+                            
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.innerHTML = `
+                                <h3>Práctica #${i}</h3>
+                                <p>Materia y repaso general del tema #${i}.</p>
+                                <div class="btn-group">
+                                    <a href="practica-${m}-${i}.html" class="btn btn-practice">Práctica</a>
+                                    <a href="resumen-${m}-${i}.html" class="btn btn-study">Resumen</a>
+                                </div>
+                            `;
+                            container.appendChild(card);
+                            encontradas++;
+                            i++;
+                        } else {
+                            // Si Vercel devuelve un error 404, significa que este número no existe y detenemos la búsqueda
+                            break; 
+                        }
+                    } catch (error) {
+                        break;
+                    }
                 }
 
-                for (let i = 1; i <= cantidad; i++) {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <h3>Práctica #${i}</h3>
-                        <p>Materia y repaso general del tema #${i}.</p>
-                        <div class="btn-group">
-                            <a href="practica-${m}-${i}.html" class="btn btn-practice">Práctica</a>
-                            <a href="resumen-${m}-${i}.html" class="btn btn-study">Resumen</a>
-                        </div>
-                    `;
-                    container.appendChild(card);
+                if (encontradas === 0) {
+                    container.innerHTML = '<p class="empty-msg">Próximamente se agregarán prácticas de esta materia...</p>';
                 }
-            });
+            }
         }
 
         function toggleSection(element) {
@@ -142,8 +154,8 @@
             section.classList.toggle('active');
         }
 
-        // Ejecutar al cargar la página
-        window.onload = generarBotones;
+        // Ejecutar el buscador automático al cargar la página
+        window.onload = generarBotonesDinamicos;
     </script>
 </body>
 </html>
