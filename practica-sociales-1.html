@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Estudios Sociales 1</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #8e44ad; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #9b59b6; }
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; }
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; }
+        .text-input:focus { border-color: #8e44ad; outline: none; }
+        textarea.text-input { resize: vertical; min-height: 80px; }
+        .btn-submit { width: 100%; padding: 15px; background: #8e44ad; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #732d91; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #8e44ad; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Importancia de los Estudios Sociales y la Historia</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script>
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Cuál es uno de los propósitos principales de los Estudios Sociales?", "opciones": {"a": "Memorizar todas las fechas del pasado", "b": "Comprender la vida de las diferentes sociedades humanas", "c": "Fomentar guerras"}, "correcta": "b", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿A través de qué elemento podemos conocer la cultura de civilizaciones antiguas (como Egipto o la Costa Rica indígena)?", "opciones": {"a": "Sus manifestaciones artísticas y ruinas", "b": "Sus naves espaciales", "c": "Sus sistemas de cómputo"}, "correcta": "a", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "Estudiar el pasado nos permite:", "opciones": {"a": "Olvidar los problemas de hoy", "b": "Predecir exactamente el futuro", "c": "Comprender el presente para mejorar el futuro"}, "correcta": "c", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Qué suceso marca el fin de la Prehistoria y el inicio de la Historia?", "opciones": {"a": "El descubrimiento de América", "b": "La invención de la escritura", "c": "La Revolución Francesa"}, "correcta": "b", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Las pirámides de Egipto son parte de la:", "opciones": {"a": "Edad Media", "b": "Edad Antigua", "c": "Edad Moderna"}, "correcta": "b", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "Los Estudios Sociales permiten comprender y valorar los avances de la humanidad. Esto ayuda a crear un aprendizaje:", "opciones": {"a": "Significativo", "b": "Aburrido", "c": "Repetitivo"}, "correcta": "a", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "El Coliseo Romano pertenece a la Edad:", "opciones": {"a": "Antigua", "b": "Contemporánea", "c": "Moderna"}, "correcta": "a", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "¿Por qué es importante NO memorizar solo fechas, sino entender los procesos históricos?", "opciones": {"a": "Porque las fechas no sirven para nada", "b": "Porque las fechas cambian cada año", "c": "Para comprender las causas y consecuencias de los hechos"}, "correcta": "c", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "Una de las disciplinas auxiliares de los Estudios Sociales que estudia los restos materiales (vasijas, ruinas) es la:", "opciones": {"a": "Geografía", "b": "Arqueología", "c": "Economía"}, "correcta": "b", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "El periodo desde los primeros seres humanos hasta la invención de la escritura se denomina:", "opciones": {"a": "Prehistoria", "b": "Edad Moderna", "c": "Antigüedad"}, "correcta": "a", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "El feudalismo y la construcción de castillos destacan en la Edad:", "opciones": {"a": "Moderna", "b": "Contemporánea", "c": "Media"}, "correcta": "c", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "¿Qué aspecto NO es fomentado por los Estudios Sociales en Costa Rica?", "opciones": {"a": "El nacionalismo extremo y el odio a otras culturas", "b": "El respeto a los Derechos Humanos", "c": "La valoración de nuestro patrimonio"}, "correcta": "a", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿A qué civilización antigua pertenece la invención de los Juegos Olímpicos y la democracia?", "opciones": {"a": "Egipcia", "b": "Romana", "c": "Griega"}, "correcta": "c", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "El continente americano fue 'descubierto' por los europeos durante la Edad:", "opciones": {"a": "Antigua", "b": "Moderna", "c": "Contemporánea"}, "correcta": "b", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "Los Estudios Sociales nos permiten comprender nuestra identidad como país y como ciudadanos del mundo. A esto se le llama:", "opciones": {"a": "Aislamiento cultural", "b": "Identidad nacional y global", "c": "Memorización histórica"}, "correcta": "b", "explicacion": "Revisa los conceptos básicos de Estudios Sociales.<br><a href='resumen-sociales-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre del gran periodo de tiempo que abarca antes de la invención de la escritura:", "keywords": ["prehistoria"], "explicacion": "La Prehistoria abarca la mayor parte de la existencia humana."}, {"id": "q17", "type": "text", "pregunta": "La invención de la __________ marca el inicio de la historia documentada.", "keywords": ["escritura"], "explicacion": "A partir de ella quedan registros escritos."}, {"id": "q18", "type": "text", "pregunta": "Roma, Grecia y Egipto forman parte de la Edad...", "keywords": ["antigua"], "explicacion": "Son las grandes civilizaciones de la antigüedad."}, {"id": "q19", "type": "text", "pregunta": "Estudiar historia sirve para comprender nuestro presente y así mejorar nuestro...", "keywords": ["futuro"], "explicacion": "Evitando repetir los errores del pasado."}, {"id": "q20", "type": "text", "pregunta": "En lugar de memorizar sin sentido, los Estudios Sociales buscan generar en el alumno un aprendizaje...", "keywords": ["significativo"], "explicacion": "Que tenga sentido y aplicación en su vida."}, {"id": "q21", "type": "text", "pregunta": "Etapa de la historia que se asocia con los castillos, reyes y el feudalismo europeo:", "keywords": ["media", "edad media"], "explicacion": "Es el periodo que va desde la caída de Roma hasta el Renacimiento."}, {"id": "q22", "type": "text", "pregunta": "Etapa histórica en la que vivimos actualmente (desde la Revolución Industrial hasta hoy):", "keywords": ["contemporanea", "contemporánea"], "explicacion": "Es la Edad Contemporánea."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Explica con tus palabras por qué es importante estudiar a los grupos indígenas de nuestro país (como quienes hicieron los trípodes antiguos).", "keywords": [], "explicacion": "Para conocer nuestras raíces, respetar la diversidad cultural y entender el desarrollo de nuestras sociedades antes de la llegada de los europeos."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Justifica por qué la invención de la escritura fue tan importante para la humanidad que dividió la Prehistoria de la Historia.", "keywords": [], "explicacion": "Porque permitió guardar el conocimiento, dejar registro de las leyes, el comercio y los relatos para que las siguientes generaciones pudieran leerlos, en lugar de pasarlos solo de forma oral."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Si alguien te dice que 'los Estudios Sociales son solo aprenderse fechas de memoria', ¿qué le responderías?", "keywords": [], "explicacion": "Le diría que no es así; sirven para entender los procesos de las sociedades, analizar causas y consecuencias y construir una sociedad mejor en el futuro."}];
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key}) ${value}</label>`;
+                }
+                html += `</div>`;
+            } else if (q.type === 'text') {
+                html += `<input type="text" id="${q.id}" class="text-input" placeholder="Escribe tu respuesta corta aquí...">`;
+            } else if (q.type === 'textarea') {
+                html += `<textarea id="${q.id}" class="text-input" placeholder="Desarrolla tu respuesta detalladamente..."></textarea>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
+
+    function calificarPrueba() {
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            if (q.type === 'mc') {
+                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                if (seleccion) { 
+                    respondida = true; 
+                    if (seleccion.value === q.correcta) esCorrecta = true; 
+                }
+            } else if (q.type === 'text') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim() !== '') {
+                    respondida = true;
+                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                }
+            } else if (q.type === 'textarea') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim().length > 5) {
+                    respondida = true;
+                    esCorrecta = true; 
+                }
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                if(q.type === 'textarea') {
+                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                } else {
+                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                }
+                deshabilitar(q);
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    if (q.type === 'mc') {
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    }
+                    deshabilitar(q);
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+    }
+
+    function deshabilitar(q) {
+        if (q.type === 'mc') document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+        else document.getElementById(q.id).disabled = true;
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
