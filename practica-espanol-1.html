@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Español 1</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #f39c12; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #f1c40f; }
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; }
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; }
+        .text-input:focus { border-color: #f39c12; outline: none; }
+        textarea.text-input { resize: vertical; min-height: 80px; }
+        .btn-submit { width: 100%; padding: 15px; background: #f39c12; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #d35400; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Ortografía: Uso del Punto y la Coma</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script>
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "¿Qué signo de puntuación separa dos párrafos distintos en un texto?", "opciones": {"a": "Punto y seguido", "b": "Punto final", "c": "Punto y aparte"}, "correcta": "c", "explicacion": "El punto y aparte marca el final de un párrafo y el inicio de otro nuevo.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q17", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q18", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q19", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q20", "type": "mc", "pregunta": "En la oración: 'Carlos, ven a cenar', la coma se utiliza para aislar un:", "opciones": {"a": "Vocativo", "b": "Inciso", "c": "Conector"}, "correcta": "a", "explicacion": "El vocativo es la palabra usada para llamar a alguien, y siempre debe ir separado por coma.<br><a href='resumen-espanol-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q21", "type": "text", "pregunta": "Signo que se utiliza al finalizar por completo un escrito:", "keywords": ["punto final"], "explicacion": "El punto final cierra el texto."}, {"id": "q22", "type": "text", "pregunta": "En 'Fui a comprar manzanas, peras y uvas', la coma se usa para una...", "keywords": ["enumeracion", "enumeración"], "explicacion": "Separa los elementos de una serie."}, {"id": "q23", "type": "text", "pregunta": "Después de un punto, la primera letra de la siguiente palabra siempre se escribe con:", "keywords": ["mayuscula", "mayúscula"], "explicacion": "Regla básica de ortografía."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Explica con tus propias palabras cuál es la diferencia entre el punto y seguido y el punto y aparte. Escribe un ejemplo corto.", "keywords": [], "explicacion": "El punto y seguido separa oraciones dentro de un mismo párrafo. El punto y aparte separa párrafos diferentes."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Inventa una oración donde utilices correctamente las comas para un inciso o aclaración.", "keywords": [], "explicacion": "Ejemplo: Mi profesor, que es muy estricto, nos dejó mucha tarea."}];
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key}) ${value}</label>`;
+                }
+                html += `</div>`;
+            } else if (q.type === 'text') {
+                html += `<input type="text" id="${q.id}" class="text-input" placeholder="Escribe tu respuesta corta aquí...">`;
+            } else if (q.type === 'textarea') {
+                html += `<textarea id="${q.id}" class="text-input" placeholder="Desarrolla tu respuesta detalladamente..."></textarea>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
+
+    function calificarPrueba() {
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            if (q.type === 'mc') {
+                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                if (seleccion) { 
+                    respondida = true; 
+                    if (seleccion.value === q.correcta) esCorrecta = true; 
+                }
+            } else if (q.type === 'text') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim() !== '') {
+                    respondida = true;
+                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                }
+            } else if (q.type === 'textarea') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim().length > 5) {
+                    respondida = true;
+                    esCorrecta = true; // Auto-evaluación para desarrollo
+                }
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                if(q.type === 'textarea') {
+                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                } else {
+                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                }
+                deshabilitar(q);
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    if (q.type === 'mc') {
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    }
+                    deshabilitar(q);
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+    }
+
+    function deshabilitar(q) {
+        if (q.type === 'mc') document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+        else document.getElementById(q.id).disabled = true;
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
