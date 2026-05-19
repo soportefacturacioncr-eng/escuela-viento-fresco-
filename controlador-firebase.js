@@ -8,17 +8,14 @@ function verificarEstudiante() {
         let nombre = "";
         let apellidos = "";
         
-        // Bucle para obligar a que escriba el nombre
         while (!nombre || nombre.trim() === "") {
             nombre = prompt("👋 ¡Hola! Por favor, ingresa tu NOMBRE (Ej: Juan):");
         }
         
-        // Bucle para obligar a que escriba el apellido
         while (!apellidos || apellidos.trim() === "") {
             apellidos = prompt(`¡Gracias ${nombre.trim()}! \n\nAhora, ingresa tus APELLIDOS.\n(Es obligatorio para no confundir tus notas con las de otro compañero):`);
         }
         
-        // Unimos el nombre y el apellido y lo guardamos
         nombreCompleto = `${nombre.trim()} ${apellidos.trim()}`;
         sessionStorage.setItem('estudianteNombre', nombreCompleto);
     }
@@ -26,8 +23,8 @@ function verificarEstudiante() {
     return sessionStorage.getItem('estudianteNombre');
 }
 
-// 2. Función global para enviar las notas a Firebase
-function enviarNota(nombreMateria, notaFinal) {
+// 2. Función global para enviar las notas y los errores a Firebase
+function enviarNota(nombreMateria, notaFinal, listaErrores = []) {
     const nombreEstudiante = sessionStorage.getItem('estudianteNombre') || 'Estudiante Anónimo';
     const fechaActual = new Date().toLocaleString('es-CR');
     
@@ -35,7 +32,8 @@ function enviarNota(nombreMateria, notaFinal) {
         nombre: nombreEstudiante,
         materia: nombreMateria,
         nota: notaFinal,
-        fecha: fechaActual
+        fecha: fechaActual,
+        errores: listaErrores // ¡Aquí se guardarán las preguntas en las que falló!
     };
 
     fetch('https://escuela-viento-fresco-default-rtdb.firebaseio.com/calificaciones.json', {
