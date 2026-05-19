@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Estudios Sociales 4</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #8e44ad; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #9b59b6; }
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; white-space: pre-wrap; }
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; }
+        .text-input:focus { border-color: #8e44ad; outline: none; }
+        textarea.text-input { resize: vertical; min-height: 80px; }
+        .btn-submit { width: 100%; padding: 15px; background: #8e44ad; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #732d91; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #8e44ad; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>La Luna: Fases y Movimientos</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script>
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Cómo se llama el movimiento en el que la Luna gira sobre su propio eje?", "opciones": {"a": "Traslación lunar", "b": "Rotación lunar", "c": "Revolución"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Aproximadamente cuántos días tarda la Luna en dar una vuelta sobre su propio eje?", "opciones": {"a": "24 horas", "b": "365 días", "c": "28 días"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "El movimiento de 'traslación lunar' ocurre cuando la Luna gira alrededor de:", "opciones": {"a": "El Sol", "b": "Su propio eje", "c": "La Tierra"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Por qué desde la Tierra SIEMPRE vemos la misma cara de la Luna?", "opciones": {"a": "Porque la Tierra no gira", "b": "Porque la Luna es plana", "c": "Porque su rotación y su traslación duran lo mismo (28 días)"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "¿Qué es la 'revolución conjunta' de la Luna?", "opciones": {"a": "El viaje que hace la Luna acompañando a la Tierra alrededor del Sol", "b": "Cuando la Luna choca con un meteorito", "c": "El giro de la Luna sobre sí misma"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿De dónde proviene la luz que hace brillar a la Luna?", "opciones": {"a": "La Luna tiene lava ardiente en su interior", "b": "La Luna refleja la luz del Sol", "c": "La Tierra ilumina a la Luna"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿En cuál fase lunar la Luna NO se puede ver desde la Tierra en la noche?", "opciones": {"a": "Luna Llena", "b": "Cuarto Creciente", "c": "Luna Nueva"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "Cuando la Luna tiene forma de letra 'D', se encuentra en la fase de:", "opciones": {"a": "Cuarto Creciente", "b": "Luna Nueva", "c": "Cuarto Menguante"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "La fase de 'Luna Llena' ocurre cuando:", "opciones": {"a": "La Tierra está exactamente entre el Sol y la Luna", "b": "La Luna está entre el Sol y la Tierra", "c": "El Sol se apaga"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Cuando la parte iluminada de la luna empieza a disminuir y toma forma de 'C', se llama:", "opciones": {"a": "Cuarto Creciente", "b": "Cuarto Menguante", "c": "Luna Nueva"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "A los cambios en la forma iluminada de la Luna que vemos desde la Tierra se les llama:", "opciones": {"a": "Eclipses", "b": "Estaciones del año", "c": "Fases lunares"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Un eclipse solar ocurre cuando:", "opciones": {"a": "La Luna se interpone entre el Sol y la Tierra", "b": "La Tierra se interpone entre la Luna y el Sol", "c": "Los planetas se alinean"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Qué es un eclipse lunar?", "opciones": {"a": "Cuando el Sol oculta a la Tierra", "b": "Cuando la Tierra se interpone entre el Sol y la Luna, dándole sombra", "c": "Cuando la Luna oculta al Sol"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "El movimiento de traslación de la Luna alrededor de la Tierra dura:", "opciones": {"a": "24 horas", "b": "28 días", "c": "365 días"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "¿La Luna emite luz propia como el Sol?", "opciones": {"a": "Sí, es una estrella pequeña", "b": "No, es un satélite que solo refleja luz", "c": "A veces sí y a veces no"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre de la fase en la que la Luna se ve completamente iluminada y redonda:", "keywords": ["luna llena", "llena"], "explicacion": "Es el momento de mayor iluminación."}, {"id": "q17", "type": "text", "pregunta": "Escribe el nombre del cuerpo celeste (estrella) que le da su luz a la Luna:", "keywords": ["el sol", "sol"], "explicacion": "La luna funciona como un espejo del Sol."}, {"id": "q18", "type": "text", "pregunta": "Nombre del movimiento en el que la Luna gira sobre su propio eje (como un trompo):", "keywords": ["rotacion", "rotación"], "explicacion": "Rotación lunar."}, {"id": "q19", "type": "text", "pregunta": "Nombre del movimiento donde la Luna da una vuelta completa alrededor de la Tierra:", "keywords": ["traslacion", "traslación"], "explicacion": "Traslación lunar."}, {"id": "q20", "type": "text", "pregunta": "¿Cuántos días (aproximadamente) tarda la Luna en completar TODAS sus fases?", "keywords": ["28", "veintiocho"], "explicacion": "El ciclo lunar dura 28 días."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica por qué razón desde la Tierra nunca podemos ver la parte de atrás (la 'cara oculta') de la Luna.", "keywords": [], "explicacion": "Porque la Luna tarda exactamente lo mismo en girar sobre su propio eje (rotación) que en dar la vuelta a la Tierra (traslación). Al moverse a la misma velocidad, siempre nos muestra el mismo frente."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: ¿Cuál es la diferencia principal entre un eclipse de Sol y un eclipse de Luna?", "keywords": [], "explicacion": "En el eclipse de Sol, la Luna tapa la luz del Sol. En el eclipse de Luna, la Tierra se interpone y su sombra tapa u oscurece a la Luna."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Describe cómo se ve la Luna en el cielo durante el 'Cuarto Creciente' y el 'Cuarto Menguante'.", "keywords": [], "explicacion": "En el Cuarto Creciente, la luna va creciendo y su parte iluminada tiene forma de 'D'. En el Cuarto Menguante, la luz va disminuyendo y tiene forma de 'C'."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Explica qué es el movimiento de 'Revolución conjunta'.", "keywords": [], "explicacion": "Es el movimiento en el cual la Luna acompaña a la Tierra en su viaje larguísimo alrededor del Sol."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué en la fase de Luna Nueva el cielo nocturno se ve más oscuro y no vemos a la luna?", "keywords": [], "explicacion": "Porque la cara de la luna que el Sol está iluminando queda viendo hacia el espacio exterior, y la cara que da hacia la Tierra está totalmente a oscuras."}];
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key}) ${value}</label>`;
+                }
+                html += `</div>`;
+            } else if (q.type === 'text') {
+                html += `<input type="text" id="${q.id}" class="text-input" placeholder="Escribe tu respuesta corta aquí...">`;
+            } else if (q.type === 'textarea') {
+                html += `<textarea id="${q.id}" class="text-input" placeholder="Desarrolla tu respuesta detalladamente..."></textarea>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
+
+    function calificarPrueba() {
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            if (q.type === 'mc') {
+                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                if (seleccion) { 
+                    respondida = true; 
+                    if (seleccion.value === q.correcta) esCorrecta = true; 
+                }
+            } else if (q.type === 'text') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim() !== '') {
+                    respondida = true;
+                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                }
+            } else if (q.type === 'textarea') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim().length > 5) {
+                    respondida = true;
+                    esCorrecta = true; 
+                }
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                if(q.type === 'textarea') {
+                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                } else {
+                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                }
+                deshabilitar(q);
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    if (q.type === 'mc') {
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    }
+                    deshabilitar(q);
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+    }
+
+    function deshabilitar(q) {
+        if (q.type === 'mc') document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+        else document.getElementById(q.id).disabled = true;
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
