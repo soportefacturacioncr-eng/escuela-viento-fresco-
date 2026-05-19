@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Matemáticas 3</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #e74c3c; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #e74c3c; }
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; white-space: pre-wrap; }
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; }
+        .text-input:focus { border-color: #e74c3c; outline: none; }
+        textarea.text-input { resize: vertical; min-height: 80px; }
+        .btn-submit { width: 100%; padding: 15px; background: #e74c3c; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #c0392b; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Operaciones, Potencias y Cuadrados Perfectos</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script>
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Qué indica el 'exponente' en una potencia?", "opciones": {"a": "El número que se va a sumar", "b": "Cuántas veces se multiplica la base por sí misma", "c": "El resultado final"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "La forma correcta de representar la potencia 4³ (4 elevado a la 3) es:", "opciones": {"a": "4 x 3", "b": "3 x 3 x 3 x 3", "c": "4 x 4 x 4"}, "correcta": "c", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "Si multiplicamos 6 x 6 x 6 x 6, ¿cómo se escribe esto en forma de potencia?", "opciones": {"a": "4⁶", "b": "6⁴", "c": "24"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Cuál de los siguientes números es un 'Cuadrado Perfecto'?", "opciones": {"a": "16", "b": "8", "c": "10"}, "correcta": "a", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "¿Cuál es el cuadrado perfecto que resulta de elevar 5 a la 2 (5²)?", "opciones": {"a": "10", "b": "25", "c": "7"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿Qué operación se debe resolver primero en la siguiente expresión: 5 + 3 x (7 - 2)?", "opciones": {"a": "La suma (5 + 3)", "b": "La multiplicación (3 x 7)", "c": "El paréntesis (7 - 2)"}, "correcta": "c", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "Resuelve: 8 - 4 ÷ 2", "opciones": {"a": "2", "b": "6", "c": "4"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "Si a 14,5 litros de agua se le restan 3,2 litros, el resultado correcto es:", "opciones": {"a": "11,3 litros", "b": "17,7 litros", "c": "10,3 litros"}, "correcta": "a", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "Para resolver una operación combinada sin paréntesis que tiene sumas y multiplicaciones, primero hacemos:", "opciones": {"a": "Las sumas", "b": "Las multiplicaciones", "c": "Se hace de izquierda a derecha sin importar el signo"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "¿Cuál es el resultado de 3 x 3 x 3?", "opciones": {"a": "9", "b": "27", "c": "12"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "El número 9 es un cuadrado perfecto porque:", "opciones": {"a": "Se obtiene de 3 x 3", "b": "Es impar", "c": "Se obtiene de 4 + 5"}, "correcta": "a", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "En la potencia 2⁵, ¿cuál es la base?", "opciones": {"a": "El 5", "b": "El 2", "c": "El 10"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "Si un cuadrado perfecto es 36, ¿qué número se multiplicó por sí mismo?", "opciones": {"a": "5", "b": "6", "c": "18"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "Al sumar 5,3 + 2,1, es importante que:", "opciones": {"a": "Se alineen las comas decimales", "b": "Se borre la coma", "c": "Se sumen solo los números grandes"}, "correcta": "a", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "¿Cuál es el resultado de 10 + 2 x 5?", "opciones": {"a": "60", "b": "20", "c": "17"}, "correcta": "b", "explicacion": "Revisa el orden de operaciones y las potencias en el resumen.<br><a href='resumen-mate-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "¿Qué número es el resultado de 10 elevado a la 2 (10²)?", "keywords": ["100", "cien"], "explicacion": "10 x 10 = 100."}, {"id": "q17", "type": "text", "pregunta": "¿Cuál es la base en la expresión matemática 7⁴ ?", "keywords": ["7", "siete"], "explicacion": "La base es el número grande."}, {"id": "q18", "type": "text", "pregunta": "El cuadrado perfecto de 8 (es decir, 8 x 8) es:", "keywords": ["64"], "explicacion": "El número 64 es el cuadrado perfecto de 8."}, {"id": "q19", "type": "text", "pregunta": "Escribe el resultado de esta operación: 5 + (2 x 3)", "keywords": ["11"], "explicacion": "Primero el paréntesis (6) y luego sumas 5."}, {"id": "q20", "type": "text", "pregunta": "Escribe el resultado de: 20 - 10 / 2", "keywords": ["15"], "explicacion": "Primero la división (10/2=5) y luego la resta (20-5=15)."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica la diferencia entre multiplicar 5 x 2 y calcular la potencia 5².", "keywords": [], "explicacion": "Multiplicar 5 x 2 es sumar cinco dos veces (resultado 10). La potencia 5² es multiplicar la base por sí misma (5 x 5 = 25)."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Escribe los primeros cinco números cuadrados perfectos (empezando desde el 1).", "keywords": [], "explicacion": "1 (1x1), 4 (2x2), 9 (3x3), 16 (4x4), 25 (5x5)."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Un estudiante resolvió la operación 10 + 4 x 2 y dijo que la respuesta es 28. Explica por qué está equivocado y cuál es la respuesta correcta.", "keywords": [], "explicacion": "Está equivocado porque sumó primero. El orden correcto dice que primero se hace la multiplicación (4x2=8) y luego la suma (10+8=18)."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Explica la regla principal a la hora de sumar o restar números con decimales.", "keywords": [], "explicacion": "La regla es que la coma siempre debe estar alineada verticalmente para sumar enteros con enteros y decimales con decimales."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: ¿Qué significa exactamente el número pequeño (exponente) en una potencia?", "keywords": [], "explicacion": "Significa la cantidad de veces que el número grande (base) se multiplica por sí mismo."}];
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key}) ${value}</label>`;
+                }
+                html += `</div>`;
+            } else if (q.type === 'text') {
+                html += `<input type="text" id="${q.id}" class="text-input" placeholder="Escribe tu respuesta corta aquí...">`;
+            } else if (q.type === 'textarea') {
+                html += `<textarea id="${q.id}" class="text-input" placeholder="Desarrolla tu respuesta detalladamente..."></textarea>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
+
+    function calificarPrueba() {
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            if (q.type === 'mc') {
+                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                if (seleccion) { 
+                    respondida = true; 
+                    if (seleccion.value === q.correcta) esCorrecta = true; 
+                }
+            } else if (q.type === 'text') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim() !== '') {
+                    respondida = true;
+                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                }
+            } else if (q.type === 'textarea') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim().length > 2) {
+                    respondida = true;
+                    esCorrecta = true;
+                }
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                if(q.type === 'textarea') {
+                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                } else {
+                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                }
+                deshabilitar(q);
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    if (q.type === 'mc') {
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    }
+                    deshabilitar(q);
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+    }
+
+    function deshabilitar(q) {
+        if (q.type === 'mc') document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+        else document.getElementById(q.id).disabled = true;
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
