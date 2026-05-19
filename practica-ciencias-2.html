@@ -7,20 +7,21 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
         .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #27ae60; }
         .header h1 { margin: 0; font-size: 24px; }
-        .header p { margin: 5px 0 0; font-size: 16px; color: #1abc9c; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #2ecc71; }
         .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
         .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
         .question-block.incorrect { border-color: #e74c3c; }
-        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; white-space: pre-wrap; }
         .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
         .options label:hover { background: #e2e8f0; }
         input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
         .text-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; }
-        .text-input:focus { border-color: #3498db; outline: none; }
-        .btn-submit { width: 100%; padding: 15px; background: #2980b9; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .btn-submit:hover { background: #2471a3; }
+        .text-input:focus { border-color: #27ae60; outline: none; }
+        textarea.text-input { resize: vertical; min-height: 80px; }
+        .btn-submit { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #219a52; }
         .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
         .feedback.show { display: block; }
         .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
@@ -35,7 +36,7 @@
 <div class="container">
     <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
     <div class="header">
-        <h1>Práctica #2: Ecología y Ecosistemas</h1>
+        <h1>Tejido Sanguíneo y el Sistema Inmunológico</h1>
         <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
     </div>
     
@@ -44,7 +45,7 @@
 </div>
 
 <script>
-    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "Proceso mediante el cual las plantas absorben energía solar, agua y dióxido de carbono para producir oxígeno:", "opciones": {"a": "Transpiración", "b": "Fotosíntesis", "c": "Evaporación"}, "correcta": "b", "explicacion": "La fotosíntesis es vital para que los productores generen hidratos de carbono.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "La interacción en la que un organismo inofensivo desarrolla características para parecerse a uno peligroso se llama:", "opciones": {"a": "Mimetismo", "b": "Mutualismo", "c": "Hibernación"}, "correcta": "a", "explicacion": "El mimetismo confunde a los depredadores.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "text", "pregunta": "Nivel de organización formado por TODAS las poblaciones (animales, plantas) en interacción dentro de un bosque:", "keywords": ["comunidad"], "explicacion": "La comunidad biológica agrupa a distintas especies conviviendo.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿A qué nivel trófico pertenecen los buitres, que se alimentan de cadáveres?", "opciones": {"a": "Descomponedores", "b": "Consumidores", "c": "Productores"}, "correcta": "b", "explicacion": "Los carroñeros son consumidores porque comen materia orgánica animal ya formada.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "El reino Monera agrupa seres unicelulares sin núcleo definido, útiles en lácteos. ¿Quiénes son?", "opciones": {"a": "Plantas", "b": "Hongos", "c": "Bacterias"}, "correcta": "c", "explicacion": "Las bacterias pertenecen al reino Monera.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}];
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Qué componente de la sangre se encarga de transportar el oxígeno?", "opciones": {"a": "Glóbulos Blancos", "b": "Glóbulos Rojos", "c": "Plaquetas"}, "correcta": "b", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Quiénes son los 'soldados' del cuerpo encargados de defendernos contra virus y bacterias?", "opciones": {"a": "Glóbulos Blancos", "b": "Plaquetas", "c": "Plasma"}, "correcta": "a", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "Si te cortas un dedo, ¿qué células actúan para coagular la sangre y tapar la herida?", "opciones": {"a": "Glóbulos Rojos", "b": "Plasma", "c": "Plaquetas"}, "correcta": "c", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Qué es el plasma sanguíneo?", "opciones": {"a": "La parte sólida formada por huesos", "b": "La parte líquida de la sangre donde flotan los glóbulos", "c": "Un tipo de glóbulo blanco"}, "correcta": "b", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Las vacunas nos protegen contra:", "opciones": {"a": "Enfermedades infecciosas causadas por virus o bacterias", "b": "Quebraduras de huesos", "c": "Golpes en la cabeza"}, "correcta": "a", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿Qué contienen principalmente las vacunas para poder entrenar a nuestro cuerpo?", "opciones": {"a": "Agua pura", "b": "Virus o bacterias debilitados o muertos", "c": "Glóbulos blancos inyectados"}, "correcta": "b", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "El tejido sanguíneo está en estado:", "opciones": {"a": "Sólido", "b": "Líquido", "c": "Gaseoso"}, "correcta": "b", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "¿Cuál es el color natural del plasma si lo separamos de los glóbulos rojos?", "opciones": {"a": "Rojo", "b": "Amarillento o transparente", "c": "Azul"}, "correcta": "b", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Qué célula de la sangre combate directamente las infecciones?", "opciones": {"a": "Glóbulo blanco", "b": "Glóbulo rojo", "c": "Plaqueta"}, "correcta": "a", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "¿Qué función tiene la sangre en nuestro cuerpo?", "opciones": {"a": "Solo respirar", "b": "Digerir la comida en el estómago", "c": "Transportar oxígeno, nutrientes y limpiar desechos"}, "correcta": "c", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "La prevención de enfermedades infectocontagiosas se logra principalmente con:", "opciones": {"a": "Vacunas y buena higiene", "b": "Comer mucha azúcar", "c": "No salir nunca de la casa"}, "correcta": "a", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Si el cuerpo tiene las plaquetas muy bajas, existe el riesgo de:", "opciones": {"a": "Sufrir desangramiento por no poder coagular la sangre", "b": "Dejar de respirar", "c": "Crecer muy rápido"}, "correcta": "a", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Qué parte de la sangre transporta el agua y los nutrientes a todo el cuerpo?", "opciones": {"a": "Glóbulos Rojos", "b": "Plaquetas", "c": "Plasma"}, "correcta": "c", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "Al recibir una vacuna, nuestro cuerpo genera una respuesta del sistema:", "opciones": {"a": "Inmunológico (defensas)", "b": "Digestivo", "c": "Nervioso"}, "correcta": "a", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "La sangre viaja por todo el cuerpo a través del sistema:", "opciones": {"a": "Circulatorio", "b": "Respiratorio", "c": "Óseo"}, "correcta": "a", "explicacion": "Revisa los componentes de la sangre y las vacunas.<br><a href='resumen-ciencias-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre de las células que taponan o cicatrizan las heridas (coagulan la sangre):", "keywords": ["plaquetas", "plaqueta"], "explicacion": "Las plaquetas detienen el sangrado."}, {"id": "q17", "type": "text", "pregunta": "Nombre del líquido amarillento donde flotan las células de la sangre:", "keywords": ["plasma", "el plasma"], "explicacion": "Es la base líquida de la sangre."}, {"id": "q18", "type": "text", "pregunta": "¿Qué glóbulos le dan a la sangre su característico color rojo y transportan oxígeno?", "keywords": ["globulos rojos", "glóbulos rojos", "los globulos rojos"], "explicacion": "Son los encargados del oxígeno."}, {"id": "q19", "type": "text", "pregunta": "¿Qué tipo de glóbulos combaten las infecciones y enfermedades?", "keywords": ["globulos blancos", "glóbulos blancos"], "explicacion": "Son los defensas del cuerpo."}, {"id": "q20", "type": "text", "pregunta": "Sustancia que se nos inyecta de pequeños para enseñarle al cuerpo a defenderse de enfermedades:", "keywords": ["vacuna", "las vacunas", "vacunas"], "explicacion": "Entrenan nuestro sistema inmunológico."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica brevemente cómo funciona una vacuna dentro de nuestro cuerpo.", "keywords": [], "explicacion": "La vacuna introduce al cuerpo el virus débil o muerto; los glóbulos blancos lo atacan, aprenden cómo destruirlo y guardan una 'memoria'. Así, si el virus real nos ataca luego, ya saben cómo defendernos rápidamente."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: ¿Qué pasaría en tu cuerpo si no tuvieras glóbulos blancos?", "keywords": [], "explicacion": "Si no tuviéramos glóbulos blancos, nos enfermaríamos constantemente y cualquier infección o virus, por más pequeño que fuera, podría ser mortal porque no tendríamos defensas."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Describe cómo trabajan en equipo los Glóbulos Rojos, los Pulmones y el Corazón.", "keywords": [], "explicacion": "Los pulmones toman oxígeno del aire, el corazón bombea la sangre, y los glóbulos rojos (que van en la sangre) recogen ese oxígeno y lo llevan a todo el cuerpo."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué es importante que un niño reciba todas sus vacunas?", "keywords": [], "explicacion": "Para evitar enfermedades graves que podrían causarle daño o la muerte, y para evitar contagiar a otros niños que sean más vulnerables."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Imagina que te haces un raspón jugando bola y empieza a salir sangre, pero luego de unos minutos se detiene y se hace una 'costra' o 'cascarita'. ¿Qué componente de la sangre hizo este trabajo y por qué es importante?", "keywords": [], "explicacion": "Fueron las plaquetas. Hicieron un tapón para coagular la sangre, lo que es vital para no desangrarnos y perder toda la sangre por esa herida."}];
     let intentosPorPregunta = {};
 
     function renderizarExamen() {
@@ -62,7 +63,9 @@
                 }
                 html += `</div>`;
             } else if (q.type === 'text') {
-                html += `<input type="text" id="${q.id}" class="text-input" placeholder="Escribe tu respuesta aquí...">`;
+                html += `<input type="text" id="${q.id}" class="text-input" placeholder="Escribe tu respuesta corta aquí...">`;
+            } else if (q.type === 'textarea') {
+                html += `<textarea id="${q.id}" class="text-input" placeholder="Desarrolla tu respuesta detalladamente..."></textarea>`;
             }
             html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
         });
@@ -86,11 +89,17 @@
                     respondida = true; 
                     if (seleccion.value === q.correcta) esCorrecta = true; 
                 }
-            } else {
+            } else if (q.type === 'text') {
                 const input = document.getElementById(q.id);
                 if (input.value.trim() !== '') {
                     respondida = true;
-                    if (q.keywords.some(kw => normalizar(input.value).includes(kw))) esCorrecta = true;
+                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                }
+            } else if (q.type === 'textarea') {
+                const input = document.getElementById(q.id);
+                if (input.value.trim().length > 5) {
+                    respondida = true;
+                    esCorrecta = true; 
                 }
             }
 
@@ -99,7 +108,11 @@
             if (esCorrecta) {
                 block.classList.add('correct');
                 fb.className = 'feedback show feedback-correct';
-                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                if(q.type === 'textarea') {
+                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                } else {
+                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                }
                 deshabilitar(q);
             } else {
                 intentosPorPregunta[q.id]++;
