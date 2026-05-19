@@ -44,8 +44,12 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- VINCULACIÓN AL CONTROLADOR DE FIREBASE -->
+<script src="controlador-firebase.js"></script>
+
 <script>
-    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Cuál cuerpo geométrico tiene dos bases circulares y una superficie lateral curva?", "opciones": {"a": "Prisma", "b": "Cono", "c": "Cilindro"}, "correcta": "c", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Qué cuerpo geométrico tiene una sola base poligonal y sus caras laterales son triángulos?", "opciones": {"a": "Prisma", "b": "Pirámide", "c": "Esfera"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "¿Cómo se llama el punto o 'esquina' donde se unen varias aristas?", "opciones": {"a": "Base", "b": "Vértice", "c": "Arista"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Qué nombre recibe la línea o borde donde se unen dos caras de un cuerpo geométrico?", "opciones": {"a": "Arista", "b": "Vértice", "c": "Lado"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Un cubo (como un dado) es un ejemplo especial de:", "opciones": {"a": "Cilindro", "b": "Prisma", "c": "Pirámide"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "Una lata de atún tradicional tiene forma de:", "opciones": {"a": "Prisma circular", "b": "Cilindro", "c": "Cono"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Cuántas bases tiene un prisma?", "opciones": {"a": "Una", "b": "Dos", "c": "Cuatro"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "¿Cuántas bases tiene un cono?", "opciones": {"a": "Una", "b": "Dos", "c": "Ninguna"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "Un cuerpo completamente curvo sin caras planas, vértices ni aristas es:", "opciones": {"a": "Cilindro", "b": "Esfera", "c": "Círculo"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Las famosas construcciones antiguas de Egipto son ejemplos de:", "opciones": {"a": "Pirámides", "b": "Prismas triangulares", "c": "Conos cuadrados"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "¿Qué forma geométrica tienen siempre las caras laterales de un prisma (si no es un cubo)?", "opciones": {"a": "Triángulos", "b": "Rectángulos o paralelogramos", "c": "Círculos"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "¿Qué forma geométrica tienen siempre las caras laterales de una pirámide?", "opciones": {"a": "Rectángulos", "b": "Cuadrados", "c": "Triángulos"}, "correcta": "c", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "A la cara inferior sobre la cual normalmente 'descansa' un cuerpo geométrico se le llama:", "opciones": {"a": "Base", "b": "Cúspide", "c": "Cara lateral"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "Un típico gorrito de fiesta de cumpleaños tiene forma de:", "opciones": {"a": "Cono", "b": "Pirámide", "c": "Cilindro"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "¿Qué cuerpo geométrico se parece a un tubo de papel higiénico?", "opciones": {"a": "Prisma rectangular", "b": "Cilindro", "c": "Esfera"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre del cuerpo 3D que parece una pelota perfecta:", "keywords": ["esfera"], "explicacion": "Es la esfera."}, {"id": "q17", "type": "text", "pregunta": "¿Cómo se le llama a la 'esquina' aguda de un cuerpo geométrico?", "keywords": ["vertice", "vértice"], "explicacion": "Vértice."}, {"id": "q18", "type": "text", "pregunta": "Escribe el nombre de la línea donde se unen dos caras planas:", "keywords": ["arista"], "explicacion": "Arista."}, {"id": "q19", "type": "text", "pregunta": "¿Qué figura plana es la base de un cilindro?", "keywords": ["circulo", "círculo"], "explicacion": "El cilindro tiene dos bases circulares."}, {"id": "q20", "type": "text", "pregunta": "¿Cuántas bases tiene una pirámide? (Escribe el número o la palabra)", "keywords": ["1", "una"], "explicacion": "Las pirámides solo tienen 1 base."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica la diferencia principal entre un Prisma y una Pirámide.", "keywords": [], "explicacion": "El prisma tiene dos bases iguales y sus caras laterales son rectángulos. La pirámide tiene solo una base y sus caras laterales son triángulos que terminan en una punta."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Escribe el nombre de 3 objetos de la vida real que tengan forma de cilindro.", "keywords": [], "explicacion": "Ejemplos válidos: una lata de atún, un estañón de agua, un tubo de PVC, un vaso recto, una batería (pila)."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué podemos decir que una esfera no tiene aristas ni vértices?", "keywords": [], "explicacion": "Porque es una superficie completamente curva y continua, no tiene caras planas que se unan para formar líneas (aristas) ni esquinas puntiagudas (vértices)."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: ¿Cuál es la diferencia entre un Círculo y una Esfera?", "keywords": [], "explicacion": "El círculo es una figura plana (2D), como un dibujo en un papel. La esfera es un cuerpo geométrico con volumen (3D), como una bola."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Imagina una caja de zapatos. ¿Qué tipo de cuerpo geométrico es y por qué?", "keywords": [], "explicacion": "Es un prisma rectangular, porque tiene dos bases rectangulares (arriba y abajo) y sus 4 caras laterales también son rectángulos."}];
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Cuál cuerpo geométrico tiene dos bases circulares y una superficie lateral curva?", "opciones": {"a": "Prisma", "b": "Cono", "c": "Cilindro"}, "correcta": "c", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Qué cuerpo geométrico tiene una sola base poligonal y sus caras laterales son triángulos?", "opciones": {"a": "Prisma", "b": "Pirámide", "c": "Esfera"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "¿Cómo se llama el punto o 'esquina' donde se unen varias aristas?", "opciones": {"a": "Base", "b": "Vértice", "c": "Arista"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Qué nombre recibe la línea o borde donde se unen dos caras de un cuerpo geométrico?", "opciones": {"a": "Arista", "b": "Vértice", "c": "Lado"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Un cubo (como un dado) es un ejemplo especial de:", "opciones": {"a": "Cilindro", "b": "Prisma", "c": "Pirámide"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "Una lata de atún tradicional tiene forma de:", "opciones": {"a": "Prisma circular", "b": "Cilindro", "c": "Cono"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Cuántas bases tiene un prisma?", "opciones": {"a": "Una", "b": "Dos", "c": "Cuatro"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "¿Cuántas bases tiene un cono?", "opciones": {"a": "Una", "b": "Dos", "c": "Ninguna"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "Un cuerpo completamente curvo sin caras planas, vértices ni aristas es:", "opciones": {"a": "Cilindro", "b": "Esfera", "c": "Círculo"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Las famosas construcciones antiguas de Egipto son ejemplos de:", "opciones": {"a": "Pirámides", "b": "Prismas triangulares", "c": "Conos cuadrados"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "¿Qué forma geométrica tienen siempre las caras laterales de un prisma (si no es un cubo)?", "opciones": {"a": "Triángulos", "b": "Rectángulos o paralelogramos", "c": "Círculos"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "¿Qué forma geométrica tienen siempre las caras laterales de una pirámide?", "opciones": {"a": "Rectángulos", "b": "Cuadrados", "c": "Triángulos"}, "correcta": "c", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "A la cara inferior sobre la cual normalmente 'descansa' un cuerpo geométrico se le llama:", "opciones": {"a": "Base", "b": "Cúspide", "c": "Cara lateral"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "Un típico gorrito de fiesta de cumpleaños tiene forma de:", "opciones": {"a": "Cono", "b": "Pirámide", "c": "Cilindro"}, "correcta": "a", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "¿Qué cuerpo geométrico se parece a un tubo de papel higiénico?", "opciones": {"a": "Prisma rectangular", "b": "Cilindro", "c": "Esfera"}, "correcta": "b", "explicacion": "Revisa los elementos de los cuerpos geométricos.<br><a href='resumen-mate-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre del cuerpo 3D que parece una pelota perfecta:", "keywords": ["esfera"], "explicacion": "Es la esfera."}, {"id": "q17", "type": "text", "pregunta": "¿Cómo se le llama a la 'esquina' aguda de un cuerpo geométrico?", "keywords": ["vertice", "vértice"], "explicacion": "Vértice."}, {"id": "q18", "type": "text", "pregunta": "Escribe el nombre de la línea donde se unen dos caras planas:", "keywords": ["arista"], "explicacion": "Arista."}, {"id": "q19", "type": "text", "pregunta": "¿Qué figura plana es la base de un cilindro?", "keywords": ["circulo", "círculo"], "explicacion": "El cilindro tiene dos bases circulares."}, {"id": "q20", "type": "text", "pregunta": "¿Cuántas bases tiene una pirámide? (Escribe el número o la palabra)", "keywords": ["1", "una"], "explicacion": "Las pirámides solo tienen 1 base."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica la diferencia principal entre un Prisma y una Pirámide.", "keywords": [], "explicacion": "El prisma tiene dos bases iguales y sus caras laterales son rectángulos. La pirámide tiene solo una base y sus caras laterales son triángulos que terminan en una punta."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Escribe el nombre de 3 objetos de la vida real que tengan forma de cilindro.", "keywords": [], "explicacion": "Ejemplos válidos: una lata de atún, un estañón de agua, un tubo de PVC, un vaso recto, una batería (pila)."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué podemos decir que una esfera no tiene aristas ni vértices?", "keywords": [], "explicacion": "Porque es una superficie completamente curva y continua, no tiene caras planas que se unan para formar líneas (aristas) ni esquinas puntiagudas (vértices)."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: ¿Cuál es la diferencia entre un Círculo y una Esfera?", "keywords": [], "explicacion": "El círculo es una figura plana (2D), como un dibujo en un papel. La esfera es un cuerpo geométrico con volumen (3D), como una bola."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Imagina una caja de zapatos. ¿Qué tipo de cuerpo geométrico es y por qué?", "keywords": [], "explicacion": "Es un prisma rectangular, porque tiene dos bases rectangulares (arriba y abajo) and sus 4 caras laterales también son rectángulos."}];
+    
     let intentosPorPregunta = {};
 
     function renderizarExamen() {
@@ -75,62 +79,102 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
-        dbPreguntas.forEach(q => {
+        let todasFinalizadas = true;
+        let correctas = 0;
+        let erroresAcumulados = [];
+
+        dbPreguntas.forEach((q, index) => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
 
-            let esCorrecta = false;
-            let respondida = false;
+            if (!block.classList.contains('correct') && !block.classList.contains('locked')) {
+                let esCorrecta = false;
+                let respondida = false;
 
-            if (q.type === 'mc') {
-                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
-                if (seleccion) { 
-                    respondida = true; 
-                    if (seleccion.value === q.correcta) esCorrecta = true; 
+                if (q.type === 'mc') {
+                    const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                    if (seleccion) { 
+                        respondida = true; 
+                        if (seleccion.value === q.correcta) esCorrecta = true; 
+                    }
+                } else if (q.type === 'text') {
+                    const input = document.getElementById(q.id);
+                    if (input.value.trim() !== '') {
+                        respondida = true;
+                        if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                    }
+                } else if (q.type === 'textarea') {
+                    const input = document.getElementById(q.id);
+                    if (input.value.trim().length > 3) {
+                        respondida = true;
+                        esCorrecta = true; 
+                    }
                 }
-            } else if (q.type === 'text') {
-                const input = document.getElementById(q.id);
-                if (input.value.trim() !== '') {
-                    respondida = true;
-                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
-                }
-            } else if (q.type === 'textarea') {
-                const input = document.getElementById(q.id);
-                if (input.value.trim().length > 3) {
-                    respondida = true;
-                    esCorrecta = true; 
+
+                if (respondida) {
+                    if (esCorrecta) {
+                        block.classList.add('correct');
+                        
+                        // LIMPIEZA VISUAL
+                        if (q.type !== 'textarea') {
+                            block.style.display = 'none';
+                        } else {
+                            fb.className = 'feedback show feedback-correct';
+                            fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                        }
+                        
+                        deshabilitar(q);
+                    } else {
+                        intentosPorPregunta[q.id]++;
+                        if (intentosPorPregunta[q.id] >= 2) {
+                            block.classList.add('locked', 'incorrect');
+                            fb.className = 'feedback show feedback-error';
+                            fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                            if (q.type === 'mc') {
+                                document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                                document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                            }
+                            deshabilitar(q);
+                        } else {
+                            fb.className = 'feedback show feedback-warning';
+                            fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                        }
+                    }
                 }
             }
 
-            if (!respondida) return;
-
-            if (esCorrecta) {
-                block.classList.add('correct');
-                fb.className = 'feedback show feedback-correct';
-                if(q.type === 'textarea') {
-                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
-                } else {
-                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
-                }
-                deshabilitar(q);
+            if (block.classList.contains('correct')) {
+                correctas++;
+            } else if (block.classList.contains('locked')) {
+                let textoError = `Pregunta ${index + 1}: ${q.pregunta.substring(0, 45)}...`;
+                erroresAcumulados.push(textoError);
             } else {
-                intentosPorPregunta[q.id]++;
-                if (intentosPorPregunta[q.id] >= 2) {
-                    block.classList.add('locked', 'incorrect');
-                    fb.className = 'feedback show feedback-error';
-                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
-                    if (q.type === 'mc') {
-                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
-                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
-                    }
-                    deshabilitar(q);
-                } else {
-                    fb.className = 'feedback show feedback-warning';
-                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
-                }
+                todasFinalizadas = false; 
             }
         });
+
+        if (todasFinalizadas) {
+            const btn = document.getElementById('btn-grade');
+            if (btn.disabled) return; 
+
+            const notaFinal = Math.round((correctas / dbPreguntas.length) * 100);
+            const tituloMateria = document.title; 
+            
+            btn.innerText = "Enviando resultados a la profesora...";
+            btn.disabled = true;
+            btn.style.background = "#7f8c8d";
+
+            enviarNota(tituloMateria, notaFinal, erroresAcumulados).then(exito => {
+                if (exito) {
+                    btn.innerText = `✅ Prueba Finalizada - Nota: ${notaFinal}`;
+                    btn.style.background = "#27ae60";
+                } else {
+                    btn.innerText = "⚠️ Error al enviar (Toca para reintentar)";
+                    btn.disabled = false;
+                    btn.style.background = "#e74c3c";
+                }
+            });
+        }
     }
 
     function deshabilitar(q) {

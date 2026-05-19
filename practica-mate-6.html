@@ -44,8 +44,12 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- VINCULACIÓN AL CONTROLADOR DE FIREBASE -->
+<script src="controlador-firebase.js"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Qué nombre recibe la línea imaginaria que divide una figura en dos partes idénticas (como un espejo)?", "opciones": {"a": "Eje central", "b": "Línea asimétrica", "c": "Eje de simetría"}, "correcta": "c", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "Si una figura NO se puede dividir en partes exactamente iguales, se dice que es:", "opciones": {"a": "Simétrica", "b": "Asimétrica", "c": "Isósceles"}, "correcta": "b", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "¿Cuántos ejes de simetría tiene un cuadrado perfecto?", "opciones": {"a": "1", "b": "2", "c": "4"}, "correcta": "c", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Cuántos ejes de simetría tiene la letra A mayúscula?", "opciones": {"a": "1", "b": "2", "c": "Ninguno"}, "correcta": "a", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "A los puntos que están a la misma distancia del eje de simetría (uno en cada mitad) se les llama:", "opciones": {"a": "Puntos homólogos", "b": "Vértices", "c": "Puntos medios"}, "correcta": "a", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "Las alas de una mariposa son un ejemplo perfecto de:", "opciones": {"a": "Asimetría", "b": "Simetría bilateral", "c": "Geometría 3D"}, "correcta": "b", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Cuál de las siguientes figuras normalmente NO tiene ningún eje de simetría?", "opciones": {"a": "Un círculo", "b": "Un cuadrado", "c": "Una nube dibujada al azar"}, "correcta": "c", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "La letra B mayúscula tiene un eje de simetría en dirección:", "opciones": {"a": "Vertical", "b": "Horizontal", "c": "Diagonal"}, "correcta": "b", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál de las siguientes letras mayúsculas es ASIMÉTRICA?", "opciones": {"a": "H", "b": "M", "c": "G"}, "correcta": "c", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Si doblo una hoja de papel por el eje de simetría de un dibujo, ¿qué pasa con las dos mitades?", "opciones": {"a": "Coinciden perfectamente una sobre la otra", "b": "No coinciden en nada", "c": "Se rompen"}, "correcta": "a", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "El rostro humano visto de frente es un ejemplo de figura:", "opciones": {"a": "Casi perfectamente simétrica", "b": "Totalmente asimétrica", "c": "Heterogénea"}, "correcta": "a", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Si alteras o mueves un punto homólogo en un lado de la figura sin alterar el otro lado, ¿qué pasa?", "opciones": {"a": "No pasa nada", "b": "La figura se vuelve asimétrica", "c": "La figura cambia de color"}, "correcta": "b", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Cuántos ejes de simetría se le pueden dibujar a un círculo perfecto?", "opciones": {"a": "Infinitos ejes", "b": "Solo 4 ejes", "c": "Solo 2 ejes"}, "correcta": "a", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "¿Cuántos ejes de simetría tiene un rectángulo?", "opciones": {"a": "2", "b": "4", "c": "1"}, "correcta": "a", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "La letra M mayúscula tiene un eje de simetría en dirección:", "opciones": {"a": "Horizontal", "b": "Vertical", "c": "Diagonal"}, "correcta": "b", "explicacion": "Revisa los conceptos de ejes de simetría.<br><a href='resumen-mate-6.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Línea imaginaria que corta la figura en dos mitades que son un reflejo exacto (3 palabras):", "keywords": ["eje de simetria", "eje de simetría"], "explicacion": "Eje de simetría."}, {"id": "q17", "type": "text", "pregunta": "Escribe la palabra que describe a una figura que NO tiene mitades iguales:", "keywords": ["asimetrica", "asimétrica"], "explicacion": "Asimétrica."}, {"id": "q18", "type": "text", "pregunta": "Los puntos que se encuentran a igual distancia del eje como si fueran un reflejo se llaman puntos...", "keywords": ["homologos", "homólogos"], "explicacion": "Homólogos."}, {"id": "q19", "type": "text", "pregunta": "¿Cuántos ejes de simetría tiene la letra H mayúscula? (escribe el número)", "keywords": ["2", "dos"], "explicacion": "Uno vertical y uno horizontal."}, {"id": "q20", "type": "text", "pregunta": "¿Cuántos ejes de simetría tiene la letra C mayúscula perfecta? (escribe el número)", "keywords": ["1", "uno"], "explicacion": "Solo uno horizontal."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica con tus palabras qué significa que una figura sea 'Asimétrica'.", "keywords": [], "explicacion": "Significa que no tiene ningún eje de simetría, es decir, no hay forma de trazar una línea recta que divida a la figura en dos partes que sean un reflejo exacto la una de la otra."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Escribe dos ejemplos de cosas de la naturaleza (animales o plantas) que sean simétricos.", "keywords": [], "explicacion": "Ejemplos válidos: una mariposa, una hoja de árbol perfecta, la cara de un tigre, una estrella de mar."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Explica una forma fácil de comprobar si un dibujo en una hoja de papel es perfectamente simétrico.", "keywords": [], "explicacion": "Se dobla la hoja de papel exactamente por la mitad del dibujo. Si las líneas de un lado coinciden perfectamente encima de las líneas del otro lado, el dibujo es simétrico."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué decimos que un círculo perfecto tiene 'infinitos' ejes de simetría?", "keywords": [], "explicacion": "Porque sin importar en qué dirección traces la línea (horizontal, vertical, inclinada), siempre y cuando pase exactamente por el centro, dividirá el círculo en dos mitades idénticas."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: ¿Qué pasaría con tu rostro si cambiaras de posición solo un punto homólogo (por ejemplo, si te bajaran una sola oreja)?", "keywords": [], "explicacion": "El rostro perdería su simetría y se volvería asimétrico, porque la oreja izquierda ya no estaría a la misma altura que su punto homólogo (la oreja derecha)."}];
+    
     let intentosPorPregunta = {};
 
     function renderizarExamen() {
@@ -75,62 +79,102 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
-        dbPreguntas.forEach(q => {
+        let todasFinalizadas = true;
+        let correctas = 0;
+        let erroresAcumulados = [];
+
+        dbPreguntas.forEach((q, index) => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
 
-            let esCorrecta = false;
-            let respondida = false;
+            if (!block.classList.contains('correct') && !block.classList.contains('locked')) {
+                let esCorrecta = false;
+                let respondida = false;
 
-            if (q.type === 'mc') {
-                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
-                if (seleccion) { 
-                    respondida = true; 
-                    if (seleccion.value === q.correcta) esCorrecta = true; 
+                if (q.type === 'mc') {
+                    const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                    if (seleccion) { 
+                        respondida = true; 
+                        if (seleccion.value === q.correcta) esCorrecta = true; 
+                    }
+                } else if (q.type === 'text') {
+                    const input = document.getElementById(q.id);
+                    if (input.value.trim() !== '') {
+                        respondida = true;
+                        if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                    }
+                } else if (q.type === 'textarea') {
+                    const input = document.getElementById(q.id);
+                    if (input.value.trim().length > 3) {
+                        respondida = true;
+                        esCorrecta = true; 
+                    }
                 }
-            } else if (q.type === 'text') {
-                const input = document.getElementById(q.id);
-                if (input.value.trim() !== '') {
-                    respondida = true;
-                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
-                }
-            } else if (q.type === 'textarea') {
-                const input = document.getElementById(q.id);
-                if (input.value.trim().length > 3) {
-                    respondida = true;
-                    esCorrecta = true; 
+
+                if (respondida) {
+                    if (esCorrecta) {
+                        block.classList.add('correct');
+                        
+                        // LIMPIEZA VISUAL
+                        if (q.type !== 'textarea') {
+                            block.style.display = 'none';
+                        } else {
+                            fb.className = 'feedback show feedback-correct';
+                            fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                        }
+                        
+                        deshabilitar(q);
+                    } else {
+                        intentosPorPregunta[q.id]++;
+                        if (intentosPorPregunta[q.id] >= 2) {
+                            block.classList.add('locked', 'incorrect');
+                            fb.className = 'feedback show feedback-error';
+                            fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                            if (q.type === 'mc') {
+                                document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                                document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                            }
+                            deshabilitar(q);
+                        } else {
+                            fb.className = 'feedback show feedback-warning';
+                            fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                        }
+                    }
                 }
             }
 
-            if (!respondida) return;
-
-            if (esCorrecta) {
-                block.classList.add('correct');
-                fb.className = 'feedback show feedback-correct';
-                if(q.type === 'textarea') {
-                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
-                } else {
-                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
-                }
-                deshabilitar(q);
+            if (block.classList.contains('correct')) {
+                correctas++;
+            } else if (block.classList.contains('locked')) {
+                let textoError = `Pregunta ${index + 1}: ${q.pregunta.substring(0, 45)}...`;
+                erroresAcumulados.push(textoError);
             } else {
-                intentosPorPregunta[q.id]++;
-                if (intentosPorPregunta[q.id] >= 2) {
-                    block.classList.add('locked', 'incorrect');
-                    fb.className = 'feedback show feedback-error';
-                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
-                    if (q.type === 'mc') {
-                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
-                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
-                    }
-                    deshabilitar(q);
-                } else {
-                    fb.className = 'feedback show feedback-warning';
-                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
-                }
+                todasFinalizadas = false; 
             }
         });
+
+        if (todasFinalizadas) {
+            const btn = document.getElementById('btn-grade');
+            if (btn.disabled) return; 
+
+            const notaFinal = Math.round((correctas / dbPreguntas.length) * 100);
+            const tituloMateria = document.title; 
+            
+            btn.innerText = "Enviando resultados a la profesora...";
+            btn.disabled = true;
+            btn.style.background = "#7f8c8d";
+
+            enviarNota(tituloMateria, notaFinal, erroresAcumulados).then(exito => {
+                if (exito) {
+                    btn.innerText = `✅ Prueba Finalizada - Nota: ${notaFinal}`;
+                    btn.style.background = "#27ae60";
+                } else {
+                    btn.innerText = "⚠️ Error al enviar (Toca para reintentar)";
+                    btn.disabled = false;
+                    btn.style.background = "#e74c3c";
+                }
+            });
+        }
     }
 
     function deshabilitar(q) {

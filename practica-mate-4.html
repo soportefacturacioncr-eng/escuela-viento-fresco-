@@ -44,8 +44,12 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- VINCULACIÓN AL CONTROLADOR DE FIREBASE -->
+<script src="controlador-firebase.js"></script>
+
 <script>
-    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "En una fracción, el número de abajo se llama:", "opciones": {"a": "Numerador", "b": "Denominador", "c": "Exponente"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "El numerador (el número de arriba de la fracción) indica:", "opciones": {"a": "En cuántas partes se divide el total", "b": "Cuántas partes se toman o tenemos", "c": "Si la fracción es buena o mala"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "¿Qué es una fracción propia?", "opciones": {"a": "Cuando el numerador es menor que el denominador", "b": "Cuando el numerador es mayor que el denominador", "c": "Cuando ambos números son iguales"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "Si una fracción representa más de una unidad entera, se llama:", "opciones": {"a": "Homogénea", "b": "Propia", "c": "Impropia"}, "correcta": "c", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Las fracciones que tienen exactamente el mismo denominador se conocen como:", "opciones": {"a": "Homogéneas", "b": "Heterogéneas", "c": "Propias"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿Cuál pareja de fracciones es homogénea?", "opciones": {"a": "1/4 y 3/4", "b": "2/3 y 2/5", "c": "1/5 y 1/2"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Cuál pareja de fracciones es heterogénea?", "opciones": {"a": "3/7 y 4/7", "b": "1/5 y 2/9", "c": "8/8 y 1/8"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "Un ejemplo de fracción impropia es:", "opciones": {"a": "2/5", "b": "7/3", "c": "1/2"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál es el resultado de sumar 2/7 + 3/7?", "opciones": {"a": "5/14", "b": "5/7", "c": "6/7"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "¿Cuál es el resultado de restar 5/8 - 2/8?", "opciones": {"a": "3/8", "b": "3/0", "c": "7/8"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "Al sumar fracciones homogéneas, ¿qué se hace con los denominadores?", "opciones": {"a": "Se suman", "b": "Se restan", "c": "Se mantienen igual"}, "correcta": "c", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Si Jimmy pinta 1/5 de una pared el lunes y 2/5 el martes, ¿cuánto ha pintado en total?", "opciones": {"a": "3/10", "b": "3/5", "c": "2/5"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Cuál de las siguientes es una fracción propia?", "opciones": {"a": "1/3", "b": "5/2", "c": "10/9"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "La fracción 4/4 es igual a:", "opciones": {"a": "Un entero completo (1)", "b": "Cero", "c": "16"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "Si tienes una pizza dividida en 8 porciones y te comes 3, la fracción de pizza que te comiste es:", "opciones": {"a": "8/3", "b": "3/8", "c": "5/8"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "En la fracción 3/5, ¿cuál es el denominador?", "keywords": ["5", "cinco"], "explicacion": "El denominador es el número de abajo."}, {"id": "q17", "type": "text", "pregunta": "¿Qué nombre reciben las fracciones que tienen diferente denominador?", "keywords": ["heterogeneas", "heterogéneas"], "explicacion": "Fracciones heterogéneas."}, {"id": "q18", "type": "text", "pregunta": "Escribe el resultado de sumar 4/9 + 1/9 (escribe la fracción usando la pleca o barra inclinada, ej: 1/2):", "keywords": ["5/9"], "explicacion": "Se suman los numeradores y se mantiene el 9."}, {"id": "q19", "type": "text", "pregunta": "¿Cómo se llama la fracción donde el número de arriba es más grande que el de abajo?", "keywords": ["impropia"], "explicacion": "Fracción impropia."}, {"id": "q20", "type": "text", "pregunta": "En la fracción 7/10, ¿cuál es el numerador?", "keywords": ["7", "siete"], "explicacion": "El número de arriba."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica con tus palabras la diferencia entre una fracción Propia y una fracción Impropia.", "keywords": [], "explicacion": "La propia representa menos de 1 entero porque el numerador es menor que el denominador. La impropia representa más de 1 entero porque el numerador es mayor que el denominador."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Escribe un ejemplo de la vida real donde utilices fracciones homogéneas (con el mismo denominador).", "keywords": [], "explicacion": "Ejemplo: Compré una pizza de 8 pedazos. Mi hermano comió 2/8 y yo 3/8."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué en la suma de fracciones homogéneas (ej. 1/5 + 2/5) el denominador (5) no se debe sumar?", "keywords": [], "explicacion": "Porque el denominador solo nos dice en cuántas partes está dividido el objeto. Si sumamos los de abajo, estaríamos cambiando el tamaño de los pedazos, lo que es incorrecto."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Una familia compra un pastel dividido en 12 pedazos. Se comen 10/12. ¿Qué fracción del pastel sobra? (Escribe la resta y la respuesta)", "keywords": [], "explicacion": "Habían 12/12. Si restamos 12/12 - 10/12, sobra 2/12 del pastel."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Dibuja mentalmente y explica cómo se vería la fracción 1/4.", "keywords": [], "explicacion": "Se vería como un círculo o cuadro cortado en 4 partes exactamente iguales, con solo 1 de esas partes pintada o tomada."}];
+    const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "En una fracción, el número de abajo se llama:", "opciones": {"a": "Numerador", "b": "Denominador", "c": "Exponente"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "El numerador (el número de arriba de la fracción) indica:", "opciones": {"a": "En cuántas partes se divide el total", "b": "Cuántas partes se toman o tenemos", "c": "Si la fracción es buena o mala"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "¿Qué es una fracción propia?", "opciones": {"a": "Cuando el numerador es menor que el denominador", "b": "Cuando el numerador es mayor que el denominador", "c": "Cuando ambos números son iguales"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "Si una fracción representa más de una unidad entera, se llama:", "opciones": {"a": "Homogénea", "b": "Propia", "c": "Impropia"}, "correcta": "c", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Las fracciones que tienen exactamente el mismo denominador se conocen como:", "opciones": {"a": "Homogénea", "b": "Heterogéneas", "c": "Propias"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿Cuál pareja de fracciones es homogénea?", "opciones": {"a": "1/4 y 3/4", "b": "2/3 y 2/5", "c": "1/5 y 1/2"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Cuál pareja de fracciones es heterogénea?", "opciones": {"a": "3/7 y 4/7", "b": "1/5 y 2/9", "c": "8/8 y 1/8"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "Un ejemplo de fracción impropia es:", "opciones": {"a": "2/5", "b": "7/3", "c": "1/2"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál es el resultado de sumar 2/7 + 3/7?", "opciones": {"a": "5/14", "b": "5/7", "c": "6/7"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "¿Cuál es el resultado de restar 5/8 - 2/8?", "opciones": {"a": "3/8", "b": "3/0", "c": "7/8"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "Al sumar fracciones homogéneas, ¿qué se hace con los denominadores?", "opciones": {"a": "Se suman", "b": "Se restan", "c": "Se mantienen igual"}, "correcta": "c", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Si Jimmy pinta 1/5 de una pared el lunes y 2/5 el martes, ¿cuánto ha pintado en total?", "opciones": {"a": "3/10", "b": "3/5", "c": "2/5"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Cuál de las siguientes es una fracción propia?", "opciones": {"a": "1/3", "b": "5/2", "c": "10/9"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "La fracción 4/4 es igual a:", "opciones": {"a": "Un entero completo (1)", "b": "Cero", "c": "16"}, "correcta": "a", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "Si tienes una pizza dividida en 8 porciones y te comes 3, la fracción de pizza que te comiste es:", "opciones": {"a": "8/3", "b": "3/8", "c": "5/8"}, "correcta": "b", "explicacion": "Revisa la teoría de fracciones.<br><a href='resumen-mate-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "En la fracción 3/5, ¿cuál es el denominador?", "keywords": ["5", "cinco"], "explicacion": "El denominador es el número de abajo."}, {"id": "q17", "type": "text", "pregunta": "¿Qué nombre reciben las fracciones que tienen diferente denominador?", "keywords": ["heterogeneas", "heterogéneas"], "explicacion": "Fracciones heterogéneas."}, {"id": "q18", "type": "text", "pregunta": "Escribe el resultado de sumar 4/9 + 1/9 (escribe la fracción usando la pleca o barra inclinada, ej: 1/2):", "keywords": ["5/9"], "explicacion": "Se suman los numeradores y se mantiene el 9."}, {"id": "q19", "type": "text", "pregunta": "¿Cómo se llama la fracción donde el número de arriba es más grande que el de abajo?", "keywords": ["impropia"], "explicacion": "Fracción impropia."}, {"id": "q20", "type": "text", "pregunta": "En la fracción 7/10, ¿cuál es el numerador?", "keywords": ["7", "siete"], "explicacion": "El número de arriba."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica con tus palabras la diferencia entre una fracción Propia y una fracción Impropia.", "keywords": [], "explicacion": "La propia representa menos de 1 entero porque el numerador es menor que el denominador. La impropia representa más de 1 entero porque el numerador es mayor que el denominador."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Escribe un ejemplo de la vida real donde utilices fracciones homogéneas (con el mismo denominador).", "keywords": [], "explicacion": "Ejemplo: Compré una pizza de 8 pedazos. Mi hermano comió 2/8 y yo 3/8."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué en la suma de fracciones homogéneas (ej. 1/5 + 2/5) el denominador (5) no se debe sumar?", "keywords": [], "explicacion": "Porque el denominador solo nos dice en cuántas partes está dividido el objeto. Si sumamos los de abajo, estaríamos cambiando el tamaño de los pedazos, lo que es incorrecto."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Una familia compra un pastel dividido en 12 pedazos. Se comen 10/12. ¿Qué fracción del pastel sobra? (Escribe la resta y la respuesta)", "keywords": [], "explicacion": "Habían 12/12. Si restamos 12/12 - 10/12, sobra 2/12 del pastel."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Dibuja mentalmente y explica cómo se vería la fracción 1/4.", "keywords": [], "explicacion": "Se vería como un círculo o cuadro cortado en 4 partes exactamente iguales, con solo 1 de esas partes pintada o tomada."}];
+    
     let intentosPorPregunta = {};
 
     function renderizarExamen() {
@@ -75,62 +79,103 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
-        dbPreguntas.forEach(q => {
+        let todasFinalizadas = true;
+        let correctas = 0;
+        let erroresAcumulados = [];
+
+        dbPreguntas.forEach((q, index) => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
 
-            let esCorrecta = false;
-            let respondida = false;
+            if (!block.classList.contains('correct') && !block.classList.contains('locked')) {
+                let esCorrecta = false;
+                let respondida = false;
 
-            if (q.type === 'mc') {
-                const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
-                if (seleccion) { 
-                    respondida = true; 
-                    if (seleccion.value === q.correcta) esCorrecta = true; 
+                if (q.type === 'mc') {
+                    const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+                    if (seleccion) { 
+                        respondida = true; 
+                        if (seleccion.value === q.correcta) esCorrecta = true; 
+                    }
+                } else if (q.type === 'text') {
+                    const input = document.getElementById(q.id);
+                    if (input.value.trim() !== '') {
+                        respondida = true;
+                        if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
+                    }
+                } else if (q.type === 'textarea') {
+                    const input = document.getElementById(q.id);
+                    if (input.value.trim().length > 2) {
+                        respondida = true;
+                        esCorrecta = true;
+                    }
                 }
-            } else if (q.type === 'text') {
-                const input = document.getElementById(q.id);
-                if (input.value.trim() !== '') {
-                    respondida = true;
-                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
-                }
-            } else if (q.type === 'textarea') {
-                const input = document.getElementById(q.id);
-                if (input.value.trim().length > 2) {
-                    respondida = true;
-                    esCorrecta = true;
+
+                if (respondida) {
+                    if (esCorrecta) {
+                        block.classList.add('correct');
+                        
+                        // EFECTO LIMPIEZA VISUAL
+                        if (q.type !== 'textarea') {
+                            block.style.display = 'none';
+                        } else {
+                            fb.className = 'feedback show feedback-correct';
+                            fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
+                        }
+                        
+                        deshabilitar(q);
+                    } else {
+                        intentosPorPregunta[q.id]++;
+                        if (intentosPorPregunta[q.id] >= 2) {
+                            block.classList.add('locked', 'incorrect');
+                            fb.className = 'feedback show feedback-error';
+                            fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                            if (q.type === 'mc') {
+                                document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                                document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                            }
+                            deshabilitar(q);
+                        } else {
+                            fb.className = 'feedback show feedback-warning';
+                            fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                        }
+                    }
                 }
             }
 
-            if (!respondida) return;
-
-            if (esCorrecta) {
-                block.classList.add('correct');
-                fb.className = 'feedback show feedback-correct';
-                if(q.type === 'textarea') {
-                    fb.innerHTML = `✅ ¡Respuesta registrada! Compara tu respuesta con la explicación:<br><br>${q.explicacion}`;
-                } else {
-                    fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
-                }
-                deshabilitar(q);
+            if (block.classList.contains('correct')) {
+                correctas++;
+            } else if (block.classList.contains('locked')) {
+                let textoError = `Pregunta ${index + 1}: ${q.pregunta.substring(0, 45)}...`;
+                erroresAcumulados.push(textoError);
             } else {
-                intentosPorPregunta[q.id]++;
-                if (intentosPorPregunta[q.id] >= 2) {
-                    block.classList.add('locked', 'incorrect');
-                    fb.className = 'feedback show feedback-error';
-                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
-                    if (q.type === 'mc') {
-                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
-                        document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
-                    }
-                    deshabilitar(q);
-                } else {
-                    fb.className = 'feedback show feedback-warning';
-                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
-                }
+                todasFinalizadas = false; 
             }
         });
+
+        // ENVÍO A FIREBASE
+        if (todasFinalizadas) {
+            const btn = document.getElementById('btn-grade');
+            if (btn.disabled) return; 
+
+            const notaFinal = Math.round((correctas / dbPreguntas.length) * 100);
+            const tituloMateria = document.title; 
+            
+            btn.innerText = "Enviando resultados a la profesora...";
+            btn.disabled = true;
+            btn.style.background = "#7f8c8d";
+
+            enviarNota(tituloMateria, notaFinal, erroresAcumulados).then(exito => {
+                if (exito) {
+                    btn.innerText = `✅ Prueba Finalizada - Nota: ${notaFinal}`;
+                    btn.style.background = "#27ae60";
+                } else {
+                    btn.innerText = "⚠️ Error al enviar (Toca para reintentar)";
+                    btn.disabled = false;
+                    btn.style.background = "#e74c3c";
+                }
+            });
+        }
     }
 
     function deshabilitar(q) {
