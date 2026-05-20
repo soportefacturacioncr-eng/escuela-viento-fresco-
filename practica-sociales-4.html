@@ -44,6 +44,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Cómo se llama el movimiento en el que la Luna gira sobre su propio eje?", "opciones": {"a": "Traslación lunar", "b": "Rotación lunar", "c": "Revolución"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Aproximadamente cuántos días tarda la Luna en dar una vuelta sobre su propio eje?", "opciones": {"a": "24 horas", "b": "365 días", "c": "28 días"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "El movimiento de 'traslación lunar' ocurre cuando la Luna gira alrededor de:", "opciones": {"a": "El Sol", "b": "Su propio eje", "c": "La Tierra"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Por qué desde la Tierra SIEMPRE vemos la misma cara de la Luna?", "opciones": {"a": "Porque la Tierra no gira", "b": "Porque la Luna es plana", "c": "Porque su rotación y su traslación duran lo mismo (28 días)"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "¿Qué es la 'revolución conjunta' de la Luna?", "opciones": {"a": "El viaje que hace la Luna acompañando a la Tierra alrededor del Sol", "b": "Cuando la Luna choca con un meteorito", "c": "El giro de la Luna sobre sí misma"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿De dónde proviene la luz que hace brillar a la Luna?", "opciones": {"a": "La Luna tiene lava ardiente en su interior", "b": "La Luna refleja la luz del Sol", "c": "La Tierra ilumina a la Luna"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿En cuál fase lunar la Luna NO se puede ver desde la Tierra en la noche?", "opciones": {"a": "Luna Llena", "b": "Cuarto Creciente", "c": "Luna Nueva"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "Cuando la Luna tiene forma de letra 'D', se encuentra en la fase de:", "opciones": {"a": "Cuarto Creciente", "b": "Luna Nueva", "c": "Cuarto Menguante"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "La fase de 'Luna Llena' ocurre cuando:", "opciones": {"a": "La Tierra está exactamente entre el Sol y la Luna", "b": "La Luna está entre el Sol y la Tierra", "c": "El Sol se apaga"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Cuando la parte iluminada de la luna empieza a disminuir y toma forma de 'C', se llama:", "opciones": {"a": "Cuarto Creciente", "b": "Cuarto Menguante", "c": "Luna Nueva"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "A los cambios en la forma iluminada de la Luna que vemos desde la Tierra se les llama:", "opciones": {"a": "Eclipses", "b": "Estaciones del año", "c": "Fases lunares"}, "correcta": "c", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Un eclipse solar ocurre cuando:", "opciones": {"a": "La Luna se interpone entre el Sol y la Tierra", "b": "La Tierra se interpone entre la Luna y el Sol", "c": "Los planetas se alinean"}, "correcta": "a", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Qué es un eclipse lunar?", "opciones": {"a": "Cuando el Sol oculta a la Tierra", "b": "Cuando la Tierra se interpone entre el Sol y la Luna, dándole sombra", "c": "Cuando la Luna oculta al Sol"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "El movimiento de traslación de la Luna alrededor de la Tierra dura:", "opciones": {"a": "24 horas", "b": "28 días", "c": "365 días"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "¿La Luna emite luz propia como el Sol?", "opciones": {"a": "Sí, es una estrella pequeña", "b": "No, es un satélite que solo refleja luz", "c": "A veces sí y a veces no"}, "correcta": "b", "explicacion": "Revisa los movimientos y fases de la Luna.<br><a href='resumen-sociales-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre de la fase en la que la Luna se ve completamente iluminada y redonda:", "keywords": ["luna llena", "llena"], "explicacion": "Es el momento de mayor iluminación."}, {"id": "q17", "type": "text", "pregunta": "Escribe el nombre del cuerpo celeste (estrella) que le da su luz a la Luna:", "keywords": ["el sol", "sol"], "explicacion": "La luna funciona como un espejo del Sol."}, {"id": "q18", "type": "text", "pregunta": "Nombre del movimiento en el que la Luna gira sobre su propio eje (como un trompo):", "keywords": ["rotacion", "rotación"], "explicacion": "Rotación lunar."}, {"id": "q19", "type": "text", "pregunta": "Nombre del movimiento donde la Luna da una vuelta completa alrededor de la Tierra:", "keywords": ["traslacion", "traslación"], "explicacion": "Traslación lunar."}, {"id": "q20", "type": "text", "pregunta": "¿Cuántos días (aproximadamente) tarda la Luna en completar TODAS sus fases?", "keywords": ["28", "veintiocho"], "explicacion": "El ciclo lunar dura 28 días."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica por qué razón desde la Tierra nunca podemos ver la parte de atrás (la 'cara oculta') de la Luna.", "keywords": [], "explicacion": "Porque la Luna tarda exactamente lo mismo en girar sobre su propio eje (rotación) que en dar la vuelta a la Tierra (traslación). Al moverse a la misma velocidad, siempre nos muestra el mismo frente."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: ¿Cuál es la diferencia principal entre un eclipse de Sol y un eclipse de Luna?", "keywords": [], "explicacion": "En el eclipse de Sol, la Luna tapa la luz del Sol. En el eclipse de Luna, la Tierra se interpone y su sombra tapa u oscurece a la Luna."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Describe cómo se ve la Luna en el cielo durante el 'Cuarto Creciente' y el 'Cuarto Menguante'.", "keywords": [], "explicacion": "En el Cuarto Creciente, la luna va creciendo y su parte iluminada tiene forma de 'D'. En el Cuarto Menguante, la luz va disminuyendo y tiene forma de 'C'."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Explica qué es el movimiento de 'Revolución conjunta'.", "keywords": [], "explicacion": "Es el movimiento en el cual la Luna acompaña a la Tierra en su viaje larguísimo alrededor del Sol."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué en la fase de Luna Nueva el cielo nocturno se ve más oscuro y no vemos a la luna?", "keywords": [], "explicacion": "Porque la cara de la luna que el Sol está iluminando queda viendo hacia el espacio exterior, y la cara que da hacia la Tierra está totalmente a oscuras."}];
     let intentosPorPregunta = {};
@@ -75,10 +78,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -114,6 +130,8 @@
                     fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 }
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -125,12 +143,40 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Estudios Sociales",
+                    nivel: "6° Grado",
+                    tema: "La Luna: Fases y Movimientos",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
