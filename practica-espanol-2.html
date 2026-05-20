@@ -44,6 +44,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Qué signo de puntuación detiene el discurso para llamar la atención sobre lo que sigue?", "opciones": {"a": "La coma", "b": "Los dos puntos", "c": "El punto y coma"}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "En el saludo de una carta 'Estimada abuela__ Espero que estés bien.', ¿qué signo va en el espacio?", "opciones": {"a": "Coma", "b": "Dos puntos", "c": "Punto"}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "Después de los dos puntos en el saludo de una carta, la siguiente línea comienza con:", "opciones": {"a": "Letra mayúscula", "b": "Letra minúscula", "c": "Sangría sin mayúscula"}, "correcta": "a", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "Los dos puntos se usan antes de una enumeración anunciada. ¿Qué oración es correcta?", "opciones": {"a": "Me gustan: el azul, el verde y el rojo.", "b": "Mis colores favoritos son: el azul, el verde y el rojo.", "c": "Mis colores favoritos: son azul, verde y rojo."}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Para introducir una cita textual, se utilizan los dos puntos. ¿Cuál oración está correcta?", "opciones": {"a": "Juan me dijo: que no vendría hoy.", "b": "El jefe ordenó: 'Todos a trabajar'.", "c": "Me preguntó: cómo estaba."}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "En textos jurídicos, detrás de palabras como CERTIFICA, EXPONE o SOLICITA, se escriben:", "opciones": {"a": "Dos puntos", "b": "Puntos suspensivos", "c": "Comas"}, "correcta": "a", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Cuál de estas opciones utiliza mal los dos puntos?", "opciones": {"a": "Tres cosas me gustan: leer, dormir y comer.", "b": "Sólo quiero saber: ¿por qué lo hiciste?", "c": "El ganador fue: Pedro."}, "correcta": "c", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "¿Cuántos puntos conforman exactamente el signo de 'puntos suspensivos'?", "opciones": {"a": "Dos", "b": "Tres", "c": "Cuatro"}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "Los puntos suspensivos se emplean para:", "opciones": {"a": "Finalizar una idea con contundencia", "b": "Dejar el sentido de la frase en suspenso", "c": "Separar párrafos"}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "En la oración 'Vendían dulces, confites, chocolates...', los puntos suspensivos equivalen a la palabra:", "opciones": {"a": "Finalmente", "b": "Además", "c": "Etcétera"}, "correcta": "c", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "¿Cuál oración utiliza los puntos suspensivos para expresar duda o temor?", "opciones": {"a": "Fui a la tienda, compré manzanas...", "b": "No sé si decírtelo... bueno, sí te lo diré.", "c": "Las vocales son a, e, i, o, u..."}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Si dejamos un refrán o dicho popular incompleto porque ya se sobreentiende, usamos:", "opciones": {"a": "Dos puntos", "b": "Comillas", "c": "Puntos suspensivos"}, "correcta": "c", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "Selecciona el ejemplo correcto de refrán incompleto:", "opciones": {"a": "A caballo regalado... no se le mira el colmillo.", "b": "A caballo regalado: no se le mira el colmillo", "c": "A caballo regalado..."}, "correcta": "c", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "Si omitimos una parte de una cita textual en medio del texto, los puntos suspensivos se encierran entre:", "opciones": {"a": "Comillas (...)", "b": "Corchetes o paréntesis [...]", "c": "Guiones -...-"}, "correcta": "b", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "Después de los puntos suspensivos, si estos cierran el enunciado, la palabra siguiente comienza con:", "opciones": {"a": "Mayúscula", "b": "Minúscula", "c": "Depende del contexto"}, "correcta": "a", "explicacion": "Revisa el uso de los dos puntos y suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Signo que se coloca detrás del saludo inicial de una carta (Ej: Estimado señor):", "keywords": ["dos puntos", "los dos puntos", ":"], "explicacion": "Dos puntos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q17", "type": "text", "pregunta": "Signo de puntuación que indica que una enumeración podría continuar (equivalente a etcétera):", "keywords": ["puntos suspensivos", "los puntos suspensivos", "..."], "explicacion": "Puntos suspensivos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q18", "type": "text", "pregunta": "¿Cuántos puntos conforman exactamente los puntos suspensivos?", "keywords": ["tres", "3"], "explicacion": "Siempre son tres.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q19", "type": "text", "pregunta": "Signo que se utiliza justo antes de escribir una cita exacta de lo que alguien dijo:", "keywords": ["dos puntos", ":"], "explicacion": "Dos puntos (ej: Él dijo: ...).<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q20", "type": "text", "pregunta": "Completa con el signo correcto: 'A quien madruga... Dios lo ayuda'. ¿Qué signo va ahí?", "keywords": ["puntos suspensivos", "..."], "explicacion": "Puntos suspensivos para la pausa del refrán.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q21", "type": "text", "pregunta": "Si en un texto vemos [...], significa que se ha __________ una parte de la cita original.", "keywords": ["omitido", "borrado", "eliminado", "quitado"], "explicacion": "Significa que se omitió parte del texto original.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q22", "type": "text", "pregunta": "Signo que introducimos cuando anunciamos: 'Los ganadores son:'", "keywords": ["dos puntos", ":"], "explicacion": "Dos puntos.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Redacta una carta corta a un amigo, utilizando el saludo correcto y los dos puntos.", "keywords": [], "explicacion": "Ej: Querido amigo: \nTe escribo para contarte que iré a visitarte pronto.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Inventa una pequeña historia de una oración que utilice los puntos suspensivos para crear suspenso o misterio.", "keywords": [], "explicacion": "Ej: Abrí la puerta lentamente y en la oscuridad vi...<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Escribe una oración que anuncie una lista o enumeración utilizando los dos puntos correctamente.", "keywords": [], "explicacion": "Ej: Para la receta ocupamos tres ingredientes: huevos, harina y leche.<br><a href='resumen-espanol-2.html' class='btn-review'>📖 Leer Resumen</a>"}];
     let intentosPorPregunta = {};
@@ -75,10 +78,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -114,6 +130,8 @@
                     fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 }
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -125,12 +143,40 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Español",
+                    nivel: "6° Grado",
+                    tema: "Ortografía: Dos Puntos y Puntos Suspensivos",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
