@@ -44,6 +44,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿En qué década se dieron las grandes Reformas Sociales en Costa Rica?", "opciones": {"a": "1920", "b": "1940", "c": "1980"}, "correcta": "b", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Cuál presidente lideró e impulsó la reforma social de 1940?", "opciones": {"a": "José Figueres Ferrer", "b": "Rafael Ángel Calderón Guardia", "c": "Tomás Guardia"}, "correcta": "b", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "Monseñor Víctor Manuel Sanabria representó en esta alianza política a la:", "opciones": {"a": "Iglesia Católica", "b": "Banca Privada", "c": "Oligarquía Cafetalera"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Qué institución de educación superior pública fue fundada en 1940?", "opciones": {"a": "Universidad Nacional", "b": "Universidad de Costa Rica", "c": "Universidad Estatal a Distancia"}, "correcta": "b", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "¿Cuál fue la importancia de la creación de la Caja Costarricense de Seguro Social (CCSS)?", "opciones": {"a": "Mejorar las condiciones de salud y de vida de la población", "b": "Construir carreteras", "c": "Generar hospitales solo para extranjeros"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "El instrumento legal que regula las relaciones entre los patronos y los obreros se denomina:", "opciones": {"a": "Código Penal", "b": "Código de Trabajo", "c": "Código Civil"}, "correcta": "b", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "Las 'Garantías Sociales' fueron incluidas en la Constitución Política en el año:", "opciones": {"a": "1943", "b": "1940", "c": "1948"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "Manuel Mora Valverde fue una figura clave de las reformas y era el líder del partido:", "opciones": {"a": "Comunista", "b": "Liberación Nacional", "c": "Republicano"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál derecho de los trabajadores está protegido por el Código de Trabajo?", "opciones": {"a": "El pago de aguinaldo y vacaciones", "b": "No pagar impuestos", "c": "Trabajar 16 horas diarias"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Antes de la creación de la CCSS, la atención médica en Costa Rica dependía principalmente de:", "opciones": {"a": "La medicina privada y hospitales de caridad", "b": "La CCSS", "c": "Seguros internacionales"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "El establecimiento de un 'salario mínimo' es una medida que busca:", "opciones": {"a": "Hacer que los ricos ganen más", "b": "Garantizar que el trabajador reciba un pago justo para vivir", "c": "Eliminar la pobreza de inmediato"}, "correcta": "b", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "¿Qué sector fue el más beneficiado por la aprobación de las Garantías Sociales?", "opciones": {"a": "Los banqueros", "b": "Las grandes empresas bananeras", "c": "Los trabajadores y las clases populares"}, "correcta": "c", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "La UCR (Universidad de Costa Rica) se creó para sustituir a la antigua Universidad de:", "opciones": {"a": "Santo Tomás", "b": "Heredia", "c": "San José"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "La alianza para lograr las reformas fue inusual porque unió a un gobierno conservador, a la Iglesia y a los:", "opciones": {"a": "Comunistas", "b": "Empresarios extranjeros", "c": "Banqueros"}, "correcta": "a", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "La protección en casos de enfermedad, invalidez o vejez es el objetivo central de la:", "opciones": {"a": "UCR", "b": "CCSS", "c": "Municipalidad"}, "correcta": "b", "explicacion": "Revisa los temas de la Reforma Social de 1940.<br><a href='resumen-sociales-2.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe las siglas de la Caja Costarricense de Seguro Social:", "keywords": ["ccss"], "explicacion": "C.C.S.S."}, {"id": "q17", "type": "text", "pregunta": "¿En qué década del siglo XX se promulgaron las Garantías Sociales? (escribe solo el año en número)", "keywords": ["1940", "40", "los 40"], "explicacion": "Fue durante la administración de los años 40."}, {"id": "q18", "type": "text", "pregunta": "Nombre del conjunto de leyes que se promulgó para regular las reglas entre empleados y jefes: Código de...", "keywords": ["trabajo"], "explicacion": "El Código de Trabajo establece las reglas laborales."}, {"id": "q19", "type": "text", "pregunta": "Escribe las siglas de la Universidad fundada en 1940 durante el gobierno de Calderón Guardia:", "keywords": ["ucr"], "explicacion": "Universidad de Costa Rica (UCR)."}, {"id": "q20", "type": "text", "pregunta": "Primer apellido del presidente de Costa Rica que impulsó las reformas sociales en 1940:", "keywords": ["calderon", "calderón"], "explicacion": "Rafael Ángel Calderón Guardia."}, {"id": "q21", "type": "text", "pregunta": "¿A quién protegen principalmente las Garantías Sociales: al Estado, a las grandes empresas o al trabajador?", "keywords": ["trabajador", "al trabajador", "los trabajadores"], "explicacion": "Su enfoque es la protección de la clase trabajadora."}, {"id": "q22", "type": "text", "pregunta": "Primer apellido del líder comunista que apoyó las Reformas Sociales de 1940 (Manuel...):", "keywords": ["mora"], "explicacion": "Manuel Mora Valverde."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Explica la función y la importancia de la Caja Costarricense de Seguro Social (CCSS) para las familias costarricenses.", "keywords": [], "explicacion": "La CCSS es fundamental porque permite a todas las personas tener acceso a servicios de salud, cirugías y medicamentos, y asegura una pensión para la vejez o invalidez, mejorando la calidad de vida general."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: Menciona al menos dos beneficios o derechos que tienen los trabajadores en Costa Rica gracias a la creación del Código de Trabajo.", "keywords": [], "explicacion": "Ejemplos válidos: Pago de aguinaldo, jornada de 8 horas, días de vacaciones pagadas, pago de horas extras, derecho a huelga, prestaciones o liquidación."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué crees que fue necesario que la Iglesia Católica, el Gobierno y el Partido Comunista (que pensaban distinto) se unieran para aprobar las reformas sociales?", "keywords": [], "explicacion": "Fue necesario unirse para tener el apoyo de la mayoría de la población y lograr aprobar leyes que incomodaban a algunos sectores ricos. La alianza demostró que se pueden superar las diferencias por el bien del país."}];
     let intentosPorPregunta = {};
@@ -75,10 +78,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -114,6 +130,8 @@
                     fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 }
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -125,12 +143,40 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Estudios Sociales",
+                    nivel: "6° Grado",
+                    tema: "Historia de Costa Rica: Las Reformas Sociales de 1940",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
