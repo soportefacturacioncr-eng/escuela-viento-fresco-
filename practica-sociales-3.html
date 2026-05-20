@@ -44,6 +44,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Cuál documento contiene los derechos fundamentales de los habitantes de Costa Rica?", "opciones": {"a": "El Código Penal", "b": "La Constitución Política", "c": "El diccionario"}, "correcta": "b", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "Según el Artículo 20, en Costa Rica nadie puede ser:", "opciones": {"a": "Esclavo o esclava", "b": "Trabajador", "c": "Estudiante"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "¿Qué significa que 'Toda persona es libre' en Costa Rica?", "opciones": {"a": "Que podemos hacer daño a los demás si queremos", "b": "Que no existen las cárceles", "c": "Que podemos elegir nuestra religión, profesión y vestimenta"}, "correcta": "c", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "¿Qué artículo de la Constitución Política declara que 'la vida humana es inviolable'?", "opciones": {"a": "Artículo 21", "b": "Artículo 20", "c": "Artículo 29"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Si una persona le quita la vida a otra, comete un delito llamado:", "opciones": {"a": "Homicidio", "b": "Robo", "c": "Estafa"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "Una forma en la que el Estado costarricense protege el 'Derecho a la vida' es mediante:", "opciones": {"a": "Campañas de vacunación y hospitales", "b": "Cerrar todas las calles", "c": "Prohibir los deportes"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Qué garantiza el Artículo 29 de la Constitución Política?", "opciones": {"a": "El derecho a no trabajar", "b": "La libertad de pensamiento y expresión", "c": "La prohibición de las religiones"}, "correcta": "b", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "La libertad de pensamiento y expresión significa que puedes decir lo que quieras, pero:", "opciones": {"a": "Eres responsable de los abusos o daños que cometas con tus palabras", "b": "Solo puedes hablar en tu casa", "c": "Nadie te va a escuchar"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Qué significa la frase 'sin previa censura' en el Artículo 29?", "opciones": {"a": "Que el gobierno debe revisar tus textos antes de que los publiques", "b": "Que puedes expresarte sin pedirle permiso al gobierno antes", "c": "Que está prohibido publicar libros"}, "correcta": "b", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Si publicas una mentira grave para dañar a alguien, estás:", "opciones": {"a": "Haciendo un buen uso de tu libertad", "b": "Cometiendo un abuso de tu libertad de expresión", "c": "Ejerciendo tu derecho a la vida"}, "correcta": "b", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "¿Cuál de las siguientes acciones representa la libertad del Artículo 20?", "opciones": {"a": "Elegir qué ropa ponerme hoy", "b": "Llevarme el carro del vecino sin permiso", "c": "No pagar mis impuestos"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Las leyes de tránsito (usar cinturón, respetar semáforos) existen principalmente para proteger:", "opciones": {"a": "El derecho a la vida humana", "b": "La libertad de expresión", "c": "El derecho al voto"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "Si un jefe obliga a un empleado a trabajar sin pago y sin dejarlo irse, está violando el derecho a:", "opciones": {"a": "La libertad (evitar la esclavitud)", "b": "La libertad de expresión", "c": "La salud pública"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "La frase 'la vida humana es inviolable' significa que:", "opciones": {"a": "Nadie tiene derecho a quitársela a otra persona", "b": "Solo las autoridades pueden quitarla", "c": "Que todos somos inmortales"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "El derecho a elegir qué carrera estudiar está protegido por la libertad de:", "opciones": {"a": "Elección o libertad personal (Art. 20)", "b": "Libertad de imprenta (Art. 29)", "c": "Seguridad nacional"}, "correcta": "a", "explicacion": "Revisa los artículos de la Constitución.<br><a href='resumen-sociales-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "¿Cuál es el número del artículo que indica que la vida humana es inviolable?", "keywords": ["21", "veintiuno"], "explicacion": "Es el Artículo 21."}, {"id": "q17", "type": "text", "pregunta": "Según la Constitución, nadie en la República de Costa Rica puede ser tratado como un...", "keywords": ["esclavo", "esclava"], "explicacion": "La esclavitud está prohibida por el artículo 20."}, {"id": "q18", "type": "text", "pregunta": "¿Qué nombre recibe el documento o ley máxima donde están escritos estos derechos? (2 palabras)", "keywords": ["constitucion politica", "constitución política"], "explicacion": "Es la carta magna del país."}, {"id": "q19", "type": "text", "pregunta": "Palabra que significa 'quitarle la vida a otra persona', lo cual es un delito penado por la ley:", "keywords": ["homicidio", "asesinato"], "explicacion": "Se castiga severamente con la cárcel."}, {"id": "q20", "type": "text", "pregunta": "El artículo 29 permite que publiquemos lo que pensamos sin necesidad de pasar por una previa...", "keywords": ["censura"], "explicacion": "Nadie revisa o bloquea tus pensamientos antes de decirlos."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica qué significa que 'tu libertad termina donde comienza la de los demás'.", "keywords": [], "explicacion": "Significa que soy libre de elegir y actuar como yo quiera, siempre y cuando mis acciones no ofendan, lastimen o le quiten los derechos a otras personas."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Menciona dos ejemplos de cómo el Estado protege el Derecho a la Vida (Artículo 21) de sus ciudadanos.", "keywords": [], "explicacion": "Ejemplos válidos: Creando hospitales (CCSS), obligando al uso del cinturón de seguridad, haciendo campañas de vacunación contra virus, prohibiendo el homicidio."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Si un amigo publica mentiras horribles sobre ti en Facebook para que los demás se burlen, ¿está usando correctamente su libertad de expresión? Justifica.", "keywords": [], "explicacion": "No, está abusando de ella. El artículo 29 dice que somos libres de expresarnos pero seremos responsables de los abusos que cometamos al difamar a otros."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué es importante que en Costa Rica esté prohibida la esclavitud desde la Constitución?", "keywords": [], "explicacion": "Para asegurar que todos los seres humanos sean tratados con dignidad, que puedan elegir su trabajo, su religión y tomar sus propias decisiones sin pertenecerle a nadie."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Inventa un ejemplo de una situación diaria donde apliques tu 'Libertad de Pensamiento y Expresión'.", "keywords": [], "explicacion": "Ejemplo: Levantar la mano en la clase de Estudios Sociales para decir que no estoy de acuerdo con una idea, de manera respetuosa."}];
     let intentosPorPregunta = {};
@@ -75,10 +78,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -114,6 +130,8 @@
                     fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 }
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -125,12 +143,40 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Estudios Sociales",
+                    nivel: "6° Grado",
+                    tema: "Derechos Constitucionales en Costa Rica",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
