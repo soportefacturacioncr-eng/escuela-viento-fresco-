@@ -1,52 +1,98 @@
 // controlador-firebase.js
 
-// 1. Función para pedir el nombre y los apellidos por separado
-function verificarEstudiante() {
-    let nombreCompleto = sessionStorage.getItem('estudianteNombre');
-    
-    if (!nombreCompleto) {
-        let nombre = "";
-        let apellidos = "";
-        
-        while (!nombre || nombre.trim() === "") {
-            nombre = prompt("👋 ¡Hola! Por favor, ingresa tu NOMBRE (Ej: Juan):");
-        }
-        
-        while (!apellidos || apellidos.trim() === "") {
-            apellidos = prompt(`¡Gracias ${nombre.trim()}! \n\nAhora, ingresa tus APELLIDOS.\n(Es obligatorio para no confundir tus notas con las de otro compañero):`);
-        }
-        
-        nombreCompleto = `${nombre.trim()} ${apellidos.trim()}`;
-        sessionStorage.setItem('estudianteNombre', nombreCompleto);
-    }
-    
-    return sessionStorage.getItem('estudianteNombre');
+// 1. Normalización avanzada (agrupa nombres similares, quita tildes, convierte a minúsculas)
+function normalizarTexto(texto) {
+    return texto.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Elimina tildes
+        .replace(/z/g, "s")   // Agrupa Z y S
+        .replace(/v/g, "b")   // Agrupa V y B
+        .replace(/ll/g, "y")  // Agrupa LL y Y
+        .trim();
 }
 
-// 2. Función global para enviar las notas y los errores a Firebase
+// 2. Genera o recupera un ID único para el dispositivo actual
+function getDeviceId() {
+    let deviceId = localStorage.getItem('deviceId');
+    if (!deviceId) {
+        deviceId = 'dev_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('deviceId', deviceId);
+    }
+    return deviceId;
+}
+
+// 3. Verificación de Estudiante: Pide datos, autoriza contra lista blanca y controla sesión
+async function verificarEstudiante() {
+    let idEstudiante = localStorage.getItem('estudianteID');
+    const myDeviceId = getDeviceId();
+
+    // Si no está registrado en el navegador, pedimos los datos
+    if (!idEstudiante) {
+        let nombre = "";
+        let apellido1 = "";
+        let apellido2 = "";
+        
+        while (!nombre || nombre.trim() === "") nombre = prompt("👋 ¡Hola! Ingresa tu NOMBRE:");
+        while (!apellido1 || apellido1.trim() === "") apellido1 = prompt("Tu PRIMER APELLIDO:");
+        while (!apellido2 || apellido2.trim() === "") apellido2 = prompt("Tu SEGUNDO APELLIDO:");
+        
+        idEstudiante = normalizarTexto(`${nombre}${apellido1}${apellido2}`);
+        localStorage.setItem('estudianteNombreReal', `${nombre} ${apellido1} ${apellido2}`);
+        localStorage.setItem('estudianteID', idEstudiante);
+    }
+
+    // A. VERIFICAR SI ESTÁ AUTORIZADO (Lista blanca en Firebase)
+    const responseAuth = await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/usuarios_autorizados/${idEstudiante}.json`);
+    const autorizado = await responseAuth.json();
+
+    if (!autorizado) {
+        alert("❌ Acceso denegado: No estás en la lista de estudiantes. Contacta a la profesora.");
+        localStorage.removeItem('estudianteID');
+        return false;
+    }
+
+    // B. VERIFICAR SESIÓN DUPLICADA (Evita dos dispositivos a la vez)
+    const responseSession = await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`);
+    const session = await responseSession.json();
+
+    if (session && session.deviceId !== myDeviceId) {
+        alert("⚠️ ATENCIÓN: Tu cuenta está abierta en otro dispositivo. Cierra la sesión en el otro equipo para continuar.");
+        return false;
+    } else {
+        await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`, {
+            method: 'PUT',
+            body: JSON.stringify({ deviceId: myDeviceId, lastLogin: new Date().toLocaleString('es-CR') })
+        });
+        return true;
+    }
+}
+
+// 4. Envío de notas a Firebase
 function enviarNota(nombreMateria, notaFinal, listaErrores = []) {
-    const nombreEstudiante = sessionStorage.getItem('estudianteNombre') || 'Estudiante Anónimo';
-    const fechaActual = new Date().toLocaleString('es-CR');
+    const nombreReal = localStorage.getItem('estudianteNombreReal') || 'Estudiante Anónimo';
+    const idUnico = localStorage.getItem('estudianteID') || 'anonimo';
     
     const paqueteDatos = {
-        nombre: nombreEstudiante,
+        id_estudiante: idUnico,
+        nombre_completo: nombreReal, 
         materia: nombreMateria,
         nota: notaFinal,
-        fecha: fechaActual,
-        errores: listaErrores // ¡Aquí se guardarán las preguntas en las que falló!
+        fecha: new Date().toLocaleString('es-CR'),
+        errores: listaErrores
     };
 
-    fetch('https://escuela-viento-fresco-default-rtdb.firebaseio.com/calificaciones.json', {
+    return fetch('https://escuela-viento-fresco-default-rtdb.firebaseio.com/calificaciones.json', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paqueteDatos)
     })
-    .then(respuesta => respuesta.json())
-    .then(datos => {
-        alert(`¡Felicidades ${nombreEstudiante}! Terminaste con una nota de ${notaFinal}. Respuestas enviadas a la profesora.`);
+    .then(respuesta => {
+        if (!respuesta.ok) throw new Error("Error en red");
+        alert(`¡Felicidades ${nombreReal}! Tu nota de ${notaFinal} se guardó correctamente.`);
+        return true;
     })
     .catch(error => {
-        console.error("Error al conectar con Firebase:", error);
-        alert(`Tu nota es ${notaFinal}, pero hubo un error de internet al guardarla.`);
+        console.error("Error Firebase:", error);
+        alert("Hubo un error al guardar la nota. Verifica tu conexión.");
+        return false;
     });
 }

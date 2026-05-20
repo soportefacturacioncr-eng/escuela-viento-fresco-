@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Educativa - Sexto Grado</title>
+    <!-- Incluimos el controlador con toda la lógica de seguridad -->
+    <script src="controlador-firebase.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; color: #333; }
         
@@ -53,8 +55,8 @@
         <p>Profesora: Hillary Molina</p>
     </div>
 
-    <div class="container">
-        
+    <div class="container" id="main-content" style="display:none;">
+        <!-- Secciones de materias -->
         <div class="subject-section ciencias">
             <div class="subject-header" onclick="toggleSection(this)">
                 <h2 class="subject-title">🌿 Ciencias</h2>
@@ -94,54 +96,45 @@
                 <div class="grid" id="lista-sociales"></div>
             </div>
         </div>
-
     </div>
 
     <script>
-        // Función asíncrona que autodetecta los archivos en Vercel
+        // Esta función se ejecuta al cargar la página y bloquea el acceso si no es válido
+        window.onload = async function() {
+            const autorizado = await verificarEstudiante();
+            if (autorizado) {
+                document.getElementById('main-content').style.display = 'block';
+                generarBotonesDinamicos();
+            } else {
+                document.body.innerHTML = `
+                    <div style="text-align:center; margin-top:100px; color: #c0392b;">
+                        <h1>Acceso Denegado</h1>
+                        <p>No tienes permiso o tu sesión está abierta en otro dispositivo.</p>
+                        <button onclick="location.reload()">Reintentar</button>
+                    </div>`;
+            }
+        };
+
         async function generarBotonesDinamicos() {
             const materias = ['ciencias', 'mate', 'espanol', 'sociales'];
-            
             for (const m of materias) {
                 const container = document.getElementById(`lista-${m}`);
                 let i = 1;
-                let encontradas = 0;
-
-                // Mensaje mientras la página revisa Vercel
-                container.innerHTML = '<p class="empty-msg">Buscando prácticas disponibles...</p>';
-
                 while (true) {
                     try {
-                        // El método HEAD comprueba si el archivo existe sin tener que descargarlo completo (muy rápido)
                         const response = await fetch(`practica-${m}-${i}.html`, { method: 'HEAD' });
-                        
                         if (response.ok) {
-                            if (i === 1) container.innerHTML = ''; // Limpiar el mensaje de "Buscando..."
-                            
                             const card = document.createElement('div');
                             card.className = 'card';
-                            card.innerHTML = `
-                                <h3>Práctica #${i}</h3>
-                                <p>Materia y repaso general del tema #${i}.</p>
-                                <div class="btn-group">
-                                    <a href="practica-${m}-${i}.html" class="btn btn-practice">Práctica</a>
-                                    <a href="resumen-${m}-${i}.html" class="btn btn-study">Resumen</a>
-                                </div>
-                            `;
+                            card.innerHTML = `<h3>Práctica #${i}</h3>
+                                            <div class="btn-group">
+                                                <a href="practica-${m}-${i}.html" class="btn btn-practice">Práctica</a>
+                                                <a href="resumen-${m}-${i}.html" class="btn btn-study">Resumen</a>
+                                            </div>`;
                             container.appendChild(card);
-                            encontradas++;
                             i++;
-                        } else {
-                            // Si Vercel devuelve un error 404, significa que este número no existe y detenemos la búsqueda
-                            break; 
-                        }
-                    } catch (error) {
-                        break;
-                    }
-                }
-
-                if (encontradas === 0) {
-                    container.innerHTML = '<p class="empty-msg">Próximamente se agregarán prácticas de esta materia...</p>';
+                        } else { break; }
+                    } catch (e) { break; }
                 }
             }
         }
@@ -153,9 +146,6 @@
             });
             section.classList.toggle('active');
         }
-
-        // Ejecutar el buscador automático al cargar la página
-        window.onload = generarBotonesDinamicos;
     </script>
 </body>
 </html>
