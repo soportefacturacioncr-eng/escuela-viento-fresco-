@@ -44,6 +44,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase (Asegúrate de que la ruta sea correcta según tu proyecto en Vercel) -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Cuál es la unidad básica y funcional de todo ser vivo?", "opciones": {"a": "El tejido", "b": "La célula", "c": "El átomo"}, "correcta": "b", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "Un organismo que está formado por una sola célula se llama:", "opciones": {"a": "Pluricelular", "b": "Acelular", "c": "Unicelular"}, "correcta": "c", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "Un organismo formado por muchas células (como un ser humano) se llama:", "opciones": {"a": "Unicelular", "b": "Pluricelular", "c": "Multiorgánico"}, "correcta": "b", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "El conjunto de células similares que trabajan juntas para cumplir una misma función forma un:", "opciones": {"a": "Órgano", "b": "Sistema", "c": "Tejido"}, "correcta": "c", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "El corazón, los pulmones y el estómago son ejemplos de:", "opciones": {"a": "Sistemas", "b": "Tejidos", "c": "Órganos"}, "correcta": "c", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "Un grupo de órganos que trabajan en equipo para realizar una gran función forman un:", "opciones": {"a": "Organismo", "b": "Sistema", "c": "Órgano principal"}, "correcta": "b", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "¿Cuál es el orden correcto de los niveles de organización (del más pequeño al más grande)?", "opciones": {"a": "Célula - Tejido - Órgano - Sistema - Organismo", "b": "Tejido - Célula - Sistema - Órgano - Organismo", "c": "Organismo - Sistema - Órgano - Tejido - Célula"}, "correcta": "a", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "¿Cuál de las siguientes opciones es un tejido?", "opciones": {"a": "Corazón", "b": "Tejido sanguíneo (sangre)", "c": "Sistema respiratorio"}, "correcta": "b", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál de las siguientes opciones es un sistema?", "opciones": {"a": "Sistema Circulatorio", "b": "Célula de la piel", "c": "Hígado"}, "correcta": "a", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "¿A qué nivel de organización pertenece una neurona?", "opciones": {"a": "Célula", "b": "Órgano", "c": "Tejido"}, "correcta": "a", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "¿A qué nivel de organización pertenece un ser humano completo?", "opciones": {"a": "Sistema", "b": "Tejido", "c": "Organismo"}, "correcta": "c", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Si juntamos el tejido muscular, el tejido nervioso y otros tejidos, formamos un:", "opciones": {"a": "Órgano", "b": "Organismo", "c": "Sistema"}, "correcta": "a", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Qué función tiene principalmente el Sistema Digestivo?", "opciones": {"a": "Respirar aire", "b": "Digerir los alimentos", "c": "Bombear sangre"}, "correcta": "b", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "¿Por qué decimos que la célula es 'estructural'?", "opciones": {"a": "Porque construye todas las partes o estructuras del ser vivo", "b": "Porque son de piedra", "c": "Porque no se mueven"}, "correcta": "a", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "Los glóbulos rojos son ejemplos de:", "opciones": {"a": "Células", "b": "Órganos", "c": "Sistemas"}, "correcta": "a", "explicacion": "Revisa los niveles de organización biológica.<br><a href='resumen-ciencias-1.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre del nivel de organización que está formado por la unión de varios tejidos:", "keywords": ["organo", "órgano", "organos", "órganos"], "explicacion": "Un órgano se compone de tejidos."}, {"id": "q17", "type": "text", "pregunta": "El nivel más pequeño y básico que tiene vida propia se llama...", "keywords": ["celula", "célula"], "explicacion": "Es la célula."}, {"id": "q18", "type": "text", "pregunta": "Un perro, un árbol y un humano pertenecen al nivel de organización llamado...", "keywords": ["organismo", "individuo"], "explicacion": "Es el ser vivo completo."}, {"id": "q19", "type": "text", "pregunta": "¿Cómo se llama el grupo de órganos que trabajan juntos, como el respiratorio o el digestivo?", "keywords": ["sistema", "sistemas", "aparato", "aparatos"], "explicacion": "Se le llama sistema o aparato."}, {"id": "q20", "type": "text", "pregunta": "Las bacterias son seres vivos formados por una sola célula, por lo que son organismos...", "keywords": ["unicelulares", "unicelular"], "explicacion": "Unicelular = Una sola célula."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica la diferencia entre un organismo unicelular y uno pluricelular, y da un ejemplo de cada uno.", "keywords": [], "explicacion": "El unicelular tiene una sola célula (como una bacteria) y el pluricelular tiene millones (como un perro o un árbol)."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué es importante que las células se agrupen formando tejidos y órganos en los seres humanos?", "keywords": [], "explicacion": "Porque el cuerpo humano es muy grande y complejo; agrupándose pueden dividirse el trabajo, hacer funciones especializadas y mantenernos con vida."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Construye la escalera de los niveles de organización del cuerpo utilizando este ejemplo: (Corazón, Sistema Circulatorio, Célula muscular cardíaca, Ser Humano, Tejido muscular). Ordénalos del más pequeño al más grande.", "keywords": [], "explicacion": "Célula muscular cardíaca -> Tejido muscular -> Corazón -> Sistema Circulatorio -> Ser Humano."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: ¿Qué pasaría con un sistema (como el digestivo) si uno de sus órganos principales (como el estómago) deja de funcionar?", "keywords": [], "explicacion": "El sistema completo fallaría, porque todos los órganos deben trabajar en equipo para lograr la función (en este caso, digerir alimentos)."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: Si la sangre es un líquido, ¿por qué la ciencia la clasifica como un 'tejido'?", "keywords": [], "explicacion": "Porque está formada por la unión de miles de células que trabajan juntas (los glóbulos rojos, blancos y plaquetas), cumpliendo con la definición de tejido."}];
     let intentosPorPregunta = {};
@@ -75,10 +78,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -114,6 +130,8 @@
                     fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 }
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -125,12 +143,42 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            // Se llama a la función global que tengas expuesta en tu controlador-firebase.js
+            // Asegúrate de que el nombre de esta función coincida con la que programaste (ej. guardarProgreso, registrarNota, etc.)
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Ciencias",
+                    nivel: "6° Grado",
+                    tema: "La Célula y los Niveles de Organización",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
