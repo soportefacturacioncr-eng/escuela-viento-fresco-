@@ -44,6 +44,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Qué es la 'Comprensión Lectora'?", "opciones": {"a": "La capacidad de leer muy rápido", "b": "Adquirir las ideas más importantes y vincularlas", "c": "Memorizar todas las palabras de un libro"}, "correcta": "b", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Cuántas ideas principales tiene un texto normalmente?", "opciones": {"a": "Solamente una", "b": "Tres o cuatro", "c": "Depende de la cantidad de páginas"}, "correcta": "a", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "Si eliminamos la idea principal de un texto, ¿qué sucede?", "opciones": {"a": "El texto se entiende mejor", "b": "El texto pierde su valor y no se entiende", "c": "No sucede nada importante"}, "correcta": "b", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "La idea principal siempre aparece escrita de forma exacta (textual) en el primer párrafo.", "opciones": {"a": "Verdadero", "b": "Falso", "c": "Solo en los cuentos cortos"}, "correcta": "b", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "A las ideas que dan soporte, ejemplos o agregan información a la idea principal se les llama:", "opciones": {"a": "Ideas centrales", "b": "Ejes temáticos", "c": "Ideas complementarias o secundarias"}, "correcta": "c", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿Qué nombre recibe el 'hilo conductor' que agrupa las temáticas de un texto?", "opciones": {"a": "Idea principal", "b": "Ejes temáticos", "c": "Conclusión"}, "correcta": "b", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "Lee el siguiente fragmento:\n'Los perros son excelentes mascotas. Ellos siempre se alegran de ver a sus dueños, protegen la casa de extraños y son muy cariñosos con los niños.'\n¿Cuál es la idea principal?", "opciones": {"a": "Los perros son excelentes mascotas.", "b": "Protegen la casa.", "c": "Son cariñosos con los niños."}, "correcta": "a", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "mc", "pregunta": "Del fragmento anterior sobre los perros, ¿cuál de las siguientes es una idea complementaria?", "opciones": {"a": "Los perros son excelentes mascotas.", "b": "Ellos siempre se alegran de ver a sus dueños.", "c": "Los gatos son independientes."}, "correcta": "b", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál de las siguientes afirmaciones es correcta sobre las ideas complementarias?", "opciones": {"a": "Solo puede haber una en cada texto.", "b": "Pueden existir muchísimas en un mismo texto.", "c": "Son más importantes que la idea principal."}, "correcta": "b", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "¿En qué parte del texto se puede encontrar la idea principal?", "opciones": {"a": "Solo al inicio", "b": "Solo al final", "c": "Al inicio, al final, o deducirse de la lectura"}, "correcta": "c", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "mc", "pregunta": "Cuando la idea principal NO está escrita textualmente, el lector debe:", "opciones": {"a": "Inventar una nueva idea", "b": "Deducirla (extraerla) a partir de la totalidad del escrito", "c": "Buscarla en un diccionario"}, "correcta": "b", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "Lee el siguiente texto:\n'El agua es vital para la supervivencia humana. Sin embargo, en muchas partes del mundo escasea debido a la contaminación y al cambio climático.'\nEl eje temático es:", "opciones": {"a": "La importancia del agua y su escasez", "b": "La supervivencia en el desierto", "c": "Las bebidas gaseosas"}, "correcta": "a", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "Una característica clave de la idea principal es que:", "opciones": {"a": "Es el contenido sin el cual el texto no se entendería", "b": "Siempre es la oración más larga del texto", "c": "Solo da ejemplos y detalles menores"}, "correcta": "a", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "mc", "pregunta": "Las ideas complementarias sirven para:", "opciones": {"a": "Reafirmar y dar soporte a la idea principal", "b": "Cambiar el tema del texto completamente", "c": "Confundir al lector para que preste atención"}, "correcta": "a", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "En un cuento, la idea principal también puede estar relacionada con el:", "opciones": {"a": "Mensaje central que el autor quiere transmitir", "b": "Color del libro", "c": "Precio del texto"}, "correcta": "a", "explicacion": "Revisa los conceptos de comprensión de lectura en el resumen.<br><a href='resumen-espanol-3.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "text", "pregunta": "Escribe el nombre del tipo de idea que es la más importante de un texto (2 palabras):", "keywords": ["idea principal", "fundamental"], "explicacion": "Se llama Idea Principal o Fundamental."}, {"id": "q17", "type": "text", "pregunta": "Escribe el nombre del tipo de idea que sirve para dar ejemplos o afirmar lo que dice la idea principal (2 palabras):", "keywords": ["idea complementaria", "ideas complementarias", "ideas secundarias", "idea secundaria"], "explicacion": "Se llaman Ideas Complementarias o Secundarias."}, {"id": "q18", "type": "text", "pregunta": "Al hilo conductor que guía las temáticas del texto se le llama '_____ temático'.", "keywords": ["eje"], "explicacion": "Se le llama Eje Temático."}, {"id": "q19", "type": "text", "pregunta": "¿Cuántas ideas principales puede tener un texto?", "keywords": ["una", "1", "solo una"], "explicacion": "Todo texto tiene solo una idea principal."}, {"id": "q20", "type": "text", "pregunta": "Si la idea principal no está textual en el párrafo, el lector debe extraerla de la _________ del escrito.", "keywords": ["totalidad", "lectura total", "lectura"], "explicacion": "Se extrae de la totalidad del escrito."}, {"id": "q21", "type": "textarea", "pregunta": "Desarrollo: Explica con tus palabras la diferencia entre la Idea Principal y las Ideas Complementarias.", "keywords": [], "explicacion": "La idea principal es el mensaje central y más importante (solo hay una). Las ideas complementarias son los detalles, ejemplos o explicaciones que apoyan a esa idea principal (pueden ser muchas)."}, {"id": "q22", "type": "textarea", "pregunta": "Desarrollo: Lee este minitexto y escribe cuál es su idea principal:\n'Comer frutas todos los días es muy bueno para la salud. Aportan vitaminas necesarias para no enfermarnos, tienen mucha fibra que ayuda a la digestión y son deliciosas.'", "keywords": [], "explicacion": "La idea principal es: Comer frutas todos los días es muy bueno para la salud."}, {"id": "q23", "type": "textarea", "pregunta": "Desarrollo: Del minitexto anterior sobre las frutas, escribe una Idea Complementaria.", "keywords": [], "explicacion": "Cualquier detalle: 'Aportan vitaminas' o 'Tienen mucha fibra' o 'Son deliciosas'."}, {"id": "q24", "type": "textarea", "pregunta": "Desarrollo: ¿Qué pasa si le quitamos las ideas complementarias a un texto? ¿Se sigue entendiendo? Justifica tu respuesta.", "keywords": [], "explicacion": "El texto se sigue entendiendo porque la idea principal es la que contiene el mensaje fundamental, aunque quede más corto y con menos detalles."}, {"id": "q25", "type": "textarea", "pregunta": "Desarrollo: ¿Por qué crees que es importante tener un 'Eje temático' o 'hilo conductor' cuando escribimos un cuento o un ensayo?", "keywords": [], "explicacion": "Es importante para no salirnos del tema, mantener un orden lógico y que el lector no se confunda."}];
     let intentosPorPregunta = {};
@@ -75,10 +78,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -99,7 +115,7 @@
                 const input = document.getElementById(q.id);
                 if (input.value.trim().length > 5) {
                     respondida = true;
-                    esCorrecta = true; 
+                    esCorrecta = true; // Auto-evaluación
                 }
             }
 
@@ -114,6 +130,8 @@
                     fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 }
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -125,12 +143,40 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Español",
+                    nivel: "6° Grado",
+                    tema: "Comprensión de Lectura",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
