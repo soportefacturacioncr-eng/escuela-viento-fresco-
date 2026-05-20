@@ -43,6 +43,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "Movimiento terrestre que permite establecer las estaciones del año y la radiación que recibe el planeta:", "opciones": {"a": "Rotación", "b": "Traslación", "c": "Precesión"}, "correcta": "b", "explicacion": "La traslación es el viaje anual alrededor del Sol.<br><a href='resumen-ciencias-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "mc", "pregunta": "¿Qué ocurre si la Luna se ubica exactamente entre el Sol y la Tierra, por lo que su cara visible está oscurecida?", "opciones": {"a": "Luna llena", "b": "Cuarto creciente", "c": "Luna nueva"}, "correcta": "c", "explicacion": "Esta fase se llama Luna Nueva.<br><a href='resumen-ciencias-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "text", "pregunta": "¿En cuál capa de la atmósfera se encuentra la capa de ozono (y los aviones vuelan por debajo de ella)?", "keywords": ["estratosfera"], "explicacion": "La estratosfera nos protege de la radiación UV.<br><a href='resumen-ciencias-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "Teoría que plantea que el universo alterna entre un proceso de expansión y otro de contracción en un solo punto:", "opciones": {"a": "Big Bang", "b": "Universo Oscilante", "c": "Gran Impacto"}, "correcta": "b", "explicacion": "Es la teoría de un ciclo infinito de expansión y colapso.<br><a href='resumen-ciencias-4.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "mc", "pregunta": "Actividad humana que influye de forma directa y negativa en el clima global del planeta:", "opciones": {"a": "Creación de parques", "b": "Tala de árboles y quema de fósiles", "c": "Energía geotérmica"}, "correcta": "b", "explicacion": "La deforestación y la quema de fósiles (petróleo) causan calentamiento.<br><a href='resumen-ciencias-4.html' class='btn-review'>📖 Leer Resumen</a>"}];
     let intentosPorPregunta = {};
@@ -72,10 +75,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -90,7 +106,8 @@
                 const input = document.getElementById(q.id);
                 if (input.value.trim() !== '') {
                     respondida = true;
-                    if (q.keywords.some(kw => normalizar(input.value).includes(kw))) esCorrecta = true;
+                    // Aseguramos que la comparación de texto sea uniforme
+                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
                 }
             }
 
@@ -101,6 +118,8 @@
                 fb.className = 'feedback show feedback-correct';
                 fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -112,12 +131,40 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Ciencias",
+                    nivel: "6° Grado",
+                    tema: "El Espacio y el Clima",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
