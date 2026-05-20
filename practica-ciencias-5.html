@@ -43,6 +43,9 @@
     <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
 </div>
 
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
 <script>
     const dbPreguntas = [{"id": "q1", "type": "mc", "pregunta": "¿Por qué se dice que Costa Rica es un país megadiverso?", "opciones": {"a": "Porque tiene el tamaño más grande de Centroamérica", "b": "Porque posee aproximadamente el 6% de la biodiversidad mundial", "c": "Porque solo tiene dos estaciones climáticas"}, "correcta": "b", "explicacion": "Costa Rica es un puente biológico con una inmensa cantidad de especies.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q2", "type": "text", "pregunta": "Escribe el nombre que reciben las especies de animales o plantas que SOLO existen en una región específica y en ninguna otra parte del mundo:", "keywords": ["endemica", "endémicas", "endemico", "endémico"], "explicacion": "Se llaman especies endémicas.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q3", "type": "mc", "pregunta": "El oso perezoso tiene garras curvas que le permiten colgarse de las ramas sin gastar energía. Esto es una adaptación:", "opciones": {"a": "Etológica", "b": "Fisiológica", "c": "Morfológica"}, "correcta": "c", "explicacion": "Es una adaptación morfológica porque es una modificación física estructural de su cuerpo.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q4", "type": "mc", "pregunta": "Cuando las aves viajan miles de kilómetros durante el invierno buscando zonas más cálidas, están realizando una adaptación:", "opciones": {"a": "Morfológica", "b": "Etológica", "c": "Fisiológica"}, "correcta": "b", "explicacion": "La migración es un cambio de comportamiento, por lo tanto es etológica.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q5", "type": "text", "pregunta": "Institución en Costa Rica encargada de administrar los Parques Nacionales y las áreas protegidas (Acrónimo de 5 letras):", "keywords": ["sinac"], "explicacion": "El Sistema Nacional de Áreas de Conservación (SINAC).<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q6", "type": "mc", "pregunta": "¿Cuál es el objetivo principal de una Reserva Biológica?", "opciones": {"a": "Construir hoteles ecológicos", "b": "Conservar ecosistemas para la investigación científica de forma estricta", "c": "Permitir la caza controlada de animales"}, "correcta": "b", "explicacion": "Las reservas biológicas son más estrictas que los parques nacionales y se enfocan en la investigación.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q7", "type": "mc", "pregunta": "El concepto de 'Desarrollo Sostenible' se refiere a:", "opciones": {"a": "Extraer todos los recursos posibles para crecer económicamente hoy", "b": "Prohibir totalmente cualquier tipo de actividad comercial en el país", "c": "Satisfacer las necesidades actuales sin destruir los recursos de las futuras generaciones"}, "correcta": "c", "explicacion": "El desarrollo sostenible busca un equilibrio entre economía y conservación.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q8", "type": "text", "pregunta": "Las serpientes de coral producen potentes toxinas (veneno) para cazar y defenderse. Esto es un ejemplo de adaptación...", "keywords": ["fisiologica", "fisiológica"], "explicacion": "Altera el funcionamiento interno del organismo para producir químicos, es fisiológica.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q9", "type": "mc", "pregunta": "¿Cuál de las siguientes es una de las mayores amenazas para la biodiversidad de los ríos de Costa Rica?", "opciones": {"a": "El ecoturismo", "b": "La contaminación por agroquímicos y pesticidas", "c": "La observación de aves"}, "correcta": "b", "explicacion": "Los pesticidas lavados por la lluvia contaminan severamente los ecosistemas acuáticos.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q10", "type": "mc", "pregunta": "Si un insecto cambia su forma para parecer una hoja seca y evitar que se lo coman, estamos hablando de un ejemplo de:", "opciones": {"a": "Camuflaje", "b": "Parasitismo", "c": "Mutualismo"}, "correcta": "a", "explicacion": "El camuflaje es una adaptación morfológica para confundirse con el entorno.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q11", "type": "text", "pregunta": "Actividad ilegal que consiste en cazar animales silvestres para venderlos como mascotas o extraer sus pieles:", "keywords": ["caceria furtiva", "trafico de animales", "cacería", "caza", "trafico ilegal", "caza furtiva"], "explicacion": "El tráfico ilegal o caza furtiva es un delito que pone especies en peligro de extinción.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q12", "type": "mc", "pregunta": "¿Qué categoría de manejo de área silvestre permite el turismo de manera regulada para que la gente disfrute de la naturaleza?", "opciones": {"a": "Reserva Biológica estricta", "b": "Parque Nacional", "c": "Monumento Nacional Arqueológico"}, "correcta": "b", "explicacion": "Los Parques Nacionales conservan la naturaleza pero permiten el ecoturismo.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q13", "type": "mc", "pregunta": "¿Qué factores geográficos contribuyen a la gran biodiversidad de Costa Rica?", "opciones": {"a": "Ser una isla alejada de los continentes", "b": "Tener un territorio completamente plano y frío", "c": "Ser un puente terrestre entre dos masas continentales y poseer sistemas montañosos"}, "correcta": "c", "explicacion": "Ser puente entre el Norte y el Sur permitió el cruce de miles de especies.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q14", "type": "text", "pregunta": "Animales que regulan su temperatura corporal internamente, sin depender del sol (como los mamíferos y aves), tienen una adaptación...", "keywords": ["fisiologica", "fisiológica"], "explicacion": "El control de la temperatura es un proceso interno del metabolismo.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q15", "type": "mc", "pregunta": "Los cactus tienen hojas transformadas en espinas para evitar la pérdida de agua en el desierto. Esto es una adaptación:", "opciones": {"a": "Morfológica", "b": "Fisiológica", "c": "Etológica"}, "correcta": "a", "explicacion": "Es un cambio en la estructura física (morfología) de la planta.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q16", "type": "mc", "pregunta": "La disminución drástica de los bosques para convertirlos en potreros para ganado se conoce como:", "opciones": {"a": "Reforestación", "b": "Deforestación", "c": "Sostenibilidad"}, "correcta": "b", "explicacion": "La deforestación destruye los hábitats naturales.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q17", "type": "text", "pregunta": "El uso de la energía del viento, el sol o el agua, que no contamina ni se agota, se llama energía...", "keywords": ["renovable", "limpia", "renovables", "limpias"], "explicacion": "Las energías renovables son clave para el desarrollo sostenible.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q18", "type": "mc", "pregunta": "¿Por qué la extracción de madera ilegal es un problema ecológico grave?", "opciones": {"a": "Porque destruye el hábitat de miles de especies y reduce la captura de dióxido de carbono", "b": "Porque la madera ilegal es de mala calidad", "c": "Porque fomenta la creación de nuevos parques nacionales"}, "correcta": "a", "explicacion": "Los árboles son hogares para la fauna y pulmones para el planeta.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q19", "type": "mc", "pregunta": "La danza de cortejo que realizan muchas aves macho para atraer a la hembra es una adaptación:", "opciones": {"a": "Morfológica", "b": "Etológica", "c": "Fisiológica"}, "correcta": "b", "explicacion": "Es un cambio de comportamiento o conducta.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q20", "type": "text", "pregunta": "El conjunto de toda la variedad de vida en la Tierra (plantas, animales, hongos, microorganismos) se denomina...", "keywords": ["biodiversidad", "diversidad biologica"], "explicacion": "La biodiversidad es la riqueza de vida del planeta.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q21", "type": "mc", "pregunta": "Cuando un zorro se hace el muerto para engañar a un depredador, está mostrando una adaptación:", "opciones": {"a": "Morfológica", "b": "Fisiológica", "c": "Etológica"}, "correcta": "c", "explicacion": "Es un comportamiento (etológico) de supervivencia.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q22", "type": "mc", "pregunta": "La protección de tortugas marinas en sus zonas de desove es un ejemplo de:", "opciones": {"a": "Conservación de la biodiversidad", "b": "Explotación comercial", "c": "Contaminación ambiental"}, "correcta": "a", "explicacion": "Ayuda a preservar especies en peligro de extinción.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q23", "type": "text", "pregunta": "Las ranas venenosas tienen colores muy llamativos para advertir a los depredadores de su toxicidad. A este tipo de coloración de advertencia se le llama adaptación...", "keywords": ["morfologica", "morfológica"], "explicacion": "El cambio de color externo es una modificación morfológica.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q24", "type": "mc", "pregunta": "Un beneficio directo de los Parques Nacionales para la economía de Costa Rica es:", "opciones": {"a": "La venta de madera", "b": "El ingreso de divisas a través del turismo ecológico", "c": "La minería a cielo abierto"}, "correcta": "b", "explicacion": "El ecoturismo es una de las principales fuentes de ingresos del país.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}, {"id": "q25", "type": "mc", "pregunta": "¿Cuál de las siguientes acciones que puedes hacer desde casa apoya el desarrollo sostenible?", "opciones": {"a": "Dejar los tubos abiertos al lavarse los dientes", "b": "Aplicar las 3R: Reducir, Reutilizar y Reciclar", "c": "Comprar animales silvestres como mascotas"}, "correcta": "b", "explicacion": "Las 3R disminuyen el impacto de la basura en los ecosistemas.<br><a href='resumen-ciencias-5.html' class='btn-review'>📖 Leer Resumen</a>"}];
     let intentosPorPregunta = {};
@@ -72,10 +75,23 @@
     function normalizar(texto) { return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
     function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
         dbPreguntas.forEach(q => {
             const block = document.getElementById(`block-${q.id}`);
             const fb = document.getElementById(`feedback-${q.id}`);
-            if (block.classList.contains('correct') || block.classList.contains('locked')) return;
+            
+            // Si ya estaba correcta o bloqueada, la sumamos a completadas
+            if (block.classList.contains('correct')) {
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+            if (block.classList.contains('locked')) {
+                preguntasCompletadas++;
+                return;
+            }
 
             let esCorrecta = false;
             let respondida = false;
@@ -90,7 +106,8 @@
                 const input = document.getElementById(q.id);
                 if (input.value.trim() !== '') {
                     respondida = true;
-                    if (q.keywords.some(kw => normalizar(input.value).includes(kw))) esCorrecta = true;
+                    // Aseguramos que la comparación de texto sea uniforme también en las keywords
+                    if (q.keywords.some(kw => normalizar(input.value).includes(normalizar(kw)))) esCorrecta = true;
                 }
             }
 
@@ -101,6 +118,8 @@
                 fb.className = 'feedback show feedback-correct';
                 fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
                 deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
             } else {
                 intentosPorPregunta[q.id]++;
                 if (intentosPorPregunta[q.id] >= 2) {
@@ -112,12 +131,40 @@
                         document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
                     }
                     deshabilitar(q);
+                    preguntasCompletadas++;
                 } else {
                     fb.className = 'feedback show feedback-warning';
                     fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
                 }
             }
         });
+
+        // ==========================================
+        // INTEGRACIÓN CON CONTROLADOR FIREBASE
+        // ==========================================
+        if (preguntasCompletadas === dbPreguntas.length) {
+            // Se calcula la nota base 100
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Ciencias",
+                    nivel: "6° Grado",
+                    tema: "Biodiversidad en C.R.",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            } else {
+                console.warn("La prueba terminó, pero la función del controlador no fue encontrada en el entorno global.");
+            }
+
+            // Cambiamos el texto del botón al terminar
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
     }
 
     function deshabilitar(q) {
