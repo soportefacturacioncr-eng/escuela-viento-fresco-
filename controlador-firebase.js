@@ -50,20 +50,12 @@ async function verificarEstudiante() {
         return false;
     }
 
-    // B. VERIFICAR SESIÓN DUPLICADA (Evita dos dispositivos a la vez)
-    const responseSession = await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`);
-    const session = await responseSession.json();
-
-    if (session && session.deviceId !== myDeviceId) {
-        alert("⚠️ ATENCIÓN: Tu cuenta está abierta en otro dispositivo. Cierra la sesión en el otro equipo para continuar.");
-        return false;
-    } else {
-        await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`, {
-            method: 'PUT',
-            body: JSON.stringify({ deviceId: myDeviceId, lastLogin: new Date().toLocaleString('es-CR') })
-        });
-        return true;
-    }
+    // B. REGISTRAR SESIÓN ACTUAL (Sobrescribe cualquier dispositivo anterior automáticamente)
+    await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`, {
+        method: 'PUT',
+        body: JSON.stringify({ deviceId: myDeviceId, lastLogin: new Date().toLocaleString('es-CR') })
+    });
+    return true;
 }
 
 // 4. Envío de notas a Firebase
