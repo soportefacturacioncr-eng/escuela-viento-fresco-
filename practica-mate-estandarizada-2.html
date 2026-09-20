@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Matemáticas Estandarizada 2 - Geometría</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #e74c3c; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #ff7979; }
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; white-space: pre-wrap; }
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; }
+        .text-input:focus { border-color: #e74c3c; outline: none; }
+        textarea.text-input { resize: vertical; min-height: 80px; }
+        .btn-submit { width: 100%; padding: 15px; background: #e74c3c; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #c0392b; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Matemáticas: Geometría</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1",
+            "type": "mc",
+            "pregunta": "Considere cuatro figuras de jardines (Figura I, Figura II, Figura III y Figura IV). De acuerdo con las propiedades de los cuadriláteros, ¿cuál de esas figuras corresponde a un paralelogramo (como un rectángulo con sus cuatro ángulos rectos)?",
+            "opciones": {"a": "Figura I", "b": "Figura II", "c": "Figura III", "d": "Figura IV"},
+            "correcta": "b",
+            "explicacion": "La Figura II corresponde a un paralelogramo (rectángulo) que posee sus ángulos interiores rectos ($90^\\circ$) y lados opuestos paralelos e iguales.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q2",
+            "type": "mc",
+            "pregunta": "Un envase de perfume tiene una forma circular en su base y tapas paralelas unidas por una superficie curva. ¿A qué cuerpo sólido corresponde?",
+            "opciones": {"a": "Cubo", "b": "Cilindro", "c": "Prisma rectangular", "d": "Pirámide"},
+            "correcta": "b",
+            "explicacion": "El cuerpo geométrico con dos bases circulares paralelas y una cara lateral curva es el cilindro.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3",
+            "type": "mc",
+            "pregunta": "Karla desea colocar una cinta decorativa alrededor de un mantel rectangular de 100 cm de largo y 50 cm de ancho. ¿Cuántos centímetros de cinta, como mínimo, necesita comprar?",
+            "opciones": {"a": "150", "b": "300", "c": "500", "d": "5000"},
+            "correcta": "b",
+            "explicacion": "Para hallar la cinta alrededor del mantel se calcula el perímetro del rectángulo: $P = 2 \\times (\\text{largo} + \\text{ancho}) = 2 \\times (100 + 50) = 2 \\times 150 = 300\\text{ cm}$.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4",
+            "type": "mc",
+            "pregunta": "En una figura simétrica con forma de ventana colocada en una cuadrícula, ¿cuántos ejes de simetría presenta dicha estructura trapezoidal regular?",
+            "opciones": {"a": "1", "b": "2", "c": "3", "d": "4"},
+            "correcta": "a",
+            "explicacion": "Un trapecio isósceles estándar simétrico posee únicamente 1 eje de simetría vertical que divide la figura en dos partes idénticas.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5",
+            "type": "mc",
+            "pregunta": "En un sistema de coordenadas donde cada lado de la cuadrícula mide 100 m, Ana (A) se encuentra en su casa. Si camina 300 m al este y 200 m al norte, ¿a qué casa llega?",
+            "opciones": {"a": "Jorge", "b": "Rocío", "c": "Tatiana", "d": "Guillermo"},
+            "correcta": "c",
+            "explicacion": "Partiendo de la posición de Ana y desplazándose 3 unidades hacia la derecha (este) y 2 unidades hacia arriba (norte), se llega exactamente a la ubicación de Tatiana (T).<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6",
+            "type": "mc",
+            "pregunta": "Cuatro señales de tránsito muestran distintas formas geométricas: un triángulo, un octágono, una flecha curva y un hexágono. ¿Cuál de ellas NO corresponde a un polígono?",
+            "opciones": {"a": "Figura I (Triángulo)", "b": "Figura II (Octágono)", "c": "Figura III (Flecha curva)", "d": "Figura IV (Hexágono)"},
+            "correcta": "c",
+            "explicacion": "Un polígono está formado exclusivamente por segmentos de recta cerrados. La Figura III contiene líneas curvas (la flecha), por lo que no es un polígono.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7",
+            "type": "mc",
+            "pregunta": "El piso de un dormitorio tiene forma cuadrada con una medida de 5 m por lado. Si se requiere colocar cerámica en la totalidad del piso, ¿cuántos metros cuadrados de cerámica se necesitan?",
+            "opciones": {"a": "10", "b": "20", "c": "25", "d": "5"},
+            "correcta": "c",
+            "explicacion": "Para calcular la superficie (área) de un cuadrado se multiplica lado por lado: $5\\text{ m} \\times 5\\text{ m} = 25\\text{ m}^2$.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8",
+            "type": "mc",
+            "pregunta": "En una reserva biológica, un sendero de ida va de la entrada al mirador pasando por el mariposario, y el de regreso va del mirador a la entrada pasando por la oficina del guardaparques formando un paralelogramo. ¿Cómo es el recorrido de ida en comparación con el de regreso?",
+            "opciones": {"a": "Igual que el recorrido por el sendero de regreso", "b": "Mayor que el recorrido por el sendero de regreso", "c": "Menor que el recorrido por el sendero de regreso", "d": "Diferente al recorrido por el sendero de regreso"},
+            "correcta": "a",
+            "explicacion": "Por propiedad de los paralelogramos, los lados opuestos que conforman los trayectos de ida y de regreso tienen exactamente la misma longitud total, por lo que los recorridos son iguales.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9",
+            "type": "mc",
+            "pregunta": "Al observar cuatro jardines en una cuadrícula identificados como P, Q, R y T, ¿cuáles de ellos tienen forma de trapecio?",
+            "opciones": {"a": "P y Q", "b": "Q y R", "c": "P y R", "d": "P y T"},
+            "correcta": "a",
+            "explicacion": "Los cuadriláteros P y Q tienen un par de lados paralelos y otros no paralelos, cumpliendo exactamente con la definición geométrica de trapecio.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10",
+            "type": "mc",
+            "pregunta": "La superficie de una mesa tiene forma de cuadrado cuyo perímetro es 12 m. ¿Cuántos metros cuadrados de plástico adhesivo se requieren para cubrir toda su superficie?",
+            "opciones": {"a": "12", "b": "9", "c": "6", "d": "16"},
+            "correcta": "b",
+            "explicacion": "Si el perímetro es 12 m, cada lado mide $12 \\div 4 = 3\\text{ m}$. El área se obtiene multiplicando lado por lado: $3 \\times 3 = 9\\text{ m}^2$.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11",
+            "type": "mc",
+            "pregunta": "En un dibujo simétrico de un árbol ubicado en un plano cartesiano, ¿cuál par de puntos corresponde a puntos homólogos entre sí respecto al eje de simetría?",
+            "opciones": {"a": "F y G", "b": "D y C", "c": "F y D", "d": "G y D"},
+            "correcta": "c",
+            "explicacion": "Los puntos homólogos se ubican a la misma distancia y dirección opuesta respecto al eje central de simetría; en este caso horizontal inferior, los puntos F y D se corresponden simétricamente.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q12",
+            "type": "mc",
+            "pregunta": "Una figura compuesta que representa el frente de una casa contiene varias secciones numeradas (1, 2, 3 y 4). ¿Cuál de esas figuras geométricas corresponde a un rectángulo?",
+            "opciones": {"a": "1", "b": "2", "c": "3", "d": "4"},
+            "correcta": "b",
+            "explicacion": "La sección número 2 corresponde a la base de la casa, la cual tiene forma rectangular con cuatro ángulos rectos y lados opuestos iguales.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Matemáticas",
+                    nivel: "6° Grado",
+                    tema: "Geometría",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
