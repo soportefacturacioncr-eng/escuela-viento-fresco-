@@ -41,12 +41,15 @@
         
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
         .card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .card h3 { margin: 0 0 8px 0; font-size: 16px; color: #2c3e50; }
+        .card h3 { margin: 0 0 5px 0; font-size: 15px; color: #7f8c8d; }
+        .card h4 { margin: 0 0 12px 0; font-size: 17px; color: #2c3e50; }
         
         .btn-group { display: flex; gap: 8px; }
-        .btn { flex: 1; text-align: center; padding: 10px 0; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 13px; color: white; }
+        .btn { flex: 1; text-align: center; padding: 10px 0; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 13px; color: white; transition: background 0.2s; }
         .btn-practice { background-color: #2980b9; }
+        .btn-practice:hover { background-color: #2471a3; }
         .btn-study { background-color: #27ae60; }
+        .btn-study:hover { background-color: #229954; }
     </style>
 </head>
 <body>
@@ -153,7 +156,7 @@
             const autorizado = await verificarEstudiante();
             if (autorizado) {
                 document.getElementById('main-content').style.display = 'block';
-                generarBotonesDinamicos();
+                renderizarPracticas();
             } else {
                 document.body.innerHTML = `
                     <div style="text-align:center; margin-top:100px; color: #c0392b;">
@@ -164,44 +167,74 @@
             }
         };
 
-        async function generarBotonesDinamicos() {
-            const configuraciones = [
-                // Pruebas Estandarizadas (Primero)
-                { id: 'lista-ciencias-estandarizada', archivo: 'practica-ciencias-estandarizada', resumen: 'resumen-ciencias-estandarizada', tipo: 'estandarizada' },
-                { id: 'lista-mate-estandarizada', archivo: 'practica-mate-estandarizada', resumen: 'resumen-mate-estandarizada', tipo: 'estandarizada' },
-                { id: 'lista-espanol-estandarizada', archivo: 'practica-espanol-estandarizada', resumen: 'resumen-espanol-estandarizada', tipo: 'estandarizada' },
-                { id: 'lista-sociales-estandarizada', archivo: 'practica-sociales-estandarizada', resumen: 'resumen-sociales-estandarizada', tipo: 'estandarizada' },
-                
-                // Prácticas Regulares (Abajo)
-                { id: 'lista-ciencias', archivo: 'practica-ciencias', resumen: 'resumen-ciencias', tipo: 'regular' },
-                { id: 'lista-mate', archivo: 'practica-mate', resumen: 'resumen-mate', tipo: 'regular' },
-                { id: 'lista-espanol', archivo: 'practica-espanol', resumen: 'resumen-espanol', tipo: 'regular' },
-                { id: 'lista-sociales', archivo: 'practica-sociales', resumen: 'resumen-sociales', tipo: 'regular' }
-            ];
+        // =====================================================================
+        // DIRECTORIO DE PRÁCTICAS (AQUÍ AGREGAS TODAS LAS QUE QUIERAS SIN LÍMITE)
+        // =====================================================================
+        const baseDeDatosPracticas = {
+            
+            // PRUEBAS ESTANDARIZADAS
+            "lista-mate-estandarizada": [
+                { numero: 1, tema: "Números", archivo: "practica-mate-estandarizada-1.html", resumen: "resumen-mate-estandarizada-1.html" },
+                { numero: 2, tema: "Geometría", archivo: "practica-mate-estandarizada-2.html", resumen: "resumen-mate-estandarizada-2.html" },
+                { numero: 3, tema: "Medidas", archivo: "practica-mate-estandarizada-3.html", resumen: "resumen-mate-estandarizada-3.html" },
+                { numero: 4, tema: "Relaciones y Álgebra", archivo: "practica-mate-estandarizada-4.html", resumen: "resumen-mate-estandarizada-4.html" },
+                // Para agregar la 5, solo copia la línea de arriba, pégala abajo, y cambia el número y el tema.
+            ],
+            
+            "lista-ciencias-estandarizada": [
+                // { numero: 1, tema: "Seres Vivos", archivo: "practica-ciencias-estandarizada-1.html", resumen: "resumen-ciencias-estandarizada-1.html" }
+            ],
 
-            for (const cfg of configuraciones) {
-                const container = document.getElementById(cfg.id);
-                let i = 1;
-                while (true) {
-                    try {
-                        const response = await fetch(`${cfg.archivo}-${i}.html`, { method: 'HEAD' });
-                        if (response.ok) {
-                            const card = document.createElement('div');
-                            card.className = 'card';
-                            const nombreCard = cfg.tipo === 'estandarizada' ? `Práctica Estandarizada #${i}` : `Práctica #${i}`;
-                            card.innerHTML = `<h3>${nombreCard}</h3>
-                                            <div class="btn-group">
-                                                <a href="${cfg.archivo}-${i}.html" class="btn btn-practice">Práctica</a>
-                                                <a href="${cfg.resumen}-${i}.html" class="btn btn-study">Resumen</a>
-                                            </div>`;
-                            container.appendChild(card);
-                            i++;
-                        } else { break; }
-                    } catch (e) { break; }
+            "lista-espanol-estandarizada": [
+                // Ejemplo de cómo agregar cuando las hagamos:
+                // { numero: 1, tema: "Comprensión de Lectura", archivo: "practica-espanol-estandarizada-1.html", resumen: "resumen-espanol-estandarizada-1.html" }
+            ],
+
+            "lista-sociales-estandarizada": [
+                // Vacío por ahora
+            ],
+
+            // PRÁCTICAS REGULARES
+            "lista-mate": [
+                // { numero: 1, tema: "Fracciones", archivo: "practica-mate-1.html", resumen: "resumen-mate-1.html" }
+            ],
+            "lista-ciencias": [],
+            "lista-espanol": [],
+            "lista-sociales": []
+        };
+
+        function renderizarPracticas() {
+            // Recorremos cada categoría en nuestro directorio
+            for (const [idContenedor, practicas] of Object.entries(baseDeDatosPracticas)) {
+                const contenedor = document.getElementById(idContenedor);
+                
+                if (practicas.length === 0) {
+                    contenedor.innerHTML = "<p style='color:#7f8c8d; font-style:italic;'>Próximamente nuevas prácticas...</p>";
+                    continue;
                 }
+
+                let htmlTarjetas = '';
+                practicas.forEach(practica => {
+                    // Determinar si es estandarizada o regular viendo el ID del contenedor
+                    const tipo = idContenedor.includes('estandarizada') ? 'Estandarizada' : 'Regular';
+                    
+                    htmlTarjetas += `
+                        <div class="card">
+                            <h3>Práctica ${tipo} #${practica.numero}</h3>
+                            <h4>${practica.tema}</h4>
+                            <div class="btn-group">
+                                <a href="${practica.archivo}" class="btn btn-practice">Ejercicios</a>
+                                <a href="${practica.resumen}" class="btn btn-study">Resumen</a>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                contenedor.innerHTML = htmlTarjetas;
             }
         }
 
+        // Función para abrir/cerrar los menús
         function toggleSection(element) {
             const section = element.parentElement;
             document.querySelectorAll('.subject-section').forEach(sec => {
