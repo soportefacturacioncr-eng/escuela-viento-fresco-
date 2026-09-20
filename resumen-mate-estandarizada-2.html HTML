@@ -35,7 +35,7 @@
     <ul>
         <li><strong>Polígonos:</strong> Figuras planas cerradas formadas exclusivamente por segmentos de recta (lados). Ejemplos: triángulos, rectángulos, pentágonos, octágonos. Las líneas curvas (como flechas con arcos) no forman polígonos.</li>
         <li><strong>Paralelogramos:</strong> Cuadriláteros que tienen sus dos pares de lados opuestos paralelos e iguales, además de ángulos rectos en figuras como el rectángulo o cuadrado.</li>
-        <li><strong>Trapezios:</strong> Cuadriláteros que poseen únicamente un par de lados paralelos.</li>
+        <li><strong>Trapecios:</strong> Cuadriláteros que poseen únicamente un par de lados paralelos.</li>
     </ul>
 
     <h2>2. Cuerpos sólidos geométricos</h2>
@@ -46,14 +46,14 @@
 
     <h2>3. Perímetro y Área</h2>
     <ul>
-        <li><strong>Perímetro ($P$):</strong> Es la medida del contorno o la longitud total alrededor de una figura. En un rectángulo se calcula sumando dos veces el largo y dos veces el ancho: $P = 2 \times (\text{largo} + \text{ancho})$.</li>
-        <li><strong>Área ($A$):</strong> Es la medida de la superficie interior. Para un cuadrado, se multiplica la medida de su lado por sí misma ($A = \text{lado} \times \text{lado}$). Si se conoce el perímetro de un cuadrado, se divide entre 4 para hallar el lado.</li>
+        <li><strong>Perímetro (P):</strong> Es la medida del contorno o la longitud total alrededor de una figura. En un rectángulo se calcula sumando dos veces el largo y dos veces el ancho: <strong>P = 2 × (largo + ancho)</strong>.</li>
+        <li><strong>Área (A):</strong> Es la medida de la superficie interior. Para un cuadrado, se multiplica la medida de su lado por sí misma (<strong>A = lado × lado</strong>). Si se conoce el perímetro de un cuadrado, primero se divide entre 4 para hallar cuánto mide un lado.</li>
     </ul>
 
     <h2>4. Simetría y Ejes de Simetría</h2>
     <ul>
-        <li><strong>Eje de simetría:</strong> Línea imaginaria que divide una figura en dos partes exactamente iguales y simétricas (como un espejo). Los trapecios regulares simétricos poseen 1 eje de simetría.</li>
-        <li><strong>Puntos homólogos:</strong> Puntos correspondientes ubicados a la misma distancia y posición opuesta respecto al eje central de simetría.</li>
+        <li><strong>Eje de simetría:</strong> Línea imaginaria que divide una figura en dos partes exactamente iguales y simétricas (como un espejo). Los trapecios regulares simétricos (isósceles) poseen 1 eje de simetría vertical.</li>
+        <li><strong>Puntos homólogos:</strong> Puntos correspondientes ubicados exactamente a la misma distancia y posición opuesta respecto al eje central de simetría.</li>
     </ul>
 
     <h2>5. Sistemas de coordenadas</h2>
