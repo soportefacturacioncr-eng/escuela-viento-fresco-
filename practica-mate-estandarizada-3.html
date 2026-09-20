@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Matemáticas Estandarizada 3 - Medidas</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #e74c3c; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #ff7979; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        /* Estilos para las tablas de las preguntas */
+        .table-q { width: 100%; max-width: 450px; border-collapse: collapse; margin: 15px 0; font-weight: normal; }
+        .table-q th, .table-q td { border: 1px solid #bdc3c7; padding: 10px; text-align: center; }
+        .table-q th { background-color: #ecf0f1; color: #2c3e50; }
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #e74c3c; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #c0392b; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Matemáticas: Medidas</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<!-- Enlace al controlador de Firebase -->
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Si el peso (masa) de un gato es 3600 g, entonces, ¿cuál es el peso, en kilogramos, de ese gato?", 
+            "opciones": {"a": "0,36", "b": "3,6", "c": "36", "d": "360"}, 
+            "correcta": "b", 
+            "explicacion": "Recordemos que 1 kilogramo equivale a 1000 gramos. Para pasar de gramos a kilogramos, dividimos entre 1000: 3600 ÷ 1000 = 3,6 kg.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "Rosaura utiliza 500 g de azúcar por cada frasco de mermelada que elabora. El azúcar solo se vende en paquetes de 2 kg a un precio de ₡1000 cada uno.<br><br>¿Cuánto debe pagar Rosaura para comprar la cantidad exacta de azúcar que utilizará en la elaboración de ocho frascos de esa mermelada?", 
+            "opciones": {"a": "₡500", "b": "₡1000", "c": "₡2000", "d": "₡4000"}, 
+            "correcta": "c", 
+            "explicacion": "Primero, calculamos el total de azúcar en gramos: 8 frascos × 500 g = 4000 g. Como 1000 g es 1 kg, ella necesita 4 kg. Si cada paquete trae 2 kg y cuesta ₡1000, necesita 2 paquetes. Entonces: 2 paquetes × ₡1000 = ₡2000.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Considere la siguiente tabla referente a la edad que tienen cuatro personas:<br>" +
+                        "<table class='table-q'><tr><th>Persona</th><th>Edad</th></tr>" +
+                        "<tr><td>Jorge</td><td>24 meses</td></tr>" +
+                        "<tr><td>Laura</td><td>365 días</td></tr>" +
+                        "<tr><td>Víctor</td><td>4 años</td></tr>" +
+                        "<tr><td>Karla</td><td>14 meses</td></tr></table>" +
+                        "De acuerdo con la información anterior, ¿cuál de esas personas es la que tiene la menor edad?", 
+            "opciones": {"a": "Jorge", "b": "Laura", "c": "Víctor", "d": "Karla"}, 
+            "correcta": "b", 
+            "explicacion": "Vamos a pasar todo a años para comparar fácilmente: Jorge tiene 2 años (24 meses). Laura tiene 1 año (365 días). Víctor tiene 4 años. Karla tiene un poco más de 1 año (14 meses). Por lo tanto, Laura es la menor.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "Si el monto que se paga por viajar en un bus es ₡580 y una persona lo paga exacto con monedas, entonces, ¿cuál sería un posible pago que hace esa persona?", 
+            "opciones": {
+                "a": "Cinco monedas de ₡100, una de ₡50 y una de ₡10", 
+                "b": "Cuatro monedas de ₡100, tres de ₡50 y tres de ₡10", 
+                "c": "Tres monedas de ₡100, cuatro de ₡50 y cinco de ₡10", 
+                "d": "Dos monedas de ₡100, siete de ₡50 y dos de ₡10"
+            }, 
+            "correcta": "b", 
+            "explicacion": "Comprobemos la opción correcta (B): (4 × 100) + (3 × 50) + (3 × 10) = 400 + 150 + 30 = ₡580 exactos.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "Una maratón es una competencia en donde las personas participantes corren una distancia de 42,195 km.<br><br>De acuerdo con la información anterior, si Esteban corrió la distancia completa de una maratón, entonces, ¿cuántos metros corrió él?", 
+            "opciones": {"a": "4,2195", "b": "42 195", "c": "421 950", "d": "421,95"}, 
+            "correcta": "b", 
+            "explicacion": "Recordemos que 1 kilómetro equivale a 1000 metros. Para pasar de km a metros, multiplicamos por 1000 (corriendo la coma tres lugares a la derecha): 42,195 × 1000 = 42 195 metros.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "Considere la siguiente tabla referente al periodo aproximado de gestación (embarazo) que tiene cada uno de cuatro animales:<br>" +
+                        "<table class='table-q'><tr><th>Animal</th><th>Periodo de gestación</th></tr>" +
+                        "<tr><td>Coneja</td><td>31 días</td></tr>" +
+                        "<tr><td>Cabra</td><td>22 semanas</td></tr>" +
+                        "<tr><td>Gata</td><td>2 meses</td></tr>" +
+                        "<tr><td>Cerda</td><td>115 días</td></tr></table>" +
+                        "¿Cuál de esos animales tiene el mayor periodo de gestación?", 
+            "opciones": {"a": "Coneja", "b": "Cabra", "c": "Gata", "d": "Cerda"}, 
+            "correcta": "b", 
+            "explicacion": "Pasemos todo a días para comparar: Coneja (31 días). Cabra (22 semanas × 7 días = 154 días). Gata (2 meses ≈ 60 días). Cerda (115 días). La Cabra tiene el periodo mayor.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Mariana fue al supermercado y compró un artículo cuyo precio es ₡500. Ella pagó por esa compra con un billete de ₡5000 y recibió el vuelto en billetes de ₡1000 y monedas de ₡500.<br><br>¿Cuál de las siguientes opciones corresponde a un posible vuelto que Mariana recibió por esa compra?", 
+            "opciones": {
+                "a": "2 billetes de ₡1000 y 2 monedas de ₡500", 
+                "b": "3 billetes de ₡1000 y 3 monedas de ₡500", 
+                "c": "4 billetes de ₡1000 y 2 monedas de ₡500", 
+                "d": "1 billete de ₡1000 y 6 monedas de ₡500"
+            }, 
+            "correcta": "b", 
+            "explicacion": "Primero, calculemos el vuelto que le toca recibir: ₡5000 - ₡500 = ₡4500. Verificando la opción B: (3 × 1000) + (3 × 500) = 3000 + 1500 = ₡4500 exactos.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "Alejandra compra 2500 g de pollo. Si el precio de cada kilogramo de pollo es ₡2500, entonces, ¿cuánto debe pagar Alejandra por esa compra?", 
+            "opciones": {"a": "₡2500", "b": "₡5000", "c": "₡6250", "d": "₡7500"}, 
+            "correcta": "c", 
+            "explicacion": "Primero pasamos los gramos a kilogramos: 2500 ÷ 1000 = 2,5 kg. Ahora multiplicamos los kilogramos por el precio: 2,5 × 2500 = ₡6250.<br><a href='resumen-mate-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Matemáticas",
+                    nivel: "6° Grado",
+                    tema: "Medidas",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
