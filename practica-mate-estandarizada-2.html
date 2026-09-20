@@ -14,12 +14,15 @@
         .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
         .question-block.incorrect { border-color: #e74c3c; }
         .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; white-space: pre-wrap; }
+        
+        /* Estilos para las figuras ilustrativas */
+        .figure-box { display: flex; justify-content: center; gap: 15px; margin: 15px 0; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; flex-wrap: wrap; text-align: center; }
+        .figure-item { background: white; padding: 10px; border-radius: 6px; border: 1px solid #ccc; min-width: 90px; }
+        
         .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
         .options label:hover { background: #e2e8f0; }
         input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
-        .text-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #bdc3c7; border-radius: 6px; box-sizing: border-box; }
-        .text-input:focus { border-color: #e74c3c; outline: none; }
-        textarea.text-input { resize: vertical; min-height: 80px; }
+        
         .btn-submit { width: 100%; padding: 15px; background: #e74c3c; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
         .btn-submit:hover { background: #c0392b; }
         .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
@@ -52,98 +55,147 @@
         {
             "id": "q1",
             "type": "mc",
-            "pregunta": "Considere cuatro figuras de jardines (Figura I, Figura II, Figura III y Figura IV). De acuerdo con las propiedades de los cuadriláteros, ¿cuál de esas figuras corresponde a un paralelogramo (como un rectángulo con sus cuatro ángulos rectos)?",
+            "pregunta": "Considere las siguientes figuras que corresponden a la superficie de cuatro jardines[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<div class='figure-item'><strong>Figura I</strong><svg width='80' height='50'><polygon points='10,40 25,10 55,10 70,40' fill='none' stroke='#333' stroke-width='2'/></svg></div>" +
+                        "<div class='figure-item'><strong>Figura II</strong><svg width='80' height='50'><rect x='10' y='10' width='60' height='30' fill='none' stroke='#333' stroke-width='2'/><rect x='10' y='10' width='8' height='8' fill='none' stroke='#333'/><rect x='62' y='10' width='8' height='8' fill='none' stroke='#333'/><rect x='10' y='32' width='8' height='8' fill='none' stroke='#333'/><rect x='62' y='32' width='8' height='8' fill='none' stroke='#333'/></svg></div>" +
+                        "<div class='figure-item'><strong>Figura III</strong><svg width='80' height='50'><polygon points='10,20 70,10 70,40 10,40' fill='none' stroke='#333' stroke-width='2'/><rect x='62' y='32' width='8' height='8' fill='none' stroke='#333'/></svg></div>" +
+                        "<div class='figure-item'><strong>Figura IV</strong><svg width='80' height='50'><polygon points='20,15 65,10 75,45 10,35' fill='none' stroke='#333' stroke-width='2'/></svg></div>" +
+                        "</div>\n" +
+                        "¿Cuál de esas figuras corresponde a un paralelogramo[cite: 4]?",
             "opciones": {"a": "Figura I", "b": "Figura II", "c": "Figura III", "d": "Figura IV"},
             "correcta": "b",
-            "explicacion": "La Figura II corresponde a un paralelogramo (rectángulo) que posee sus ángulos interiores rectos ($90^\\circ$) y lados opuestos paralelos e iguales.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "La Figura II corresponde a un paralelogramo (rectángulo) que posee sus ángulos interiores rectos ($90^\\circ$) y lados opuestos paralelos e iguales[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q2",
             "type": "mc",
-            "pregunta": "Un envase de perfume tiene una forma circular en su base y tapas paralelas unidas por una superficie curva. ¿A qué cuerpo sólido corresponde?",
+            "pregunta": "Considere la siguiente figura que representa a un envase de un perfume[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<svg width='80' height='100'><ellipse cx='40' cy='20' rx='30' ry='10' fill='none' stroke='#333' stroke-width='2'/><line x1='10' y1='20' x2='10' y2='80' stroke='#333' stroke-width='2'/><line x1='70' y1='20' x2='70' y2='80' stroke='#333' stroke-width='2'/><ellipse cx='40' cy='80' rx='30' ry='10' fill='none' stroke='#333' stroke-width='2' stroke-dasharray='4'/></svg>" +
+                        "</div>\n" +
+                        "De acuerdo con la información anterior, la forma que tiene el envase de ese perfume podría corresponder al cuerpo sólido denominado[cite: 4]:",
             "opciones": {"a": "Cubo", "b": "Cilindro", "c": "Prisma rectangular", "d": "Pirámide"},
             "correcta": "b",
-            "explicacion": "El cuerpo geométrico con dos bases circulares paralelas y una cara lateral curva es el cilindro.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "El cuerpo geométrico con dos bases circulares paralelas y una superficie lateral curva es el cilindro[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q3",
             "type": "mc",
-            "pregunta": "Karla desea colocar una cinta decorativa alrededor de un mantel rectangular de 100 cm de largo y 50 cm de ancho. ¿Cuántos centímetros de cinta, como mínimo, necesita comprar?",
+            "pregunta": "Karla desea colocar una cinta decorativa alrededor de un mantel rectangular[cite: 4]. Si la medida del largo de ese mantel es 100 cm y la del ancho es 50 cm, entonces ¿cuántos centímetros de esa cinta, como mínimo, necesita comprar[cite: 4]?",
             "opciones": {"a": "150", "b": "300", "c": "500", "d": "5000"},
             "correcta": "b",
-            "explicacion": "Para hallar la cinta alrededor del mantel se calcula el perímetro del rectángulo: $P = 2 \\times (\\text{largo} + \\text{ancho}) = 2 \\times (100 + 50) = 2 \\times 150 = 300\\text{ cm}$.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Para hallar la cinta alrededor del mantel se calcula el perímetro del rectángulo: $P = 2 \\times (100 + 50) = 300\\text{ cm}$[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q4",
             "type": "mc",
-            "pregunta": "En una figura simétrica con forma de ventana colocada en una cuadrícula, ¿cuántos ejes de simetría presenta dicha estructura trapezoidal regular?",
+            "pregunta": "En el siguiente sistema de coordenadas se representa la figura de una ventana y los puntos (P, T, R y H) donde se colocaron tornillos[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<svg width='140' height='90'><polygon points='30,70 50,30 90,30 110,70' fill='#e2e8f0' stroke='#333' stroke-width='2'/><circle cx='50' cy='30' r='4' fill='black'/><text x='45' y='22' font-size='12'>P</text><circle cx='90' cy='30' r='4' fill='black'/><text x='95' y='22' font-size='12'>T</text><circle cx='110' cy='70' r='4' fill='black'/><text x='115' y='75' font-size='12'>R</text><circle cx='30' cy='70' r='4' fill='black'/><text x='15' y='75' font-size='12'>H</text></svg>" +
+                        "</div>\n" +
+                        "La medida del lado de cada cuadrado de la cuadrícula es 10 cm[cite: 4]. ¿Cuántos ejes de simetría tiene esa figura[cite: 4]?",
             "opciones": {"a": "1", "b": "2", "c": "3", "d": "4"},
             "correcta": "a",
-            "explicacion": "Un trapecio isósceles estándar simétrico posee únicamente 1 eje de simetría vertical que divide la figura en dos partes idénticas.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Un trapecio isósceles estándar posee únicamente 1 eje de simetría vertical que divide la figura en dos partes idénticas[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q5",
             "type": "mc",
-            "pregunta": "En un sistema de coordenadas donde cada lado de la cuadrícula mide 100 m, Ana (A) se encuentra en su casa. Si camina 300 m al este y 200 m al norte, ¿a qué casa llega?",
+            "pregunta": "Ubicación de la casa de Ana (A), Jorge (J), Guillermo (G), Rocío (R) y Tatiana (T) en un sistema de coordenadas[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<svg width='160' height='120'><text x='10' y='15' font-size='11'>Norte ⬆</text><text x='110' y='110' font-size='11'>Este ➡</text><circle cx='30' cy='80' r='4' fill='black'/><text x='35' y='85' font-size='12'>A</text><circle cx='60' cy='40' r='4' fill='black'/><text x='65' y='45' font-size='12'>J</text><circle cx='80' cy='60' r='4' fill='black'/><text x='85' y='65' font-size='12'>T</text><circle cx='80' cy='105' r='4' fill='black'/><text x='85' y='105' font-size='12'>R</text><circle cx='130' cy='80' r='4' fill='black'/><text x='135' y='85' font-size='12'>G</text></svg>" +
+                        "</div>\n" +
+                        "La medida del lado de cada cuadrado de la cuadrícula es 100 m[cite: 4]. Si Ana (A) sale de su casa y camina 300 m al este y 200 m al norte, llega a la casa de[cite: 4]:",
             "opciones": {"a": "Jorge", "b": "Rocío", "c": "Tatiana", "d": "Guillermo"},
             "correcta": "c",
-            "explicacion": "Partiendo de la posición de Ana y desplazándose 3 unidades hacia la derecha (este) y 2 unidades hacia arriba (norte), se llega exactamente a la ubicación de Tatiana (T).<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Partiendo de Ana (A) y desplazándose 3 unidades a la derecha y 2 hacia arriba, se llega exactamente a la casa de Tatiana (T)[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q6",
             "type": "mc",
-            "pregunta": "Cuatro señales de tránsito muestran distintas formas geométricas: un triángulo, un octágono, una flecha curva y un hexágono. ¿Cuál de ellas NO corresponde a un polígono?",
-            "opciones": {"a": "Figura I (Triángulo)", "b": "Figura II (Octágono)", "c": "Figura III (Flecha curva)", "d": "Figura IV (Hexágono)"},
+            "pregunta": "Señales de tránsito formadas por líneas[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<div class='figure-item'><strong>Figura I</strong><svg width='50' height='45'><polygon points='25,5 45,40 5,40' fill='none' stroke='#333' stroke-width='2'/></svg></div>" +
+                        "<div class='figure-item'><strong>Figura II</strong><svg width='50' height='45'><polygon points='15,5 35,5 45,15 45,30 35,40 15,40 5,30 5,15' fill='none' stroke='#333' stroke-width='2'/></svg></div>" +
+                        "<div class='figure-item'><strong>Figura III</strong><svg width='50' height='45'><path d='M10,35 L10,20 Q10,10 20,10 L35,10 M30,5 L40,10 L30,15' fill='none' stroke='#333' stroke-width='2'/></svg></div>" +
+                        "<div class='figure-item'><strong>Figura IV</strong><svg width='50' height='45'><polygon points='25,5 45,15 45,35 25,45 5,35 5,15' fill='none' stroke='#333' stroke-width='2'/></svg></div>" +
+                        "</div>\n" +
+                        "¿Cuál de esas figuras NO corresponde a un polígono[cite: 4]?",
+            "opciones": {"a": "Figura I", "b": "Figura II", "c": "Figura III", "d": "Figura IV"},
             "correcta": "c",
-            "explicacion": "Un polígono está formado exclusivamente por segmentos de recta cerrados. La Figura III contiene líneas curvas (la flecha), por lo que no es un polígono.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Un polígono está formado exclusivamente por segmentos de recta cerrados. La Figura III contiene líneas curvas, por lo que no es un polígono[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q7",
             "type": "mc",
-            "pregunta": "El piso de un dormitorio tiene forma cuadrada con una medida de 5 m por lado. Si se requiere colocar cerámica en la totalidad del piso, ¿cuántos metros cuadrados de cerámica se necesitan?",
+            "pregunta": "Cuadrado que representa el piso de un dormitorio de 5 m por lado[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<svg width='60' height='60'><rect x='5' y='5' width='50' height='50' fill='none' stroke='#333' stroke-width='2'/><text x='20' y='35' font-size='12'>5 m</text></svg>" +
+                        "</div>\n" +
+                        "Si se requiere colocar cerámica en la totalidad del piso, ¿cuántos metros cuadrados se requieren[cite: 4]?",
             "opciones": {"a": "10", "b": "20", "c": "25", "d": "5"},
             "correcta": "c",
-            "explicacion": "Para calcular la superficie (área) de un cuadrado se multiplica lado por lado: $5\\text{ m} \\times 5\\text{ m} = 25\\text{ m}^2$.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "El área de un cuadrado se calcula multiplicando lado por lado: $5\\text{ m} \\times 5\\text{ m} = 25\\text{ m}^2$[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q8",
             "type": "mc",
-            "pregunta": "En una reserva biológica, un sendero de ida va de la entrada al mirador pasando por el mariposario, y el de regreso va del mirador a la entrada pasando por la oficina del guardaparques formando un paralelogramo. ¿Cómo es el recorrido de ida en comparación con el de regreso?",
-            "opciones": {"a": "Igual que el recorrido por el sendero de regreso", "b": "Mayor que el recorrido por el sendero de regreso", "c": "Menor que el recorrido por el sendero de regreso", "d": "Diferente al recorrido por el sendero de regreso"},
+            "pregunta": "Senderos de una reserva biológica (de ida y de regreso en forma de paralelogramo)[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<svg width='220' height='80'><polygon points='30,60 70,20 180,20 140,60' fill='none' stroke='#333' stroke-width='2'/><text x='15' y='65' font-size='10'>Entrada</text><text x='80' y='15' font-size='10'>750 m</text><text x='185' y='25' font-size='10'>Mirador</text></svg>" +
+                        "</div>\n" +
+                        "De acuerdo con la información anterior, el recorrido realizado por el sendero de ida es[cite: 4]:",
+            "opciones": {"a": "igual que el recorrido por el sendero de regreso.", "b": "mayor que el recorrido por el sendero de regreso.", "c": "menor que el recorrido por el sendero de regreso.", "d": "diferente al recorrido por el sendero de regreso."},
             "correcta": "a",
-            "explicacion": "Por propiedad de los paralelogramos, los lados opuestos que conforman los trayectos de ida y de regreso tienen exactamente la misma longitud total, por lo que los recorridos son iguales.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Por propiedad de los paralelogramos, los lados opuestos que conforman los trayectos de ida y de regreso tienen la misma longitud[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q9",
             "type": "mc",
-            "pregunta": "Al observar cuatro jardines en una cuadrícula identificados como P, Q, R y T, ¿cuáles de ellos tienen forma de trapecio?",
+            "pregunta": "Forma de los jardines P, Q, R y T en una cuadrícula (lado = 1 m)[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<div class='figure-item'><strong>P</strong><svg width='50' height='40'><polygon points='5,35 5,5 35,5 45,35' fill='#cbd5e1'/></svg></div>" +
+                        "<div class='figure-item'><strong>Q</strong><svg width='50' height='40'><polygon points='10,10 40,5 40,35 10,25' fill='#cbd5e1'/></svg></div>" +
+                        "<div class='figure-item'><strong>R</strong><svg width='50' height='40'><polygon points='5,35 20,10 45,25 45,35' fill='#cbd5e1'/></svg></div>" +
+                        "<div class='figure-item'><strong>T</strong><svg width='50' height='40'><rect x='5' y='10' width='40' height='25' fill='#cbd5e1'/></svg></div>" +
+                        "</div>\n" +
+                        "¿Cuáles de esos jardines tienen forma de trapecio[cite: 4]?",
             "opciones": {"a": "P y Q", "b": "Q y R", "c": "P y R", "d": "P y T"},
             "correcta": "a",
-            "explicacion": "Los cuadriláteros P y Q tienen un par de lados paralelos y otros no paralelos, cumpliendo exactamente con la definición geométrica de trapecio.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Los cuadriláteros P y Q tienen exactamente un par de lados paralelos, cumpliendo con la definición de trapecio[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q10",
             "type": "mc",
-            "pregunta": "La superficie de una mesa tiene forma de cuadrado cuyo perímetro es 12 m. ¿Cuántos metros cuadrados de plástico adhesivo se requieren para cubrir toda su superficie?",
+            "pregunta": "La superficie de una mesa tiene forma cuadrada con un perímetro de 12 m[cite: 4]. ¿Cuántos metros cuadrados de plástico adhesivo se requieren para cubrir la superficie[cite: 4]?",
             "opciones": {"a": "12", "b": "9", "c": "6", "d": "16"},
             "correcta": "b",
-            "explicacion": "Si el perímetro es 12 m, cada lado mide $12 \\div 4 = 3\\text{ m}$. El área se obtiene multiplicando lado por lado: $3 \\times 3 = 9\\text{ m}^2$.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Cada lado mide $12 \\div 4 = 3\\text{ m}$. El área se obtiene multiplicando lado por lado: $3 \\times 3 = 9\\text{ m}^2$[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q11",
             "type": "mc",
-            "pregunta": "En un dibujo simétrico de un árbol ubicado en un plano cartesiano, ¿cuál par de puntos corresponde a puntos homólogos entre sí respecto al eje de simetría?",
+            "pregunta": "Figura simétrica de un árbol en un sistema de coordenadas (lado de cuadrícula = 10 cm)[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<svg width='120' height='90'><polygon points='60,10 80,40 70,40 90,70 40,70 60,40 50,40' fill='#e2e8f0' stroke='#333'/><circle cx='40' cy='40' r='3' fill='black'/><text x='25' y='43' font-size='10'>G</text><circle cx='80' cy='40' r='3' fill='black'/><text x='88' y='43' font-size='10'>C</text><circle cx='45' cy='70' r='3' fill='black'/><text x='35' y='82' font-size='10'>F</text><circle cx='75' cy='70' r='3' fill='black'/><text x='78' y='82' font-size='10'>D</text></svg>" +
+                        "</div>\n" +
+                        "De acuerdo con la información, ¿cuáles puntos son homólogos entre sí respecto al eje de simetría[cite: 4]?",
             "opciones": {"a": "F y G", "b": "D y C", "c": "F y D", "d": "G y D"},
             "correcta": "c",
-            "explicacion": "Los puntos homólogos se ubican a la misma distancia y dirección opuesta respecto al eje central de simetría; en este caso horizontal inferior, los puntos F y D se corresponden simétricamente.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "Los puntos homólogos se ubican a la misma distancia y dirección opuesta respecto al eje central; los puntos F y D se corresponden simétricamente en la base inferior[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         },
         {
             "id": "q12",
             "type": "mc",
-            "pregunta": "Una figura compuesta que representa el frente de una casa contiene varias secciones numeradas (1, 2, 3 y 4). ¿Cuál de esas figuras geométricas corresponde a un rectángulo?",
+            "pregunta": "Frente de una casa compuesta por las figuras 1, 2, 3 y 4[cite: 4]:\n\n" +
+                        "<div class='figure-box'>" +
+                        "<svg width='120' height='80'><polygon points='10,35 60,10 110,35' fill='none' stroke='#333' stroke-width='2'/><rect x='15' y='35' width='80' height='40' fill='none' stroke='#333' stroke-width='2'/><text x='45' y='60' font-size='14'>2</text></svg>" +
+                        "</div>\n" +
+                        "¿Cuál de esas figuras geométricas corresponde a un rectángulo[cite: 4]?",
             "opciones": {"a": "1", "b": "2", "c": "3", "d": "4"},
             "correcta": "b",
-            "explicacion": "La sección número 2 corresponde a la base de la casa, la cual tiene forma rectangular con cuatro ángulos rectos y lados opuestos iguales.<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+            "explicacion": "La sección número 2 corresponde a la base de la casa, la cual tiene forma rectangular con cuatro ángulos rectos[cite: 4].<br><a href='resumen-mate-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
         }
     ];
 
