@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Matemáticas Estandarizada 5 - Estadística y Probabilidad</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #e74c3c; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #ff7979; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .table-q { width: 100%; max-width: 500px; border-collapse: collapse; margin: 15px 0; font-weight: normal; }
+        .table-q th, .table-q td { border: 1px solid #bdc3c7; padding: 10px; text-align: center; }
+        .table-q th { background-color: #ecf0f1; color: #2c3e50; }
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #e74c3c; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #c0392b; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Matemáticas: Estadística y Probabilidad</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "En la siguiente tabla se muestran los tiempos en segundos obtenidos por un atleta en siete carreras[cite: 6]:<br>" +
+                        "<table class='table-q'><tr><th>Carrera</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr>" +
+                        "<tr><td>Tiempo (s)</td><td>6,93</td><td>6,17</td><td>6,02</td><td>6,85</td><td>6,90</td><td>7,02</td><td>6,93</td></tr></table>" +
+                        "De acuerdo con la información anterior, ¿cuál fue el tiempo que obtuvo ese atleta con <strong>mayor frecuencia (moda)</strong>[cite: 6]?", 
+            "opciones": {"a": "6,02 s", "b": "6,85 s", "c": "6,93 s", "d": "7,02 s"}, 
+            "correcta": "c", 
+            "explicacion": "La frecuencia indica cuántas veces se repite un dato. El tiempo de 6,93 s aparece dos veces (en la carrera 1 y en la 7), siendo el dato que más se repite[cite: 6].<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "Un juego consiste en tirar simultáneamente dos dados de seis caras cada uno y multiplicar los números que quedaron en las caras superiores. Cada dado tiene sus caras numeradas del uno al seis sin repetir[cite: 6].<br><br>¿Cuál de los siguientes resultados es <strong>el más probable</strong> de obtener al multiplicar los números superiores[cite: 6]?", 
+            "opciones": {"a": "3", "b": "6", "c": "9", "d": "10"}, 
+            "correcta": "b", 
+            "explicacion": "El número 6 se puede obtener de más combinaciones al multiplicar los números de los dados (por ejemplo: 1×6, 2×3, 3×2, 6×1), lo que le otorga mayor probabilidad frente a los demás[cite: 6].<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Una investigación pretende determinar el tiempo, en horas, que dedican a estudiar las 1000 personas matriculadas en un centro educativo. Para ello se seleccionaron al azar a 200 de esas personas y se les aplicó una encuesta[cite: 6].<br><br>En esa investigación, la <strong>muestra</strong> corresponde a[cite: 6]:", 
+            "opciones": {
+                "a": "las personas a las que se les aplicó la encuesta.", 
+                "b": "las personas matriculadas en el centro educativo.", 
+                "c": "al tiempo, en horas, que dedican las personas a estudiar.", 
+                "d": "al método de estudio preferido por las personas encuestadas."
+            }, 
+            "correcta": "a", 
+            "explicacion": "La muestra es el subgrupo pequeño seleccionado de la población total al que realmente se le aplica el estudio o la encuesta (en este caso, las 200 personas encuestadas)[cite: 6].<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "Una investigación requiere determinar el tiempo que dedican a la lectura 500 estudiantes de una escuela. Para ello, se seleccionaron al azar 100 de esas personas y se les aplicó una encuesta[cite: 6].<br><br>La <strong>muestra</strong> de esa investigación corresponde a la cantidad de[cite: 6]:", 
+            "opciones": {
+                "a": "personas estudiantes de esa escuela.", 
+                "b": "personas estudiantes seleccionadas al azar de esa escuela.", 
+                "c": "horas que dedican a la lectura las personas estudiantes.", 
+                "d": "lugares donde las personas estudiantes realizan sus sesiones de lectura."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La muestra representa al grupo específico seleccionado al azar (los 100 estudiantes encuestados) de entre toda la población de la escuela[cite: 6].<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "La siguiente tabla muestra el tiempo, en segundos, que duró cada uno de cinco nadadores en una competencia[cite: 6]:<br>" +
+                        "<table class='table-q'><tr><th>Nadador</th><th>Carlos</th><th>Gabriel</th><th>Esteban</th><th>Juan Luis</th><th>José Roberto</th></tr>" +
+                        "<tr><td>Tiempo (s)</td><td>32</td><td>28</td><td>35</td><td>45</td><td>40</td></tr></table>" +
+                        "¿Cuál es la <strong>mayor diferencia</strong> entre los tiempos de dos nadadores cualesquiera en esa competencia[cite: 6]?", 
+            "opciones": {"a": "8 s", "b": "13 s", "c": "17 s", "d": "10 s"}, 
+            "correcta": "c", 
+            "explicacion": "La mayor diferencia (rango) se calcula restando el valor máximo y el valor mínimo del conjunto de datos: 45 s (Juan Luis) - 28 s (Gabriel) = 17 segundos[cite: 6].<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "Considere las siguientes situaciones[cite: 6]:<br>" +
+                        "I. El nombre del día de la semana siguiente al lunes.<br>" +
+                        "II. La cantidad de minutos que tiene una hora.<br>" +
+                        "III. El número ganador en una rifa.<br>" +
+                        "IV. La cantidad de meses que tiene un año.<br><br>" +
+                        "De acuerdo con la información anterior, ¿cuál de esas situaciones es <strong>aleatoria (incierta)</strong>[cite: 6]?", 
+            "opciones": {"a": "I", "b": "II", "c": "III", "d": "IV"}, 
+            "correcta": "c", 
+            "explicacion": "Una situación aleatoria es aquella cuyo resultado no se puede predecir con certeza antes de que ocurra, como el número ganador de una rifa. Las demás opciones son sucesos deterministas o seguros[cite: 6].<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "En un grupo de sexto grado se registraron las notas obtenidas en una práctica: 80, 95, 70, 80, 90, 85, 80. ¿Cuál es la <strong>moda</strong> de las calificaciones?", 
+            "opciones": {"a": "70", "b": "80", "c": "85", "d": "95"}, 
+            "correcta": "b", 
+            "explicacion": "La moda es el valor que más se repite en un conjunto de datos. En este caso, la nota 80 se repite tres veces, siendo la moda.",
+            "explicacion": "La moda es el valor que se repite con mayor frecuencia. El 80 aparece tres veces, superando al resto.<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "Una bolsa contiene 3 canicas rojas, 2 azules y 5 verdes. Si se saca una canica sin mirar, ¿cuál color tiene <strong>menor probabilidad</strong> de salir?", 
+            "opciones": {"a": "Roja", "b": "Azul", "c": "Verde", "d": "Amarilla"}, 
+            "correcta": "b", 
+            "explicacion": "La menor probabilidad corresponde al color con menor cantidad de elementos en la bolsa. Como hay solo 2 canicas azules frente a 3 rojas y 5 verdes, la azul es la menos probable.",
+            "explicacion": "La probabilidad es menor para el color con menos unidades en el recipiente (las 2 canicas azules frente a las demás).<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "Durante una semana se registraron las temperaturas mínimas en una zona montañosa: 14°C, 12°C, 15°C, 11°C y 18°C. ¿Cuál es el <strong>rango</strong> de temperatura registrada?", 
+            "opciones": {"a": "4°C", "b": "7°C", "c": "15°C", "d": "18°C"}, 
+            "correcta": "b", 
+            "explicacion": "El rango se obtiene restando la temperatura máxima menos la temperatura mínima: 18°C - 11°C = 7°C.",
+            "explicacion": "El rango estadístico se calcula encontrando la diferencia entre el valor mayor (18°C) y el valor menor (11°C): 18 - 11 = 7.<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "De las siguientes opciones, ¿cuál describe un evento o situación <strong>determinista (segura)</strong>?", 
+            "opciones": {
+                "a": "Obtener un número par al lanzar un dado común.", 
+                "b": "Llover mañana en la comunidad.", 
+                "c": "Tener 24 horas exactas un día completo.", 
+                "d": "Ganar el premio mayor de la lotería."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Un evento determinista es aquel que se sabe con absoluta seguridad que va a ocurrir siempre bajo las mismas condiciones, como que un día completo tiene 24 horas.",
+            "explicacion": "Saber que un día tiene 24 horas es un hecho fijo y seguro que no depende del azar, a diferencia de los juegos o el clima.<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "En un estudio sobre preferencias de frutas de 500 personas, se encuestó únicamente a un grupo de 50 personas elegidas al azar en el mercado central. En este contexto, el grupo de 50 personas representa:", 
+            "opciones": {"a": "La población", "b": "La muestra", "c": "La variable", "d": "La frecuencia"}, 
+            "correcta": "b", 
+            "explicacion": "El subgrupo de 50 personas seleccionado para el estudio a partir del total de la población recibe el nombre estadístico de muestra.",
+            "explicacion": "La muestra es la porción representativa elegida de la población total para llevar a cabo la investigación de forma práctica.<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q12", 
+            "type": "mc", 
+            "pregunta": "Al lanzar una moneda legal al aire, ¿cuál es la probabilidad teórica de obtener 'escudo'?", 
+            "opciones": {"a": "Imposible", "b": "Una de dos (1/2)", "c": "Segura", "d": "Cero"}, 
+            "correcta": "b", 
+            "explicacion": "Una moneda tiene dos caras posibles (cara y escudo). Al ser un evento equitativo, la probabilidad de que salga escudo es de 1 entre 2 posibles resultados (1/2).",
+            "explicacion": "Al tener dos caras igualmente probables, la opción de obtener escudo corresponde a 1 resultado favorable de un total de 2 posibles (1/2).<br><a href='resumen-mate-estandarizada-5.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Matemáticas",
+                    nivel: "6° Grado",
+                    tema: "Estadística y Probabilidad",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
