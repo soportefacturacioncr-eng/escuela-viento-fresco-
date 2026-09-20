@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen - Matemáticas: Geometría</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #2c3e50; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #e74c3c; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #ff7979; }
+        
+        h2 { color: #2c3e50; border-bottom: 2px solid #e74c3c; padding-bottom: 8px; margin-top: 30px; font-size: 20px; }
+        p, li { font-size: 15px; color: #444; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        
+        .highlight { background: #fdf2f2; border-left: 4px solid #e74c3c; padding: 15px; margin: 15px 0; border-radius: 0 6px 6px 0; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; transition: background 0.2s; }
+        .btn-nav:hover { background: #d0d0d0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="practica-mate-estandarizada-2.html" class="btn-nav">⬅️ Volver a la Práctica</a>
+    
+    <div class="header">
+        <h1>Resumen de Estudio: Geometría</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+
+    <h2>1. Figuras geométricas planas y polígonos</h2>
+    <ul>
+        <li><strong>Polígonos:</strong> Figuras planas cerradas formadas exclusivamente por segmentos de recta (lados). Ejemplos: triángulos, rectángulos, pentágonos, octágonos. Las líneas curvas (como flechas con arcos) no forman polígonos.</li>
+        <li><strong>Paralelogramos:</strong> Cuadriláteros que tienen sus dos pares de lados opuestos paralelos e iguales, además de ángulos rectos en figuras como el rectángulo o cuadrado.</li>
+        <li><strong>Trapezios:</strong> Cuadriláteros que poseen únicamente un par de lados paralelos.</li>
+    </ul>
+
+    <h2>2. Cuerpos sólidos geométricos</h2>
+    <p>Son figuras tridimensionales con volumen:</p>
+    <div class="highlight">
+        <strong>Cilindro:</strong> Cuerpo geométrico limitado por dos bases circulares paralelas y congruentes, unidas por una superficie lateral curva (ej. envases de perfumes, latas).
+    </div>
+
+    <h2>3. Perímetro y Área</h2>
+    <ul>
+        <li><strong>Perímetro ($P$):</strong> Es la medida del contorno o la longitud total alrededor de una figura. En un rectángulo se calcula sumando dos veces el largo y dos veces el ancho: $P = 2 \times (\text{largo} + \text{ancho})$.</li>
+        <li><strong>Área ($A$):</strong> Es la medida de la superficie interior. Para un cuadrado, se multiplica la medida de su lado por sí misma ($A = \text{lado} \times \text{lado}$). Si se conoce el perímetro de un cuadrado, se divide entre 4 para hallar el lado.</li>
+    </ul>
+
+    <h2>4. Simetría y Ejes de Simetría</h2>
+    <ul>
+        <li><strong>Eje de simetría:</strong> Línea imaginaria que divide una figura en dos partes exactamente iguales y simétricas (como un espejo). Los trapecios regulares simétricos poseen 1 eje de simetría.</li>
+        <li><strong>Puntos homólogos:</strong> Puntos correspondientes ubicados a la misma distancia y posición opuesta respecto al eje central de simetría.</li>
+    </ul>
+
+    <h2>5. Sistemas de coordenadas</h2>
+    <p>Permiten ubicar puntos mediante desplazamientos horizontales (este u oeste) y verticales (norte o sur) partiendo de un punto de referencia en una cuadrícula con unidades de medida definidas.</p>
+
+</div>
+
+</body>
+</html>
