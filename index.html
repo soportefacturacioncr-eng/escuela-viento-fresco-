@@ -17,25 +17,21 @@
         
         .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
         
+        /* Títulos de Categorías Principales */
+        .main-category-title { font-size: 22px; color: #2c3e50; margin: 30px 0 15px 0; padding-bottom: 8px; border-bottom: 3px solid #1abc9c; display: flex; align-items: center; gap: 10px; }
+        
         /* Estilos de las Secciones Plegables */
         .subject-section { background: white; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 6px solid; overflow: hidden; }
         
-        /* Colores diferenciados para las secciones regulares y estandarizadas */
+        /* Colores de las materias */
         .ciencias { border-color: #27ae60; }
-        .ciencias-est { border-color: #16a085; }
-        
         .mate { border-color: #e74c3c; }
-        .mate-est { border-color: #c0392b; }
-        
         .espanol { border-color: #f39c12; }
-        .espanol-est { border-color: #d35400; }
-        
         .sociales { border-color: #8e44ad; }
-        .sociales-est { border-color: #6c3483; }
 
         .subject-header { padding: 18px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; user-select: none; }
         .subject-header:hover { background: #f8f9fa; }
-        .subject-title { font-size: 20px; margin: 0; color: #2c3e50; display: flex; align-items: center; gap: 10px; }
+        .subject-title { font-size: 18px; margin: 0; color: #2c3e50; display: flex; align-items: center; gap: 10px; }
         
         .toggle-icon { font-size: 16px; transition: transform 0.3s ease; color: #7f8c8d; }
         .subject-section.active .toggle-icon { transform: rotate(180deg); }
@@ -63,7 +59,53 @@
 
     <div class="container" id="main-content" style="display:none;">
         
-        <!-- CIENCIAS REGULARES -->
+        <!-- ================= PRIMERO: PRUEBAS ESTANDARIZADAS ================= -->
+        <h2 class="main-category-title">🌟 Pruebas Estandarizadas</h2>
+
+        <div class="subject-section ciencias">
+            <div class="subject-header" onclick="toggleSection(this)">
+                <h2 class="subject-title">🌿 Ciencias - Pruebas Estandarizadas</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="subject-content">
+                <div class="grid" id="lista-ciencias-estandarizada"></div>
+            </div>
+        </div>
+
+        <div class="subject-section mate">
+            <div class="subject-header" onclick="toggleSection(this)">
+                <h2 class="subject-title">📐 Matemáticas - Pruebas Estandarizadas</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="subject-content">
+                <div class="grid" id="lista-mate-estandarizada"></div>
+            </div>
+        </div>
+
+        <div class="subject-section espanol">
+            <div class="subject-header" onclick="toggleSection(this)">
+                <h2 class="subject-title">📖 Español - Pruebas Estandarizadas</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="subject-content">
+                <div class="grid" id="lista-espanol-estandarizada"></div>
+            </div>
+        </div>
+
+        <div class="subject-section sociales">
+            <div class="subject-header" onclick="toggleSection(this)">
+                <h2 class="subject-title">🌍 Estudios Sociales - Pruebas Estandarizadas</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="subject-content">
+                <div class="grid" id="lista-sociales-estandarizada"></div>
+            </div>
+        </div>
+
+
+        <!-- ================= DESPUÉS: PRÁCTICAS REGULARES ================= -->
+        <h2 class="main-category-title" style="margin-top: 40px; border-color: #2980b9;">📚 Prácticas Regulares</h2>
+
         <div class="subject-section ciencias">
             <div class="subject-header" onclick="toggleSection(this)">
                 <h2 class="subject-title">🌿 Ciencias (Prácticas Regulares)</h2>
@@ -74,18 +116,6 @@
             </div>
         </div>
 
-        <!-- CIENCIAS ESTANDARIZADAS -->
-        <div class="subject-section ciencias-est">
-            <div class="subject-header" onclick="toggleSection(this)">
-                <h2 class="subject-title">🧪 Ciencias - Pruebas Estandarizadas</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="subject-content">
-                <div class="grid" id="lista-ciencias-estandarizada"></div>
-            </div>
-        </div>
-
-        <!-- MATEMÁTICAS REGULARES -->
         <div class="subject-section mate">
             <div class="subject-header" onclick="toggleSection(this)">
                 <h2 class="subject-title">📐 Matemáticas (Prácticas Regulares)</h2>
@@ -96,18 +126,6 @@
             </div>
         </div>
 
-        <!-- MATEMÁTICAS ESTANDARIZADAS -->
-        <div class="subject-section mate-est">
-            <div class="subject-header" onclick="toggleSection(this)">
-                <h2 class="subject-title">📊 Matemáticas - Pruebas Estandarizadas</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="subject-content">
-                <div class="grid" id="lista-mate-estandarizada"></div>
-            </div>
-        </div>
-
-        <!-- ESPAÑOL REGULARES -->
         <div class="subject-section espanol">
             <div class="subject-header" onclick="toggleSection(this)">
                 <h2 class="subject-title">📖 Español (Prácticas Regulares)</h2>
@@ -118,18 +136,6 @@
             </div>
         </div>
 
-        <!-- ESPAÑOL ESTANDARIZADAS -->
-        <div class="subject-section espanol-est">
-            <div class="subject-header" onclick="toggleSection(this)">
-                <h2 class="subject-title">📚 Español - Pruebas Estandarizadas</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="subject-content">
-                <div class="grid" id="lista-espanol-estandarizada"></div>
-            </div>
-        </div>
-
-        <!-- ESTUDIOS SOCIALES REGULARES -->
         <div class="subject-section sociales">
             <div class="subject-header" onclick="toggleSection(this)">
                 <h2 class="subject-title">🌍 Estudios Sociales (Prácticas Regulares)</h2>
@@ -137,17 +143,6 @@
             </div>
             <div class="subject-content">
                 <div class="grid" id="lista-sociales"></div>
-            </div>
-        </div>
-
-        <!-- ESTUDIOS SOCIALES ESTANDARIZADAS -->
-        <div class="subject-section sociales-est">
-            <div class="subject-header" onclick="toggleSection(this)">
-                <h2 class="subject-title">🗺️ Estudios Sociales - Pruebas Estandarizadas</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="subject-content">
-                <div class="grid" id="lista-sociales-estandarizada"></div>
             </div>
         </div>
 
@@ -171,17 +166,17 @@
 
         async function generarBotonesDinamicos() {
             const configuraciones = [
-                { id: 'lista-ciencias', archivo: 'practica-ciencias', resumen: 'resumen-ciencias', tipo: 'regular' },
+                // Pruebas Estandarizadas (Primero)
                 { id: 'lista-ciencias-estandarizada', archivo: 'practica-ciencias-estandarizada', resumen: 'resumen-ciencias-estandarizada', tipo: 'estandarizada' },
-                
-                { id: 'lista-mate', archivo: 'practica-mate', resumen: 'resumen-mate', tipo: 'regular' },
                 { id: 'lista-mate-estandarizada', archivo: 'practica-mate-estandarizada', resumen: 'resumen-mate-estandarizada', tipo: 'estandarizada' },
-                
-                { id: 'lista-espanol', archivo: 'practica-espanol', resumen: 'resumen-espanol', tipo: 'regular' },
                 { id: 'lista-espanol-estandarizada', archivo: 'practica-espanol-estandarizada', resumen: 'resumen-espanol-estandarizada', tipo: 'estandarizada' },
+                { id: 'lista-sociales-estandarizada', archivo: 'practica-sociales-estandarizada', resumen: 'resumen-sociales-estandarizada', tipo: 'estandarizada' },
                 
-                { id: 'lista-sociales', archivo: 'practica-sociales', resumen: 'resumen-sociales', tipo: 'regular' },
-                { id: 'lista-sociales-estandarizada', archivo: 'practica-sociales-estandarizada', resumen: 'resumen-sociales-estandarizada', tipo: 'estandarizada' }
+                // Prácticas Regulares (Abajo)
+                { id: 'lista-ciencias', archivo: 'practica-ciencias', resumen: 'resumen-ciencias', tipo: 'regular' },
+                { id: 'lista-mate', archivo: 'practica-mate', resumen: 'resumen-mate', tipo: 'regular' },
+                { id: 'lista-espanol', archivo: 'practica-espanol', resumen: 'resumen-espanol', tipo: 'regular' },
+                { id: 'lista-sociales', archivo: 'practica-sociales', resumen: 'resumen-sociales', tipo: 'regular' }
             ];
 
             for (const cfg of configuraciones) {
