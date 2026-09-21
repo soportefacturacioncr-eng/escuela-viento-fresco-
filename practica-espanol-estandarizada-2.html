@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Español Estandarizada 2 - Comprensión Lectora</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #f39c12; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #d68910; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #fdf2e9; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #f39c12; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #d68910; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Español: Comprensión Lectora Parte 2</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q13", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Un gran número de aves en toda América del Norte surcan los cielos cuando el sol se pone en otoño. Para estos viajeros cansados, es hora de otro largo vuelo. Muchas aves tienen una casa de verano y otra de invierno... Este comportamiento se llama migración.</div>¿Cuál es la idea fundamental del texto anterior?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Algunas aves de América del Norte migran en otoño.", 
+                "b": "Muchas aves tienen un hogar para calentarse en invierno.", 
+                "c": "Ciertas aves vuelan durante la noche para evitar depredadores.", 
+                "d": "Muchas aves viajan largas distancias cuando cambia el clima."
+            }, 
+            "correcta": "a", 
+            "explicacion": "La idea principal o fundamental engloba el mensaje central del párrafo: el texto nos explica específicamente que un gran número de aves en América del Norte emprenden un viaje en otoño (migración) <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q14", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Durante la temporada de reproducción de las aves en el verano, los jilgueros americanos machos desarrollan plumas más brillantes para atraer parejas... Los jilgueros recién nacidos pueden volar unas dos semanas después de nacer, pero muchos regresan a sus nidos...</div>En el texto anterior, ¿cuál de las siguientes opciones presenta una idea complementaria relacionada con los jilgueros?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Pueden volar a la edad de unas dos semanas.", 
+                "b": "Recién nacidos tienen un plumaje más brillante.", 
+                "c": "Pueden reproducirse en cualquier época del año.", 
+                "d": "Las hembras ponen entre dos y siete huevos."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Una idea complementaria es un detalle adicional. El texto especifica literalmente como un detalle extra que los recién nacidos \"pueden volar unas dos semanas después de nacer\" <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q15", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La parte más profunda de los océanos suele estar a unos ocho mil metros. Es tanta la distancia que ninguna persona ha conseguido llegar hasta esos lugares... Gracias a ellos sabemos que los oscurísimos fondos oceánicos están habitados por extrañas y fascinantes criaturas marinas.</div>En el texto anterior, ¿cuál es una idea complementaria?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Los robots no han encontrado vida en los fondos oceánicos.", 
+                "b": "Los fondos oceánicos están habitados por criaturas extrañas.", 
+                "c": "Pocas personas han podido llegar hasta la Fosa de las Marianas.", 
+                "d": "La parte más profunda de los océanos se encuentra a ocho mil metros."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El texto expone como detalle secundario o complementario un descubrimiento hecho por los robots: que en esos fondos oscuros habitan extrañas y fascinantes criaturas <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q16", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Si nuestra piel está expuesta a demasiada luz ultravioleta, con el tiempo, esta luz puede dañar las células... La luz ultravioleta viene del Sol, pero también puede rebotar en otras superficies... La luz ultravioleta también puede atravesar las nubes, por eso es posible quemarse en un día nublado.</div>En el texto anterior, ¿cuál es una idea complementaria?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La sombrilla protege de quemaduras solares.", 
+                "b": "La nieve también puede quemar nuestra piel.", 
+                "c": "La luz ultravioleta puede atravesar las nubes.", 
+                "d": "La piel se vuelve roja y duele cuando nos quemamos."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El texto agrega como un dato complementario importante que esta luz no solo es directa, sino que \"también puede atravesar las nubes\" <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q17", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La atmósfera terrestre tiene el grosor perfecto para mantener la temperatura templada del planeta... Está compuesto por nitrógeno, en su mayor parte, pero tiene una buena cantidad de oxígeno, que es lo que nos permite respirar.</div>Según el texto anterior, ¿cuál es la causa de que podamos respirar en la Tierra?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La contextura pequeña y rocosa que posee el planeta.", 
+                "b": "La composición de nitrógeno que caracteriza al planeta.", 
+                "c": "La buena cantidad de oxígeno que tiene nuestro planeta.", 
+                "d": "La atmósfera mantiene la temperatura templada del planeta."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La causa responde a la pregunta '¿Por qué podemos respirar?'. El texto dice claramente que la Tierra \"tiene una buena cantidad de oxígeno, que es lo que nos permite respirar\" <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q18", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>El pez león... No es un pez agresivo, es manso y curioso. Los buzos... los ven en parejas o en grupos... Es de color rojo y tiene como unas plumas y unas espinas... Es un pez de cuidado, pues en las espinas tiene un veneno.</div>Según el texto anterior, ¿cuál es la causa de que el pez león se considere de cuidado?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Es muy curioso y agresivo.", 
+                "b": "Son peces de gran tamaño.", 
+                "c": "Sus espinas son venenosas.", 
+                "d": "Su color rojo lo hace llamativo para los buzos."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La última oración del texto indica directamente la causa de por qué hay que tener cuidado con él: \"pues en las espinas tiene un veneno\" <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q19", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>El jaguar es el felino más grande de Costa Rica... En nuestro país se encuentra en peligro de extinción, debido a la pérdida de su hábitat por deforestación.</div>Según la información anterior, ¿cuál es la causa de que el jaguar se encuentre en riesgo de desaparecer?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "El conflicto con humanos al invadir sus propiedades.", 
+                "b": "La pérdida de su hábitat producto de la deforestación.", 
+                "c": "La lucha contra presas muy grandes que intenta cazar.", 
+                "d": "La presencia frecuente en bosques húmedos y manglares."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El texto señala textualmente que el peligro de extinción se debe (es causado por) \"la pérdida de su hábitat por deforestación\" <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q20", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>El tucán pico iris habita en zonas montañosas... Sus pesadas alas hacen que volar sea una experiencia agotadora, por lo que no vuela largas distancias. Anida en los huecos de altos árboles...</div>Según la información anterior, ¿cuál es la causa de que el tucán pico iris no vuele largas distancias?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Vive en bosques donde encuentra refugio seguro.", 
+                "b": "Experimenta cansancio debido al peso de sus alas.", 
+                "c": "Prefiere estar en los árboles para evitar depredadores.", 
+                "d": "Debe permanecer en zonas montañosas para alimentarse."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La frase clave es \"sus pesadas alas hacen que volar sea una experiencia agotadora\". Esa pesadez (causa) provoca que no vuele lejos (efecto) <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q21", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>En las zonas frías de Norteamérica y Europa vive un animal llamado marmota... En esas regiones donde vive hace mucho frío los últimos meses del año... Entonces cuando el período de frío se acerca, estos animalitos se esconden en un hueco y allí duermen durante meses. A este sueño profundo por tanto tiempo se le llama hibernación.</div>Según el texto anterior, ¿cuál es el efecto del período frío en las marmotas?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Mueren por la falta de alimentos.", 
+                "b": "Entran en periodo de hibernación.", 
+                "c": "Tienden a enfermarse por resfríos.", 
+                "d": "Buscan refugio para protegerse del clima."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La llegada del frío (causa) provoca un cambio drástico en ellas: su efecto directo es que deben esconderse a dormir por meses, es decir, entran en hibernación <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q22", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Hace unos 20 años se estudió a varios animalitos de los llamados perezosos y se vio que dormían unas 16 horas por día. Pero los perezosos que se estudiaron estaban encerrados. Hace poco se hizo otro estudio con perezosos en libertad, y se vio que solo duermen unas 9 horas... Se piensa que cuando están encerrados, tal vez duermen más horas por aburrimiento...</div>Según el texto anterior, ¿cuál es el efecto de que los perezosos estén encerrados?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Viven más tiempo, al no tener enemigos.", 
+                "b": "Consumen mayor cantidad de alimentos.", 
+                "c": "Duermen mayor número de horas diarias.", 
+                "d": "Permanecen más tranquilos dentro de su espacio."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El texto compara perezosos en libertad y en cautiverio. La consecuencia o efecto de estar encerrados y aburridos es que \"duermen más horas por día\" (16 horas) <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q23", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Cenamos y papá tocó el tema de la basura. Comienza explicando y termina regañando: \"que la suciedad de las playas\", \"que la gente tira papeles por las ventanas de los buses y de los automóviles\", \"que los parques dan asco...\"</div>¿Cuál tema se expone en el texto anterior?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Los problemas entre padres e hijos.", 
+                "b": "La ausencia de basureros en algunas zonas.", 
+                "c": "La irresponsabilidad para desechar la basura.", 
+                "d": "La importancia de la educación para mejorar la cultura ambiental."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Todo el regaño del padre gira en torno a las malas acciones de la gente al botar desperdicios en playas, calles y parques, es decir, la enorme irresponsabilidad ciudadana para desechar la basura <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q24", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>A menudo, la madre y el padre de Charlie acudían también a la habitación y se quedaban de pie junto a la puerta, escuchando las historias que contaban los ancianos, y así, durante una media hora cada noche, esta habitación se convertía en un lugar feliz, y la familia entera conseguía olvidar la situación difícil que vivía.</div>En el texto anterior, ¿cuál es el tema tratado?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La alegría de compartir tiempo en familia.", 
+                "b": "Las historias propias de cada generación.", 
+                "c": "La pobreza que afecta a algunas familias.", 
+                "d": "La importancia de escuchar relatos de otras personas."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Aunque se menciona que vivían una situación difícil, el núcleo del mensaje es cómo esa media hora escuchando a los abuelos transformaba la habitación en un \"lugar feliz\", destacando el valor y la alegría de estar unidos en familia <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 13}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Español",
+                    nivel: "6° Grado",
+                    tema: "Comprensión Lectora (P2)",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
