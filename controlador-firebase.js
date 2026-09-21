@@ -20,8 +20,8 @@ function getDeviceId() {
     return deviceId;
 }
 
-// 3. Verificación de Estudiante: Pide datos, autoriza contra lista blanca y controla sesión
-async function verificarEstudiante() {
+// 3. Verificación de Estudiante (Expuesta a window para evitar errores de módulos)
+window.verificarEstudiante = async function() {
     let idEstudiante = localStorage.getItem('estudianteID');
     const myDeviceId = getDeviceId();
 
@@ -41,35 +41,46 @@ async function verificarEstudiante() {
     }
 
     // A. VERIFICAR SI ESTÁ AUTORIZADO (Lista blanca en Firebase)
-    const responseAuth = await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/usuarios_autorizados/${idEstudiante}.json`);
-    const autorizado = await responseAuth.json();
+    try {
+        const responseAuth = await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/usuarios_autorizados/${idEstudiante}.json`);
+        const autorizado = await responseAuth.json();
 
-    if (!autorizado) {
-        alert("❌ Acceso denegado: No estás en la lista de estudiantes. Contacta a la profesora.");
-        localStorage.removeItem('estudianteID');
+        if (!autorizado) {
+            alert("❌ Acceso denegado: No estás en la lista de estudiantes. Contacta a la profesora.");
+            localStorage.removeItem('estudianteID');
+            return false;
+        }
+
+        // B. REGISTRAR SESIÓN ACTUAL
+        await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`, {
+            method: 'PUT',
+            body: JSON.stringify({ deviceId: myDeviceId, lastLogin: new Date().toLocaleString('es-CR') })
+        });
+        
+        return true;
+    } catch (error) {
+        console.error("Error al verificar estudiante:", error);
+        alert("Problema de conexión con la base de datos.");
         return false;
     }
+};
 
-    // B. REGISTRAR SESIÓN ACTUAL (Sobrescribe cualquier dispositivo anterior automáticamente)
-    await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`, {
-        method: 'PUT',
-        body: JSON.stringify({ deviceId: myDeviceId, lastLogin: new Date().toLocaleString('es-CR') })
-    });
-    return true;
-}
-
-// 4. Envío de notas a Firebase
-function enviarNota(nombreMateria, notaFinal, listaErrores = []) {
+// 4. Envío de notas a Firebase (Adaptado para recibir el objeto de las prácticas)
+window.registrarResultadoPrueba = function(datosPrueba) {
     const nombreReal = localStorage.getItem('estudianteNombreReal') || 'Estudiante Anónimo';
     const idUnico = localStorage.getItem('estudianteID') || 'anonimo';
     
+    // Armamos el paquete usando los datos que manda la práctica
     const paqueteDatos = {
         id_estudiante: idUnico,
         nombre_completo: nombreReal, 
-        materia: nombreMateria,
-        nota: notaFinal,
-        fecha: new Date().toLocaleString('es-CR'),
-        errores: listaErrores
+        materia: datosPrueba.materia,
+        tema: datosPrueba.tema,
+        nivel: datosPrueba.nivel,
+        nota: datosPrueba.nota,
+        aciertos: datosPrueba.aciertos,
+        total_preguntas: datosPrueba.totalPreguntas,
+        fecha: new Date().toLocaleString('es-CR')
     };
 
     return fetch('https://escuela-viento-fresco-default-rtdb.firebaseio.com/calificaciones.json', {
@@ -79,12 +90,12 @@ function enviarNota(nombreMateria, notaFinal, listaErrores = []) {
     })
     .then(respuesta => {
         if (!respuesta.ok) throw new Error("Error en red");
-        alert(`¡Felicidades ${nombreReal}! Tu nota de ${notaFinal} se guardó correctamente.`);
+        alert(`¡Felicidades ${nombreReal}! Tu nota de ${datosPrueba.nota} en ${datosPrueba.materia} se guardó correctamente.`);
         return true;
     })
     .catch(error => {
         console.error("Error Firebase:", error);
-        alert("Hubo un error al guardar la nota. Verifica tu conexión.");
+        alert("Hubo un error al guardar la nota. Verifica tu conexión a internet.");
         return false;
     });
-}
+};
