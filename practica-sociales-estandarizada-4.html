@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Estudios Sociales 4 - Historia y Educación Cívica</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #8e44ad; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #9b59b6; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #f5eef8; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #8e44ad; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #8e44ad; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #732d91; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #8e44ad; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Estudios Sociales: Historia y Cívica Parte 4</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Lea la siguiente información:<br><div class='figure-box'>En este período (2000 a.C al 500 a.C) la organización social era de tipo tribal, en la que se desarrolló un cultivo basado en tubérculos y semillas. También se inició un proceso de diferenciación social y se aplicaron diversas técnicas de decoración en la cerámica.</div>El texto anterior, hace referencia al período de la historia antigua de Costa Rica denominado modo de vida:<span class='cite-hidden'></span>", 
+            "opciones": {
+                "a": "cacical.", 
+                "b": "aldeano igualitario.", 
+                "c": "nómada recolector.", 
+                "d": "cazadores y recolectores."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El periodo entre el 2000 a.C y el 500 a.C. corresponde al modo de vida <strong>aldeano igualitario</strong>, donde los grupos comenzaron a asentarse, sembrar y formar las primeras aldeas, aunque aún no tenían caciques poderosos<span class='cite-hidden'></span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "Los pueblos bribris y cabécares desarrollaron una relación armoniosa con el entorno natural que se ha transmitido oralmente. También avanzaron en el campo de la medicina, las plantas medicinales y los valores espirituales. Según el texto, un aporte de los pueblos originarios a la sociedad actual es la:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "desaparición de sus prácticas culturales debido a la influencia externa.", 
+                "b": "adopción exclusiva de tecnologías modernas y pérdida de tradiciones.", 
+                "c": "transmisión oral y la práctica de conocimientos ancestrales sobre medicina natural y valores espirituales.", 
+                "d": "sustitución total de los saberes tradicionales por costumbres externas."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Nuestros pueblos indígenas conservan conocimientos milenarios sobre el uso de plantas para curar enfermedades, que hoy en día siguen siendo un valioso aporte a nuestra cultura<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "En la actualidad, el guacal o la jícara no ha perdido su gran sentido utilitario para Bribris y Cabécares en Talamanca, ni tampoco ha perdido importancia para su arte y su poder de comunicación. La información indica que el arte para los pueblos originarios del país:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "sigue siendo un elemento fundamental que refleja su identidad cultural, transmite experiencias y mantiene viva su tradición ancestral.", 
+                "b": "se ha transformado en una actividad comercial sin vínculos con las tradiciones.", 
+                "c": "ha perdido relevancia práctica y simbólica, convirtiéndose en meros objetos decorativos.", 
+                "d": "se ha limitado a la fabricación de utensilios sin valor simbólico."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Para las comunidades originarias, crear objetos como la jícara no es solo hacer una vasija, es un medio para expresar y mantener viva su identidad y cultura en la vida diaria<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "Los pueblos originarios se destacan por sus avances en agricultura, especialmente con cultivos como el maíz y el frijol, así como la práctica de la milpa la cual es un sistema agrícola sostenible. Un aporte de los pueblos originarios a la sociedad actual consiste en la:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "conservación de sus lenguas y costumbres para evitar el contacto con la sociedad actual.", 
+                "b": "introducción de cultivos modernos que han sustituido las prácticas agrícolas.", 
+                "c": "implementación de sistemas agrícolas sostenibles y la defensa de tradiciones culturales que fortalecen la identidad nacional.", 
+                "d": "abandono de los sistemas agrícolas tradicionales y el rechazo de las prácticas culturales."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El sistema de la milpa demuestra cómo los indígenas cultivaban de forma equilibrada con la naturaleza (sostenible), un legado invaluable para nuestro presente<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "En Costa Rica, han iniciado proyectos de desarrollo sostenible en territorios indígenas. Sin embargo, persisten retos significativos como la ocupación ilegal de tierras indígenas y la falta de implementación efectiva de leyes de protección. El texto refleja que es necesario:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "priorizar proyectos económicos sin atender las problemáticas sociales.", 
+                "b": "fortalecer la protección legal y promover el desarrollo sostenible para garantizar los derechos y territorios indígenas.", 
+                "c": "impulsar la modernización económica sin atender la defensa de los territorios.", 
+                "d": "mantener intacta la idiosincrasia aborigen sin implementar medidas adicionales."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El Estado debe aplicar leyes reales y efectivas para devolver y proteger las tierras que les han sido usurpadas ilegalmente a los indígenas<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "La encomienda consistió en un grupo de indígenas que se asignaban a un español. La mano de obra se utilizó en explotaciones agrarias como el trigo. También, los encomenderos les cobraban impuestos. Una de las consecuencias de la conquista en Costa Rica consistió en el:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "preservación de la autonomía indígena sin afectación en sus formas de trabajo.", 
+                "b": "integración voluntaria de los indígenas en actividades agrícolas sin explotación.", 
+                "c": "sometimiento de los indígenas a trabajos forzados y cobro de impuestos por parte de los encomenderos españoles.", 
+                "d": "respeto pleno de las formas de trabajo indígena y reconocimiento de sus derechos."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Durante la colonia, la encomienda fue un sistema opresivo que obligó a los indígenas a trabajar gratuitamente y a pagar altos tributos a los españoles<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Durante el <strong>siglo XVII</strong> en Costa Rica, los españoles y sus descendientes comenzaron a expandirse más allá del Valle Oriental. Se establecieron en nuevas áreas del Valle Occidental que incluyeron los territorios actuales de San José, Heredia, Barva y Aserrí. ¿A cuál período de la historia refiere el texto?<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "Colonial", 
+                "b": "Republicano", 
+                "c": "Precolombino", 
+                "d": "Independiente"
+            }, 
+            "correcta": "a", 
+            "explicacion": "El siglo XVII (años 1600) corresponde a la etapa plena del Período Colonial, cuando los españoles fundaron los principales pueblos del Valle Central<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "La exportación de mulas desde diversos puntos de Centroamérica hacia Panamá fue un negocio que dejó ganancias a algunos habitantes de Cartago. El envío se mantuvo hasta el siglo XVIII. De acuerdo con la información, la economía de Costa Rica durante el período colonial se caracterizó por la:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "exportación de textiles y metales preciosos hacia el sur.", 
+                "b": "comercialización de productos agrícolas y pecuarios (como mulas) hacia diferentes regiones cercanas.", 
+                "c": "concentración del comercio de mulas en el mercado nacional hasta el siglo XX.", 
+                "d": "producción de artesanías y objetos de lujo destinados al comercio con Europa."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Nuestra provincia era muy pobre en oro, por lo que la economía se basó en cultivar y criar animales (productos pecuarios, como las mulas) para venderlos en zonas vecinas como Panamá o Nicaragua<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "En la primera Constitución de Costa Rica (1821), el artículo 2 establece que: «La Provincia de Costa Rica reconoce y respeta la libertad civil, propiedad y demás derechos naturales y legítimos». Un principio democrático en Costa Rica establecido desde la independencia consiste en:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "la concentración del poder en una sola autoridad sin garantías para los derechos.", 
+                "b": "el reconocimiento y respeto de los derechos civiles en un contexto de libertad individual y colectivo.", 
+                "c": "la limitación de la libertad civil a ciertos grupos privilegiados.", 
+                "d": "el establecimiento de un sistema monárquico que restringía los derechos naturales."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Desde que somos independientes, Costa Rica eligió el camino del respeto por los derechos y libertades de los ciudadanos, sentando las bases de nuestra democracia<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "El 1 de diciembre de 1821, la Junta de Legados redactó el <strong>Pacto de Concordia</strong> para garantizar que los primeros pasos autónomos se dieran en un clima de armonía. ¿Cuál es la importancia del Pacto de Concordia en la organización republicana?<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "Impuso un régimen autoritario que limitó la participación ciudadana.", 
+                "b": "Fue un documento sin relevancia práctica, que no influyó en el país.", 
+                "c": "Estableció las bases para la unión y la paz social, sentando los cimientos del Estado republicano costarricense.", 
+                "d": "Instauró un sistema monárquico provisional que mantuvo la dependencia de España."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El Pacto de Concordia fue nuestra primera gran ley, y aseguró que transitáramos hacia nuestra vida independiente en completa paz, unidad y hermandad<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "La región del partido de Nicoya era muy importante para Costa Rica en la configuración de su Estado. Con un mínimo de inversión y sin batallas, aumentó su territorio, aseguró su puerto en el Pacífico y quedó en situación de reclamar participación en un canal. Un aspecto importante de la anexión (1824) fue la:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "búsqueda de ventajas económicas y de seguridad que ofrecía Costa Rica frente a la inestabilidad en Nicaragua.", 
+                "b": "intención de mantener lazos coloniales con Guatemala y evitar cambios.", 
+                "c": "presión militar ejercida por Costa Rica para asegurar su anexión.", 
+                "d": "mantener la dependencia política de Nicoya hacia Nicaragua."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Nicoya se unió a Costa Rica voluntariamente buscando seguridad política, paz y el gran beneficio comercial que ofrecía tener acceso a Puntarenas, lejos de las guerras civiles de Nicaragua en esa época<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q12", 
+            "type": "mc", 
+            "pregunta": "Esta institución puede realizar transferencias económicas dirigidas a familias o personas afectadas por emergencias, provocadas por fenómenos de origen natural o antrópico, para la atención de sus necesidades inmediatas. Hace referencia a la institución promotora de derechos denominada:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "Caja Costarricense de Seguro Social (CCSS).", 
+                "b": "Patronato Nacional de la Infancia (PANI).", 
+                "c": "Ministerio de Educación Pública (MEP).", 
+                "d": "Instituto Mixto de Ayuda Social (IMAS)."
+            }, 
+            "correcta": "d", 
+            "explicacion": "El IMAS es la institución encargada de brindar ayudas económicas y transferencias de dinero a las familias en pobreza extrema o que han sufrido daños por desastres naturales. *(Nota: El solucionario oficial del MEP tenía un error de asignación indicando el MEP como respuesta C, pero legalmente corresponde al IMAS)*<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q13", 
+            "type": "mc", 
+            "pregunta": "Desde la llegada de los europeos a Costa Rica, el desarrollo de las sociedades aborígenes se vio cortado producto de la conquista y diferenciación social, y la población disminuyó debido a las enfermedades y a la explotación de mano de obra forzada. Este problema ético y social consistió en la:<span class='cite-hidden'>[cite: 3]</span>", 
+            "opciones": {
+                "a": "integración voluntaria y armoniosa de los pueblos indígenas debido a la ausencia de conflictos.", 
+                "b": "marginación de las sociedades indígenas por la conquista, sumado a las enfermedades y la explotación laboral.", 
+                "c": "fortalecimiento de las sociedades indígenas por el acceso equitativo a recursos.", 
+                "d": "expansión pacífica de las comunidades indígenas con el apoyo español."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La conquista implicó un enorme atropello a los derechos de los pueblos indígenas, quienes fueron marginados, despojados de sus territorios y explotados laboralmente<span class='cite-hidden'>[cite: 3]</span>.<br><a href='resumen-sociales-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Estudios Sociales",
+                    nivel: "6° Grado",
+                    tema: "Historia y Cívica (P4)",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
