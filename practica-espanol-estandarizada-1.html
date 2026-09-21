@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Español Estandarizada 1 - Comprensión Lectora</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #f39c12; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #d68910; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #fdf2e9; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #f39c12; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #d68910; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Español: Comprensión Lectora Parte 1</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>De las especies de tortugas marinas, casi todas están clasificadas como en peligro de extinción, y eso se debe principalmente a las actividades humanas. La captura accidental en las redes, son asesinadas por sus huevos, y el cambio climático afecta sus playas.</div>Según el texto anterior, ¿cuál es la idea fundamental transmitida?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Las tortugas son cazadas para poder consumir su carne y huevos.", 
+                "b": "Los cambios en el ambiente afectan la anidación de las tortugas marinas.", 
+                "c": "La población de la tortuga marina disminuye por causa de las acciones humanas.", 
+                "d": "La captura accidental en redes de pesca es la mayor amenaza."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La idea fundamental resume todo el mensaje: el texto indica al inicio que el peligro de extinción se debe \"principalmente a las actividades humanas\", y luego da ejemplos de esas acciones (caza, pesca, contaminación) <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Los bosques otorgan múltiples beneficios, tanto para el ser humano como para las miles de especies que habitan la Tierra. Son la mayor fuente de oxígeno y son los purificadores del aire por excelencia. Además, proporcionan hogar y alimento a todos los animales.</div>En el texto anterior, una idea complementaria destaca que en los bosques se:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "forman miles de especies de árboles.", 
+                "b": "produce agua pura, necesaria para la vida.", 
+                "c": "proporcionan hogar y alimento a todos los animales.", 
+                "d": "destacan por ser una fuente de oxígeno en el planeta Tierra."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Una idea complementaria es un detalle que apoya a la principal. El texto dice textualmente que \"proporcionan hogar y alimento a todos los animales\", lo cual es un complemento perfecto a la idea de sus múltiples beneficios <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Los derrumbes ocurren por gravedad... Los motivos principales y naturales de los derrumbes son las lluvias prolongadas e intensas y los temblores de tierra. Las actividades de los humanos complican la situación...</div>Según el texto anterior, ¿cuál es una causa natural que provoca los derrumbes?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Las lluvias constantes", 
+                "b": "Las lluvias fuertes en barrancos", 
+                "c": "Los pozos sépticos mal ubicados", 
+                "d": "La construcción en terrenos no aptos"
+            }, 
+            "correcta": "a", 
+            "explicacion": "El texto señala que uno de los motivos principales y naturales de los derrumbes son las lluvias prolongadas, es decir, las lluvias constantes que saturan la tierra <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Un sismo es el movimiento brusco de la Tierra... Los más fuertes pueden generar graves daños... Esto puede repercutir generando daños en las viviendas y edificios, derrumbes de puentes, rompimiento de vidrios...</div>Según el texto anterior, ¿cuál es un efecto provocado por los sismos?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La liberación de energía almacenada", 
+                "b": "El rompimiento de vidrios en edificios", 
+                "c": "La construcción de edificios y casas modernas", 
+                "d": "Los daños a la infraestructura vial y a las viviendas"
+            }, 
+            "correcta": "d", 
+            "explicacion": "Un efecto es la consecuencia de un evento. El texto menciona claramente que los sismos repercuten generando \"daños en las viviendas, edificios y derrumbes de puentes\" (infraestructura vial) <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>En Francia, se ha investigado las reacciones de niños adictos a videojuegos, y sus conclusiones son optimistas. El juego potencia en los niños la tenacidad, la reflexión, los reflejos, el espíritu lógico y la memoria...</div>Según el texto anterior, un efecto de los videojuegos consiste en que:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "incentiva la reflexión y la memoria.", 
+                "b": "fomenta un ambiente violento pero competitivo.", 
+                "c": "aísla a los niños de las relaciones sociales.", 
+                "d": "estimula la imaginación y la reflexión para enfrentar la vida."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El texto expone directamente los efectos positivos encontrados, señalando que el juego \"potencia en los niños la tenacidad, la reflexión... y la memoria\" <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Hubo gente que se asombró muchísimo de que una gata Angora fuera novia de un armadillo, y de que ambos pasaran tantas horas sentados en el sofá estampado viendo televisión. \"Pensándolo bien, hay cosas mucho más raras\", dijo el ama de casa.</div>En el texto anterior, ¿cuál es el tema tratado?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Las buenas relaciones a pesar de las diferencias.", 
+                "b": "Los comentarios ajenos que afectan la tranquilidad.", 
+                "c": "Las situaciones que impiden la convivencia familiar.", 
+                "d": "La sorpresa de la gente ante mascotas inusuales."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El relato muestra de manera simpática cómo dos animales totalmente diferentes (una gata fina y un armadillo) logran compartir juntos en paz. El tema de fondo es la tolerancia y las buenas relaciones superando las diferencias <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>-El príncipe da un baile... Si le llevo una rosa roja a mi amada, bailará conmigo. Pero no hay rosas rojas en mi jardín... Se destrozará mi corazón.<br>-He aquí el verdadero enamorado -dijo el ruiseñor-. Sufre todo lo que yo canto: todo lo que es alegría para mí es pena para él.</div>Según el pensamiento mostrado por el ruiseñor,:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "el fracaso amoroso produce tristeza.", 
+                "b": "el amor es un lujo inalcanzable para los pobres.", 
+                "c": "el amor verdadero es gratuito, paciente y solidario.", 
+                "d": "la alegría y las penas son parte del enamoramiento."
+            }, 
+            "correcta": "d", 
+            "explicacion": "El pájaro se da cuenta de que las mismas emociones (lo que él canta alegre, el joven lo sufre como pena). Por ende, reflexiona que el amor es algo maravilloso que engloba tanto las grandes alegrías como las penas <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Como un pajarillo que se viera por primera vez encerrado en una bella jaula de oro y que... tratara de atravesar cada uno de los barrotes de su prisión para lanzarse al aire libre, Heidi iba de una ventana a otra, intentando abrirlas para ver el sol.</div>Según el texto, ¿cuál es el conflicto que enfrenta Heidi?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Sentirse encerrada.", 
+                "b": "Desear ver el sol y no poder.", 
+                "c": "Querer escaparse y no encontrar la salida.", 
+                "d": "Levantarse temprano en un lugar desconocido."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El texto compara directamente a Heidi con un pajarillo encerrado en una jaula que golpea los barrotes; su conflicto principal es la angustia de sentirse encerrada sin acceso a la naturaleza <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La Cucarachita le dijo a su marido: \"Véame el fuego y cuidadito con golosear en esa olla de arroz con leche\". Volvió y se encontró con la puerta atrancada... Le dieron ganas de asomarse a la olla... y ¡va viendo!... a su esposo bailando en aquel caldo.</div>¿Cuál conflicto enfrenta la Cucarachita cuando llega a la casa?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Dar gritos hasta provocar que todos los vecinos se asustaran.", 
+                "b": "Darse cuenta de que su marido había caído en la olla.", 
+                "c": "Ir a buscar agua para cocinar el arroz con leche.", 
+                "d": "Encontrar la puerta atrancada y no poder entrar."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El conflicto central y más trágico del relato ocurre cuando ella se asoma y descubre que su marido desobedeció, cayó y murió dentro de la olla hirviendo <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Pinocho empezó a ir al colegio con la compañía de un grillo, que le daba buenos consejos. Pero, como la mayoría de los niños, Pinocho prefería ir a divertirse que ir al colegio a aprender, por lo que no siempre hacía caso del grillo.</div>Según el texto anterior, Pinocho se comportó de forma:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "desinteresada, prefiere divertirse que aprender.", 
+                "b": "positiva, valora el esfuerzo de su padre Gepetto.", 
+                "c": "entusiasta, atiende los consejos de su amigo el grillo.", 
+                "d": "obediente, acompaña al grillo al colegio todos los días."
+            }, 
+            "correcta": "a", 
+            "explicacion": "A Pinocho no le importaba el sacrificio de su padre ni los consejos del grillo; su actitud demuestra desinterés por aprender, ya que solo buscaba jugar <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Últimamente se ha visto que otra causa importante de la desaparición de insectos son las luces. Bombillos y lámparas pueden atraer mariposas y otros insectos. Se quedan dando vueltas y muchos mueren antes de la mañana, por cansancio o porque se los comen otros.</div>¿Cuál es la idea fundamental del texto anterior?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La iluminación beneficia la reproducción de los insectos.", 
+                "b": "Los bombillos pueden atraer mariposas y otros insectos.", 
+                "c": "Las luces ocasionan que muchos insectos desaparezcan.", 
+                "d": "Las especies nocturnas de insectos mueren por luces artificiales."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La idea principal del texto se plantea desde la primera línea: las luces artificiales son una causa grave que provoca la muerte y desaparición de los insectos nocturnos <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q12", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La Tierra gira alrededor de un eje inclinado... Si el planeta tuviera un ángulo diferente, o si la Tierra estuviera un poco más cerca o más lejos del Sol, las temperaturas cambiarían drásticamente. Y eso haría imposible la vida aquí.</div>¿Cuál es la idea fundamental del texto anterior?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La Tierra gira alrededor de un eje imaginario que atraviesa los polos.", 
+                "b": "La inclinación de la Tierra varía según la cercanía con el Sol.", 
+                "c": "La Tierra tendría una mejor temperatura si cambia su ángulo.", 
+                "d": "La posición de la Tierra permite que exista la vida en ella."
+            }, 
+            "correcta": "d", 
+            "explicacion": "Todo el párrafo busca explicar que la posición exacta de nuestro planeta (su eje y distancia al Sol) es perfecta, y gracias a ella podemos existir <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Español",
+                    nivel: "6° Grado",
+                    tema: "Comprensión Lectora (P1)",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
