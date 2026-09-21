@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Estudios Sociales 2 - Historia de Costa Rica</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #8e44ad; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #9b59b6; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #f5eef8; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #8e44ad; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #8e44ad; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #732d91; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #8e44ad; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Estudios Sociales: Historia Nacional</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Lea la siguiente información:<br><div class='figure-box'>Durante el <strong>siglo XVII</strong>, la expansión de la población española en Costa Rica se concentró en el Valle Central, especialmente en las zonas de San José, Heredia, Barva y Aserrí. Esta colonización fue impulsada tanto por la élite de Cartago como por agricultores que buscaban nuevas tierras para asentarse.</div>¿A cuál periodo de la historia de Costa Rica hace referencia la información anterior?<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "Exploración y conquista", 
+                "b": "Republicano", 
+                "c": "Colonial", 
+                "d": "Liberal"
+            }, 
+            "correcta": "c", 
+            "explicacion": "El siglo XVII (los años 1600s) corresponde al periodo Colonial, cuando los españoles ya estaban establecidos y comenzaron a fundar pueblos en el Valle Central<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "En Costa Rica, los pobladores originarios fueron repartidos en <strong>encomiendas</strong> al servicio de un pequeño grupo de españoles, quienes emplearon esta mano de obra para explotaciones agrícolas y exigieron tributos de productos autóctonos. Una característica de la economía de Costa Rica en el periodo colonial consistió en la:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "pago voluntario de tributos en productos autóctonos para fortalecer la economía indígena.", 
+                "b": "imposición de tributos en productos autóctonos y la recolección de plantas silvestres por los indígenas.", 
+                "c": "responsabilidad de los indígenas para coordinar el transporte hacia puertos libremente.", 
+                "d": "integración de la mano de obra voluntaria del aborigen en la economía colonial."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Durante la colonia, la economía se basaba en la <strong>imposición</strong> (obligación). Los españoles forzaban a los indígenas a trabajar gratuitamente y a entregarles tributos (productos y canastas) en el sistema de encomienda<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "La obra de evangelización emprendida por los sacerdotes franciscanos durante el periodo colonial permite considerar a estos misioneros como los primeros maestros de nuestros aborígenes. Además de la religión cristiana, les enseñaban a leer, contar y escribir. En relación con el texto, uno de los aportes del periodo colonial a la sociedad costarricense consiste en la:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "organización de escuelas laicas administradas por indígenas.", 
+                "b": "introducción de la educación básica con el papel de los misioneros franciscanos como primeros 'maestros'.", 
+                "c": "establecimiento de rutas comerciales que facilitaron el intercambio.", 
+                "d": "construcción de infraestructura religiosa como refugio durante guerras."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Las primeras formas de educación formal (leer y escribir) llegaron durante la colonia de la mano de los sacerdotes y misioneros (Iglesia Católica), quienes usaban las capillas como centros educativos<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "En octubre de 1821, la jornada terminó con el establecimiento del primer documento con carácter constitucional, el cual concedió la <strong>ciudadanía</strong> a todos los hombres libres y naturales de la provincia o habitantes en ella con cinco años de residencia. Un principio democrático establecido en el <strong>Pacto de Concordia</strong> consiste en que la ciudadanía se:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "limita únicamente a quienes hayan nacido en la provincia, excluyendo extranjeros.", 
+                "b": "concede de manera automática a toda persona sin importar residencia.", 
+                "c": "otorga a los hombres libres y residentes, reconociendo derechos políticos a quienes cumplen ciertos requisitos.", 
+                "d": "reconoce como ciudadanos únicamente a quienes poseen propiedades o tierras."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El Pacto de Concordia fue nuestra primera constitución y sentó las bases de la democracia al otorgar derechos de ciudadanía (participación política) a los hombres libres que cumplían ciertos requisitos, como vivir 5 años en la provincia<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "Considerada la primera Constitución Política, el <strong>Pacto de Concordia (1821)</strong> tuvo vigencia hasta 1823 y su importancia llega hasta hoy. Según el texto, el Pacto de Concordia adquirió un carácter relevante para el país porque:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "posibilitó la construcción de una república soberana y estableció un marco para la convivencia pacífica.", 
+                "b": "estableció el sufragio universal e incluyó a las mujeres en las elecciones.", 
+                "c": "fue el último documento colonial que mantuvo la subordinación a España.", 
+                "d": "confirmó la dependencia política de Costa Rica frente a España."
+            }, 
+            "correcta": "a", 
+            "explicacion": "La principal importancia del Pacto de Concordia es que garantizó que Costa Rica diera sus primeros pasos como país independiente en paz y sentó las bases para crear nuestra República<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "Tras la independencia, las relaciones entre Costa Rica y el <strong>Partido de Nicoya</strong> se intensificaron debido a la <strong>proximidad geográfica y conveniencia comercial</strong>. Nicoya tenía más vínculos con Costa Rica que con Nicaragua, comerciando con Puntarenas. Por ello, decidieron integrarse el 25 de julio de 1824. Una característica geográfica que propició la anexión fue la:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "ausencia de límites naturales claros entre Nicoya y Costa Rica.", 
+                "b": "cercanía territorial entre Costa Rica y Nicoya, lo que facilitó la continuidad de sus relaciones comerciales.", 
+                "c": "extensión territorial del Partido de Nicoya que incrementó a Costa Rica.", 
+                "d": "lejanía entre Nicoya y Costa Rica, que dificultaba el comercio."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Al estar tan cerca geográficamente de Puntarenas y otras zonas de Costa Rica, a los habitantes de Nicoya les resultaba mucho más fácil y provechoso vender sus productos aquí que llevarlos hasta Nicaragua<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "La Campaña Nacional de 1856-1857 se libró contra los filibusteros liderados por William Walker que pretendían dominar Centroamérica. La amenaza a la existencia de Costa Rica como nación soberana, fortaleció el patriotismo y la identidad. De acuerdo con el texto, la guerra contra los filibusteros contribuyó con:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "la creación de un ejército para expandir el territorio costarricense en Centroamérica.", 
+                "b": "establecer vínculos diplomáticos permanentes con España para evitar invasiones.", 
+                "c": "fortalecer el sentimiento patriótico y consolidar la identidad costarricense ante una amenaza externa.", 
+                "d": "impulsar el control extranjero sobre Costa Rica, debilitando la identidad."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La Campaña Nacional nos unió como pueblo. Al enfrentarnos todos juntos (campesinos, mujeres, soldados) contra la invasión de Walker, descubrimos y fortalecimos lo que verdaderamente significa ser costarricense<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "En horas de la mañana del <strong>11 de abril de 1856</strong> el ejército costarricense fue sorprendido por el enemigo. La mayor parte de las fuerzas enemigas se concentró en una casona llamada <strong>Mesón de Guerra</strong>, desde donde les resultaba muy fácil controlar la situación. ¿A cuál batalla hace referencia el texto?<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "Batalla de Santa Rosa, donde los filibusteros ocuparon el Mesón de Guerra.", 
+                "b": "Batalla de Rivas, caracterizada por el enfrentamiento en Nicaragua y el uso estratégico del Mesón de Guerra.", 
+                "c": "Batalla de Sardinal, donde el ejército fue sorprendido en un campamento.", 
+                "d": "Batalla del río San Juan, centrada en el control de rutas fluviales."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El 11 de abril de 1856 ocurrió la Batalla de Rivas (en Nicaragua). Fue allí donde los filibusteros se escondieron en el Mesón de Guerra y donde Juan Santamaría sacrificó su vida para quemarlo. <em>(Nota: El solucionario oficial del MEP indica erróneamente la opción A, ¡pero la batalla del 11 de abril es Rivas, no Santa Rosa!)</em><span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "Para 1884, la secularización de los cementerios pretendía demostrar el poder del Estado sobre otras instituciones, en este caso en contra de la jerarquía de la Iglesia Católica. Uno de los argumentos era permitir el libre culto. El texto hace referencia a uno de los aspectos que formaron parte de las Reformas Liberales denominado:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "separación de poderes.", 
+                "b": "leyes anticlericales.", 
+                "c": "reforma educativa.", 
+                "d": "monarquía."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Las 'leyes anticlericales' fueron medidas que tomaron los gobernantes liberales para quitarle poder a la Iglesia Católica (el clero) y dárselo al Estado, como pasó con el control de los cementerios y el matrimonio civil<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "En el Gobierno de Rafael Ángel Calderón Guardia (1940), se impulsó la creación de la Universidad de Costa Rica (UCR), convencidos de que el país tenía gran madurez y necesitaba un centro de estudios superiores que respondiera a las necesidades del país. A partir del texto, la UCR desde su creación ha:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "promovido principalmente la educación religiosa y la influencia de la Iglesia Católica.", 
+                "b": "representado un centro público, autónomo y comprometido con el desarrollo nacional.", 
+                "c": "funcionado como una institución privada con acceso restringido a élites sociales.", 
+                "d": "actuado como un centro exclusivo para la formación militar."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La creación de la UCR fue una de las grandes Reformas Sociales de los años 40. Se fundó como un espacio público (del pueblo) para formar a los profesionales que Costa Rica necesitaba para su desarrollo<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Estudios Sociales",
+                    nivel: "6° Grado",
+                    tema: "Historia Nacional",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
