@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Ciencias Estandarizada 2 - Biodiversidad</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #27ae60; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #2ecc71; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #d5f5e3; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .table-container { width: 100%; overflow-x: auto; margin: 15px 0; -webkit-overflow-scrolling: touch; }
+        .table-q { width: 100%; max-width: 500px; border-collapse: collapse; font-weight: normal; font-size: 14px; }
+        .table-q th, .table-q td { border: 1px solid #bdc3c7; padding: 8px; text-align: center; white-space: nowrap; }
+        .table-q th { background-color: #ecf0f1; color: #2c3e50; }
+
+        .figure-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; font-style: italic; color: #555;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #219150; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Ciencias: Biodiversidad</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "La siguiente información se relaciona con conceptos de ecología:<br><div class='figure-box'>Los manatíes, conocidos con el nombre de vacas marinas, habitan los canales de Tortuguero y se alimentan de plantas acuáticas. En estos canales pueden encontrarse, además, una alta diversidad de aves, como garzas y patos.</div>Según el texto anterior, ¿cuál opción hace referencia a una <strong>población</strong> de organismos?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "La diversidad de aves", 
+                "b": "Los manatíes de Tortuguero", 
+                "c": "Las garzas y patos que buscan alimento", 
+                "d": "La diversidad de aves, los manatíes y su entorno."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Una población es un grupo de organismos de la <strong>misma especie</strong> que viven juntos en un lugar determinado. Los 'manatíes de Tortuguero' cumplen exactamente con esta definición<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "En una clase de Ciencias la maestra muestra dos láminas:<br><br><strong>Lámina 1:</strong> Un tipo de bacteria y un alga verdeazulada (cianobacterias), que son organismos procariotas sin organelas.<br><strong>Lámina 2:</strong> Una ameba, una euglena y un paramecio, que son organismos eucariotas unicelulares microscópicos.<br><br>De acuerdo con la clasificación, los organismos de la lámina 1 y 2 pertenecen respectivamente a los reinos biológicos denominados<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "fungi y monera.", 
+                "b": "monera y protista.", 
+                "c": "protista y monera.", 
+                "d": "animalia y monera."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Las bacterias y organismos procariotas pertenecen al reino <strong>Monera</strong>. Los organismos microscópicos eucariotas como la ameba y el paramecio pertenecen al reino <strong>Protista</strong><span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Las garrapatas son parásitos que se suben a cualquier animal o persona (huésped). Una vez ahí, la garrapata se ubica en zonas con mayor suministro de sangre para picar y alimentarse, perjudicando al huésped sin causarle la muerte inmediata.<br><br>La información anterior hace referencia a la relación de tipo<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "simbiótica, dado al beneficio mutuo de las especies.", 
+                "b": "intraespecífica, porque interactúan individuos de la misma especie.", 
+                "c": "interespecífica, ya que interactúan individuos de especies diferentes.", 
+                "d": "intraespecífica, debido a que una especie se beneficia y otra se perjudica."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Es una relación <strong>interespecífica</strong> porque se da entre individuos de <em>especies diferentes</em> (una garrapata y un perro/humano). En este caso particular, es parasitismo<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "La vida en el planeta depende de las radiaciones solares, gracias a las cuales se forma materia orgánica en el proceso de fotosíntesis por medio de los organismos autótrofos (como las plantas). Convierten sustancias simples en azúcares y oxígeno.<br><br>A partir de la información anterior, se puede asegurar que la fotosíntesis<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "provee de alimento de forma directa a los animales carnívoros.", 
+                "b": "es una forma que tienen todos los seres vivos de aprovechar la energía del sol.", 
+                "c": "es el proceso que realizan las plantas para obtener sus nutrientes, crecer y desarrollarse.", 
+                "d": "es la forma en la que los animales herbívoros ayudan a reducir el gas de invernadero."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La fotosíntesis es el mecanismo exclusivo de las plantas y organismos autótrofos para fabricar su propio alimento (azúcares), lo que les permite nutrirse, crecer y almacenar carbono<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "Observe la siguiente cadena alimenticia:<br><div class='figure-box'><strong>Planta de maíz ➔ Ratón ➔ Serpiente ➔ Lechuza</strong></div><br>De acuerdo con el esquema anterior, en el orden respectivo, ¿cuáles organismos corresponden a los niveles tróficos de <strong>productor</strong> y <strong>consumidor de segundo orden</strong>?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Ratón y Lechuza", 
+                "b": "Lechuza y Serpiente", 
+                "c": "Planta de maíz y Ratón", 
+                "d": "Planta de maíz y Serpiente"
+            }, 
+            "correcta": "d", 
+            "explicacion": "El productor siempre es la planta (Planta de maíz). El consumidor de primer orden es el herbívoro (Ratón). El consumidor de segundo orden es el que se come al ratón (la Serpiente)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "Los animales pueden clasificarse en dos grupos: vertebrados e invertebrados, según posean o no columna vertebral. Algunos ejemplos de animales son: caracoles, araña, cangrejo, pez, mariposa, elefante, tortuga, tucán y pato.<br><br>Según la información, los organismos que se clasifican como <strong>invertebrados</strong> corresponden a<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "el pez y el tucán.", 
+                "b": "la jirafa y la araña.", 
+                "c": "el pato y la mariposa.", 
+                "d": "la mariposa y el caracol."
+            }, 
+            "correcta": "d", 
+            "explicacion": "Los invertebrados son animales que no tienen huesos ni columna vertebral. Tanto la mariposa (insecto) como el caracol (molusco) cumplen con esta característica<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Un ejemplo claro de una comunidad ecológica se encuentra en el jardín, donde se observan poblaciones de plantas (hierbas, arbustos, árboles), aves que consumen frutos y una variedad de invertebrados que habitan en el suelo, las rocas y las charcas de agua.<br><br>Según la información anterior, ¿cuáles componentes forman parte del concepto de <strong>comunidad ecológica</strong>?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Las aves y las rocas", 
+                "b": "El suelo, las rocas y el agua", 
+                "c": "Las hierbas, los arbustos y los árboles", 
+                "d": "El agua, las hierbas, los arbustos y los árboles"
+            }, 
+            "correcta": "c", 
+            "explicacion": "Una comunidad ecológica está formada EXCLUSIVAMENTE por los <strong>seres vivos</strong> (factores bióticos) de un lugar. El agua, las rocas y el suelo son elementos sin vida y no forman parte de la \"comunidad\" biológica<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "Ciertas serpientes, como la terciopelo, poseen una coloración muy similar al ambiente donde se encuentran. Al camuflarse tan bien con su entorno logran acercarse a sus presas sin ser notadas, lo que le permite atacar más fácilmente y sus presas no logran escapar a tiempo.<br><br>Según la información, el camuflaje en algunas serpientes les<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "ayuda a alimentarse.", 
+                "b": "facilita la reproducción.", 
+                "c": "permite escapar de sus depredadores.", 
+                "d": "disminuye sus posibilidades de supervivencia."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El texto explica que esta adaptación (el camuflaje) se utiliza como una técnica de caza. Les permite acercarse a la presa sin ser vistas para atacarla, facilitando así su alimentación<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "Lea las siguientes características referidas a organismos de un reino biológico:<br><div class='figure-box'>Se caracterizan por ser heterótrofos, inmóviles y por tener células provistas de paredes reforzadas con quitina. Incapaces de fijar carbono por fotosíntesis. Pueden ser unicelulares o pluricelulares.</div>Estos organismos pertenecen al reino<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "plantae, porque realiza la fotosíntesis.", 
+                "b": "protista, debido a que es unicelular o pluricelular.", 
+                "c": "fungi, ya que no puede producir su propio alimento.", 
+                "d": "animalia, porque pueden ser unicelulares y pluricelulares."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Las paredes celulares de quitina, la incapacidad de moverse (inmóviles) y ser heterótrofos (no pueden hacer fotosíntesis para crear su alimento) son características definitivas de los hongos, reino <strong>Fungi</strong><span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "En una gira, se explica que los tiburones son animales de sangre fría, con aletas y cuerpo alargado para el agua. También se menciona que las ballenas se caracterizan por nacer del vientre materno y alimentar a sus crías con leche.<br><br>Según la información anterior, los tiburones y las ballenas se clasifican, respectivamente, como<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "anfibios y peces.", 
+                "b": "peces y mamíferos.", 
+                "c": "mamíferos y peces.", 
+                "d": "reptiles y mamíferos."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El tiburón es un <strong>pez</strong> (cartilaginoso, de sangre fría, aletas). La ballena, a pesar de vivir en el mar, al nacer del vientre y tomar leche materna, es un <strong>mamífero</strong><span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "En el suelo, las lombrices de tierra y escarabajos se alimentan de restos orgánicos. También se agrupan gran diversidad de bacterias y otros organismos microscópicos que descomponen la materia orgánica.<br><br>De los seres vivos mencionados, ¿cuáles corresponden a organismos <strong>unicelulares</strong>?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Plantas", 
+                "b": "Bacterias", 
+                "c": "Escarabajos", 
+                "d": "Lombrices de tierra"
+            }, 
+            "correcta": "b", 
+            "explicacion": "Los organismos unicelulares son aquellos formados por una única célula que realiza todas las funciones de vida. De la lista, solo las bacterias cumplen esto<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q12", 
+            "type": "mc", 
+            "pregunta": "Lea la siguiente información sobre relaciones en los seres vivos:<br><br>(1) Las gaviotas suelen agruparse y tienen sus nidos cerca unas de otras para protegerse mejor. Esto les brinda protección contra (2) los depredadores como los zorros que buscan alimentarse de sus pichones.<br><br>La información numerada hace referencia a las relaciones de tipo<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "1 intraespecífica y 2 interespecífica.", 
+                "b": "1 interespecífica y 2 intraespecífica.", 
+                "c": "1 intraespecífica y 2 intraespecífica.", 
+                "d": "1 interespecífica y 2 interespecífica."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El comportamiento (1) es entre gaviotas (misma especie = intraespecífica). El comportamiento (2) es entre gaviotas y zorros (diferentes especies = interespecífica)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q13", 
+            "type": "mc", 
+            "pregunta": "Lucrecia encontró que la mayoría de las manzanas de su árbol estaban llenas de gusanos. Su papá le explicó que el gusano obtiene beneficio y vive a costa de la manzana, causándole daño generalmente.<br><br>La relación entre la manzana y los gusanos se denomina<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "simbiótica.", 
+                "b": "mutualismo.", 
+                "c": "parasitismo.", 
+                "d": "comensalismo."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Cuando un organismo (el gusano parásito) se beneficia de otro (la manzana/huésped) causándole daño en el proceso, a esta relación ecológica se le conoce como parasitismo<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-2.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Ciencias",
+                    nivel: "6° Grado",
+                    tema: "Biodiversidad",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
