@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Estudios Sociales Estandarizada 1 - Geografía y Pueblos Originarios</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #8e44ad; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #9b59b6; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #f5eef8; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #8e44ad; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #8e44ad; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #732d91; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #8e44ad; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Estudios Sociales: Geografía e Historia Parte 1</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Considere el siguiente texto:<br><div class='figure-box'>Los Estudios Sociales es una disciplina que analiza, discute y genera conocimientos para resolver problemas, investigar el pasado, relacionarse con el entorno y cuestionar el presente con miras al futuro. Su misión es que los jóvenes comprendan y valoren los avances culturales, sociales y económicos, contribuyendo así a una mejor convivencia y fortalecimiento del sistema democrático.</div>A partir del texto, los Estudios Sociales propician en la vida cotidiana de la sociedad costarricense:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "otorgar mayor importancia al aprendizaje sobre culturas extranjeras, ignorando la historia costarricense.", 
+                "b": "promover la indiferencia hacia los avances sociales y económicos.", 
+                "c": "fomentar la curiosidad por aprender sobre los sucesos históricos que ha contribuido al desarrollo democrático de Costa Rica.", 
+                "d": "considerar que los problemas nacionales se solucionan de mejor manera cuando la persona actúa por su cuenta."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Los Estudios Sociales nos ayudan a investigar nuestro pasado y entender nuestro entorno para fortalecer nuestra democracia y convivencia ciudadana, en lugar de actuar de manera individual o ignorar nuestra historia<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La ubicación estratégica de Limón y su proximidad al Canal de Panamá lo convierten en un puerto crucial para Costa Rica. Desde allí se exportan alimentos, productos agrícolas, carnes, equipos médicos y componentes electrónicos. Además, recibe importaciones de materias primas, petróleo y materiales de construcción.</div>El texto describe la importancia del puerto de Limón para la actividad comercial del país, debido a que:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "destaca únicamente la exportación de productos agrícolas, sin reconocer la diversidad de bienes y servicios.", 
+                "b": "contribuye al comercio nacional, además de tener una función turística al recibir cruceros y visitantes internacionales.", 
+                "c": "la ubicación de Limón facilita el comercio exterior, siendo un puerto clave para solo exportar y recibir materias primas.", 
+                "d": "la cercanía con el Canal de Panamá tiene un impacto limitado en el comercio y exportaciones nacionales."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El puerto de Limón es la principal puerta del país hacia el mar Caribe para el comercio exterior, facilitando tanto la exportación (enviar nuestros productos al mundo) como la importación (recibir materias primas)<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Lea la siguiente definición:<br><div class='figure-box'>Se trata de una depresión alargada y con pendiente entre dos cadenas montañosas, por donde suele fluir un río. Esta formación geográfica destaca por su entorno natural y su valor paisajístico, siendo un lugar ideal para actividades al aire libre. Las montañas que la rodean y los cuerpos de agua contribuyen a su atractivo ecológico.</div>¿A cuál forma de relieve del territorio costarricense hace referencia la definición anterior?<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {"a": "Cordillera", "b": "Meseta", "c": "Sierra", "d": "Valle"}, 
+            "correcta": "d", 
+            "explicacion": "Un <strong>valle</strong> es exactamente eso: una zona plana y hundida (depresión) rodeada por montañas, por donde generalmente atraviesa un río (como el Valle Central donde vivimos muchos costarricenses)<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "Lea la siguiente información:<br><div class='figure-box'>Se trata de una extensión amplia y plana del terreno, con pocas irregularidades, que facilita actividades como la agricultura y la ganadería. Este tipo de relieve es preferido por su accesibilidad y suelo fértil, lo que favorece el desarrollo económico en esas zonas.</div>La información anterior hace referencia al tipo de relieve denominado:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {"a": "costa.", "b": "llanura.", "c": "altiplano.", "d": "fosa abisal."}, 
+            "correcta": "b", 
+            "explicacion": "Las <strong>llanuras</strong> son terrenos planos, extensos y de baja altitud, con suelos muy fértiles que las hacen perfectas para sembrar y criar ganado (como las llanuras del Norte o del Caribe)<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "El maíz fue clave en la Costa Rica mesoamericana, especialmente en Guanacaste. La milpa, formada por maíz, frijoles y ayote, es reconocida por sus beneficios nutricionales y ambientales, y desde 2010 es Patrimonio Inmaterial Mundial. De acuerdo con el texto, un hecho de la historia antigua de Costa Rica presente en la sociedad actual está relacionado con la:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "milpa como sistema agrícola tradicional que contribuye con la diversidad alimentaria y es Patrimonio Inmaterial Mundial.", 
+                "b": "domesticación del ayote en la época colonial, que permitió su uso en múltiples preparaciones.", 
+                "c": "introducción del maíz y la yuca por los europeos, que transformó la alimentación.", 
+                "d": "pérdida total del uso de la milpa tras la llegada de las culturas extranjeras."
+            }, 
+            "correcta": "a", 
+            "explicacion": "La <strong>milpa</strong> es un sistema agrícola ancestral (indígena, no europeo) basado en sembrar maíz, frijoles y ayote juntos. Es tan valioso que la humanidad lo declaró Patrimonio Inmaterial y se sigue usando hoy en día<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "El artista precolombino consideraba su arte un instrumento mágico para influir en la naturaleza, dominar enemigos y expresar temas de vida y muerte. Su objetivo no era crear belleza, sino manifestar el poder mágico, los símbolos y ritos. El texto describe características del arte de los pueblos originarios, el cual:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "buscaba principalmente la belleza estética y la decoración de objetos cotidianos.", 
+                "b": "tenía un propósito mágico y simbólico, reflejando la identidad y las creencias de la sociedad.", 
+                "c": "se limitaba a reproducir escenas de la naturaleza sin intención mágica ni simbólica.", 
+                "d": "se enfocaba en narrar historias mitológicas sin relación con la vida social."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Para los indígenas, esculpir una piedra o hacer cerámica no era solo para que se viera bonito (estética), sino que tenía un profundo significado religioso, espiritual y mágico (creencias)<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Los Chorotegas se establecieron en Guanacaste y se destacaron como alfareros. Aunque los diseños originales se perdieron con la colonización española, la <strong>técnica de alfarería en hornos rústicos</strong> perduró gracias a una tradición transmitida de madres a hijas. El texto describe características artísticas que han propiciado la:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "creación de cerámica multicolor original que se mantiene exactamente igual desde la época precolombina.", 
+                "b": "práctica de la alfarería únicamente en talleres industriales modernos.", 
+                "c": "conservación de técnicas ancestrales de alfarería que mantienen viva la identidad cultural de Guanacaste.", 
+                "d": "influencia directa de la colonización española en el diseño de la cerámica tradicional."
+            }, 
+            "correcta": "c", 
+            "explicacion": "A pesar de que se perdieron los dibujos o colores originales por culpa de la colonización, la <em>técnica y la forma de hacer la cerámica</em> se conservó de madres a hijas, manteniendo viva la cultura de Guanacaste<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "En Costa Rica, la herencia Chorotega se fusiona con la tradición española en las festividades de la Virgen de Guadalupe, celebradas con devoción en Nicoya. Estas fiestas tienen sus raíces en las antiguas celebraciones chorotegas del Maíz y del Sol. La información refleja un aporte que se manifiesta en:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "las danzas y festividades que se basan exclusivamente en costumbres españolas.", 
+                "b": "una tradición religiosa y cultural que fusiona (mezcla) antiguas celebraciones indígenas con festividades actuales.", 
+                "c": "las prácticas agrícolas ancestrales que anularon la influencia de los europeos.", 
+                "d": "las festividades religiosas actuales que reemplazaron por completo las fiestas indígenas."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Este fenómeno se conoce como <strong>sincretismo cultural</strong>: una mezcla o fusión donde las celebraciones actuales (como la de la Virgen) mantienen elementos ocultos de las antiguas tradiciones indígenas (como la fiesta del Maíz)<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "El Juego de los Diablitos es la tradición más representativa de la cultura indígena Boruca. Representa dramáticamente la lucha entre el invasor español, simbolizado por el toro, y la comunidad indígena, representada por los diablitos. De acuerdo con la información, un aporte de los pueblos originarios a la sociedad actual consiste en la:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "integración de elementos comerciales sin contenido simbólico para adorno turístico.", 
+                "b": "transmisión de una identidad cultural viva mediante rituales que preservan la memoria histórica y el sentido de pertenencia.", 
+                "c": "influencia de prácticas políticas comunitarias usadas en la agricultura moderna.", 
+                "d": "representación pasiva y sumisa de los indígenas ante los europeos."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El Juego de los Diablitos no es solo un show; es un ritual profundo que permite a los indígenas Boruca recordar su historia de resistencia, demostrando que su cultura sigue viva y rebelde frente a la conquista<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "En 2020, hubo avances en derechos indígenas (vivienda e inversión). Sin embargo, persisten problemas graves como la impunidad ante <strong>invasiones de tierras</strong>, que el Estado no ha logrado resolver debido a una visión que no considera la complejidad sociocultural de los conflictos. Por tanto, es necesario:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "implementar políticas que reconozcan la complejidad sociocultural y garanticen la protección de los derechos territoriales indígenas.", 
+                "b": "continuar con programas de vivienda sin modificar las estrategias de tierras.", 
+                "c": "mantener la atención únicamente en ayudas sociales temporales, ignorando las invasiones.", 
+                "d": "priorizar la inversión en escuelas y dejar los conflictos de tierras para un futuro."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El problema más grave que enfrentan los indígenas hoy en día es que personas que no son indígenas les roban sus tierras. El Estado necesita crear leyes fuertes y efectivas que protejan y devuelvan esos territorios a sus legítimos dueños<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "Como consecuencia del abandono de los caminos y el difícil acceso geográfico, los niños y niñas de los territorios aborígenes tienen un <strong>limitado ingreso a los servicios de salud</strong>, con pocas posibilidades de recibir atención médica rápida frente a enfermedades o traumas. Frente a esta situación es urgente:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "incrementar campañas de vacunación de forma ocasional y lejana.", 
+                "b": "promover talleres educativos sobre hábitos saludables sin modificar el acceso a salud.", 
+                "c": "aumentar únicamente charlas informativas en las comunidades, sin mejorar caminos ni médicos.", 
+                "d": "atender la infraestructura vial (caminos) y mejorar el acceso real a servicios de salud en los territorios."
+            }, 
+            "correcta": "d", 
+            "explicacion": "De nada sirven las charlas si no hay un doctor o un camino asfaltado para que entre una ambulancia en una emergencia. La solución real es mejorar las calles (infraestructura) y poner clínicas en sus comunidades<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q12", 
+            "type": "mc", 
+            "pregunta": "Una vez conquistado un territorio, los españoles recibían concesiones de indígenas en <strong>encomienda</strong> como premio. Esto permitía al encomendero cobrar impuestos a los aborígenes en productos agrícolas, artesanales y trabajo directo. Una de las consecuencias de la conquista en Costa Rica consistió en:<span class='cite-hidden'>[cite: 9]</span>", 
+            "opciones": {
+                "a": "la imposición de un sistema de explotación indígena mediante la encomienda, que los obligaba a tributar y trabajar para los españoles.", 
+                "b": "la creación de acuerdos justos de intercambio que garantizaron igualdad de derechos.", 
+                "c": "la integración pacífica de indígenas y españoles mediante acuerdos comerciales.", 
+                "d": "el establecimiento de comunidades indígenas autónomas libres de tributos coloniales."
+            }, 
+            "correcta": "a", 
+            "explicacion": "La <strong>encomienda</strong> fue un sistema cruel e injusto. Los españoles no hicieron \"acuerdos justos\"; forzaron y explotaron a los indígenas para que trabajaran la tierra de forma obligatoria y les pagaran impuestos<span class='cite-hidden'>[cite: 9]</span>.<br><a href='resumen-sociales-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Estudios Sociales",
+                    nivel: "6° Grado",
+                    tema: "Geografía e Historia (P1)",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
