@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Ciencias Estandarizada 3 - Energía</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #27ae60; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #2ecc71; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #d5f5e3; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .table-container { width: 100%; overflow-x: auto; margin: 15px 0; -webkit-overflow-scrolling: touch; }
+        .table-q { width: 100%; max-width: 500px; border-collapse: collapse; font-weight: normal; font-size: 14px; }
+        .table-q th, .table-q td { border: 1px solid #bdc3c7; padding: 8px; text-align: center; white-space: nowrap; }
+        .table-q th { background-color: #ecf0f1; color: #2c3e50; }
+
+        .figure-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; font-style: italic; color: #555;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #219150; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Ciencias: Energía</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Es un procedimiento que usa ondas para producir imágenes del cuerpo, monitorear el embarazo y en fisioterapia trata lesiones. La información anterior hace referencia al avance tecnológico en medicina denominado:<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "rayo láser.", "b": "ultrasonido.", "c": "bomba de cobalto.", "d": "tomografía computarizada (TAC)."}, 
+            "correcta": "b", 
+            "explicacion": "El ultrasonido utiliza ondas de sonido (energía sonora de alta frecuencia) para crear imágenes del interior del cuerpo de forma segura, como al revisar a un bebé en el embarazo<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "Algunos animales son reconocidos por su velocidad: halcón peregrino (100 km/h), vencejo (200 km/h), tiburón Mako (124 km/h) y guepardo (114 km/h). Si compiten en condiciones ideales durante un recorrido de 5 km, ¿cuál llegaría primero?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "Halcón peregrino", "b": "Tiburón Mako", "c": "Guepardo", "d": "Vencejo"}, 
+            "correcta": "d", 
+            "explicacion": "El animal que tiene la mayor velocidad es el vencejo, con 200 km/h. Al ser el más rápido, cubrirá la distancia de 5 km en menor tiempo que los demás<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Después de remover el arroz con leche, la mamá dejó el cucharón sobre la olla. Al volver, se da cuenta de que el cucharón está caliente. ¿Cómo se denomina la forma de transmisión del calor desde la olla hasta el cucharón?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "Radiación", "b": "Convección", "c": "Conducción", "d": "Evaporación"}, 
+            "correcta": "c", 
+            "explicacion": "La <strong>conducción</strong> es la transferencia de calor que se da a través de los cuerpos sólidos (como el metal del cucharón) cuando están en contacto directo con una fuente de calor<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "Tres niñas cuidaron su planta de distinta forma con respecto a la luz:<br> (1) Lucía la colocó junto a la ventana donde recibía mucha luz.<br> (2) Sandra la colocó tras una pantalla que dejaba pasar la luz parcialmente.<br> (3) Susana la colocó tras un armario donde no pasaba nada de luz.<br><br>¿Cómo se clasifican los objetos con base en su capacidad para dejar pasar la luz en el orden 1, 2 y 3?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Translúcido, opaco y transparente", 
+                "b": "Transparente, translúcido y opaco", 
+                "c": "Opaco, transparente, y translúcido", 
+                "d": "Transparente, opaco, translúcido"
+            }, 
+            "correcta": "b", 
+            "explicacion": "El cristal de la ventana es <strong>transparente</strong> (deja pasar toda la luz), la pantalla es <strong>translúcida</strong> (deja pasar luz parcial) y el armario de madera es <strong>opaco</strong> (bloquea la luz)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "El docente explica sobre: (1) energía nuclear que genera residuos radioactivos peligrosos por millones de años, y (2) la energía solar que no genera residuos y utiliza una fuente natural. La información hace referencia a la energía<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "1 limpia y 2 limpia.", 
+                "b": "1 limpia y 2 contaminante.", 
+                "c": "1 contaminante y 2 limpia.", 
+                "d": "1 contaminante y 2 contaminante."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La energía nuclear es <strong>contaminante</strong> por los peligrosos residuos radiactivos que genera. La energía solar es <strong>limpia (o renovable)</strong> porque no contamina y viene del sol<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "Tipos de corriente eléctrica:<br> (1) El flujo de electrones cambia de dirección, permitiendo conectar un enchufe sin importar el lado positivo o negativo.<br> (2) Los electrones fluyen en una sola dirección, repelidos por un polo y atraídos por el otro (como en baterías).<br><br>Los ejemplos corresponden a corriente de tipo:<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "1 alterna y 2 alterna.", 
+                "b": "1 continua y 2 alterna.", 
+                "c": "1 alterna y 2 continua.", 
+                "d": "1 continua y 2 continua."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Los tomacorrientes de las casas usan corriente <strong>alterna</strong>. Las baterías de los controles o juguetes usan corriente <strong>continua</strong>, donde la electricidad viaja en un solo sentido<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Observe las dos situaciones: (1) Un perro corriendo velozmente. (2) Un perro durmiendo en reposo absoluto. Es correcto afirmar que:<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "ninguna posición tiene energía cinética.", 
+                "b": "la posición 1 y 2 tienen la misma energía cinética.", 
+                "c": "la posición 1 tiene más energía cinética que la posición 2.", 
+                "d": "la posición 2 tiene más energía cinética que la posición 1."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La <strong>energía cinética</strong> es la energía del movimiento. Como el perro en la situación 1 está corriendo, posee mayor energía cinética que el perro dormido<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "En 2015, Costa Rica no usó combustibles fósiles durante 250 días para producir electricidad, dependiendo casi totalmente de fuentes hidroeléctricas, geotérmicas, eólicas o solares, alcanzando en la actualidad hasta un 98,9% del servicio. Esto se refiere a<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "el porcentaje de energía que se realiza en países europeos.", 
+                "b": "la energía hidroeléctrica como única fuente limpia.", 
+                "c": "la producción europea de electricidad general.", 
+                "d": "el crecimiento que ha tenido la generación de energía a partir de fuentes naturales en Costa Rica."
+            }, 
+            "correcta": "d", 
+            "explicacion": "El texto resalta el gran éxito y crecimiento de Costa Rica al utilizar energías limpias y renovables (agua, viento, sol y volcanes) para abastecer a todo el país<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "La casa de Rolando está a 800 m de la escuela, mientras que la de Cecilia se encuentra a 1200 m. Un día miden el tiempo que tardan caminando hacia la escuela y descubren que tardan exactamente lo mismo. A partir de la situación, cada mañana Cecilia<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "llega siempre después que Rolando.", 
+                "b": "tiene mayor rapidez que Rolando.", 
+                "c": "tiene menor rapidez que Rolando.", 
+                "d": "tarda más tiempo que Rolando."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Si ambos tardan el mismo tiempo, pero Cecilia recorre una distancia mucho mayor (1200 m frente a los 800 m de Rolando), significa que Cecilia tiene que caminar mucho más rápido (mayor rapidez) para lograrlo<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "El herrero moldea a martillazos herraduras en un horno a gran temperatura. El hierro caliente es manipulado con una pinza y guantes gruesos. ¿Cuál es la forma de transmisión del calor en la pieza de hierro que obliga a usar guantes?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "Conducción", "b": "Convección", "c": "Radiación", "d": "Fricción"}, 
+            "correcta": "a", 
+            "explicacion": "Al igual que con el cucharón, el calor viaja a través del metal sólido de la herradura y la pinza mediante el proceso de <strong>conducción</strong><span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "Es una energía renovable que aprovecha el calor del subsuelo (el calor interno de la tierra) para obtener agua caliente y vapor, con el cual se mueven turbinas para generar electricidad ecológica. La información se refiere a la energía<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "solar.", "b": "magnética.", "c": "geotérmica.", "d": "hidroeléctrica."}, 
+            "correcta": "c", 
+            "explicacion": "La palabra \"geo\" significa Tierra, y \"térmica\" significa calor. La energía que aprovecha el calor del subsuelo (volcanes) es la <strong>geotérmica</strong><span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q12", 
+            "type": "mc", 
+            "pregunta": "El docente frota dos globos con una franela y luego los acerca, observando que los globos <strong>se atraen entre sí</strong>. Hay una atracción entre los dos globos porque las cargas generadas son<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "ambas positivas.", 
+                "b": "ambas negativas.", 
+                "c": "positivas y negativas.", 
+                "d": "iguales, pero con diferente intensidad."
+            }, 
+            "correcta": "c", 
+            "explicacion": "En el magnetismo y la electricidad, las cargas opuestas (una positiva y una negativa) se atraen, mientras que las cargas iguales se rechazan<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q13", 
+            "type": "mc", 
+            "pregunta": "En atletismo, los niños de 9 años compiten en la carrera de 1 kilómetro y entrenan 2 veces por semana. Los de 12 años correrán en la carrera de 3 kilómetros, y también entrenan 2 veces por semana. A partir de esto, durante una semana de entrenamiento<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "los de 9 años recorren mayor distancia que los de 12 años.", 
+                "b": "los de 12 años recorren mayor distancia que los de 9 años.", 
+                "c": "todos sin importar la edad recorren la misma distancia.", 
+                "d": "los de 9 años corren más porque son más pequeños."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Los de 12 años entrenan corriendo 3 km cada día. Al final de la semana, habrán recorrido mucha más distancia que los de 9 años (que solo corren 1 km por día de entrenamiento)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q14", 
+            "type": "mc", 
+            "pregunta": "Cuando se coloca una olla con agua sobre un quemador, el agua caliente del fondo asciende y el agua menos caliente de arriba desciende, provocando un movimiento circular dentro de la olla. Este tipo de transmisión del calor se denomina<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "radiación.", "b": "convección.", "c": "conducción.", "d": "condensación."}, 
+            "correcta": "b", 
+            "explicacion": "La <strong>convección</strong> es el movimiento circular que ocurre en los líquidos (como el agua) y los gases cuando se calientan, subiendo la parte caliente y bajando la fría<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q15", 
+            "type": "mc", 
+            "pregunta": "La luz blanca se desplaza en ondas que definen los colores en los objetos. Por ejemplo, en una manzana el tamaño de la onda de luz roja rebota, por eso la vemos de ese color. Se concluye que<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "los objetos rojos absorben ese color en su totalidad.", 
+                "b": "los colores resultan de la luz que refractan los objetos.", 
+                "c": "la manzana se ve roja porque cambia el color de la luz.", 
+                "d": "la manzana se ve roja porque refleja la luz de color rojo."
+            }, 
+            "correcta": "d", 
+            "explicacion": "Cuando vemos un objeto de un color, significa que está absorbiendo todos los colores de la luz blanca y <strong>reflejando (rebotando)</strong> únicamente ese color hacia nuestros ojos<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q16", 
+            "type": "mc", 
+            "pregunta": "En la energía geotérmica, el vapor y el agua extraída del subsuelo se devuelven a su lugar original luego de mover la turbina para asegurar la sostenibilidad del recurso. Esta información se refiere a una energía limpia porque<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "el agua empleada ya no se puede utilizar como un recurso natural.", 
+                "b": "genera residuos que pueden contaminar durante siglos.", 
+                "c": "se obtiene de los combustibles como el petróleo.", 
+                "d": "utiliza recursos que no dañan el ambiente."
+            }, 
+            "correcta": "d", 
+            "explicacion": "Es una energía limpia (renovable) porque respeta y cuida la naturaleza, reutilizando los recursos sin contaminar ni destruir el medio ambiente<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q17", 
+            "type": "mc", 
+            "pregunta": "En los circuitos como el (A), la corriente viaja por <strong>un solo camino</strong>; si falla un foco, el resto se apaga. En los circuitos como el (B), la corriente viaja por <strong>dos o más caminos</strong>; si falla uno, la luz sigue por el otro. Se afirma que el circuito<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "A es en paralelo, y el circuito B es en serie.", 
+                "b": "A es en serie, y el circuito B es en paralelo.", 
+                "c": "A es en serie y el circuito B es mixto.", 
+                "d": "A es mixto y el circuito B es en serie."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El circuito que va en una sola línea conectando uno detrás de otro es el circuito <strong>en serie</strong> (A). El que se divide en varios caminos independientes es el circuito <strong>en paralelo</strong> (B)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q18", 
+            "type": "mc", 
+            "pregunta": "Se muestra un paracaidista en dos momentos: Situación 1 (sentado en reposo dentro del avión) y Situación 2 (cayendo en pleno movimiento por el aire). Sobre su energía cinética, ¿qué afirmación es correcta?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "La energía cinética es igual en ambas situaciones.", 
+                "b": "El paracaidista de la situación 2 tiene más energía cinética que el de la situación 1.", 
+                "c": "El paracaidista de la situación 1 tiene más energía cinética que el de la situación 2.", 
+                "d": "El paracaidista de la situación 1 tiene el doble de energía cinética."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La energía cinética depende directamente de la velocidad (del movimiento). Como en la situación 2 el paracaidista está cayendo rápido por el aire, posee mucha más energía cinética que cuando estaba sentado (reposo)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Ciencias",
+                    nivel: "6° Grado",
+                    tema: "Energía",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
