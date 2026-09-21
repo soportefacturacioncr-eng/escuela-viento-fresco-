@@ -196,13 +196,35 @@
               { numero: 1, tema: "Geografía y Pueblos Originarios", archivo: "practica-sociales-estandarizada-1.html", resumen: "resumen-sociales-estandarizada-1.html" },
               { numero: 2, tema: "Historia de Costa Rica (Colonia a 1940)", archivo: "practica-sociales-estandarizada-2.html", resumen: "resumen-sociales-estandarizada-2.html" }
             ],
-            // PRÁCTICAS REGULARES
-            "lista-mate": [],
-            "lista-ciencias": [],
-            "lista-espanol": [],
-            "lista-sociales": []
-        };
-
+             // PRÁCTICAS REGULARES
+            "lista-mate": [
+                { numero: 1, tema: "Práctica Regular 1", archivo: "practica-mate-1.html", resumen: "resumen-mate-1.html" },
+                { numero: 2, tema: "Práctica Regular 2", archivo: "practica-mate-2.html", resumen: "resumen-mate-2.html" },
+                { numero: 3, tema: "Práctica Regular 3", archivo: "practica-mate-3.html", resumen: "resumen-mate-3.html" },
+                { numero: 4, tema: "Práctica Regular 4", archivo: "practica-mate-4.html", resumen: "resumen-mate-4.html" },
+                { numero: 5, tema: "Práctica Regular 5", archivo: "practica-mate-5.html", resumen: "resumen-mate-5.html" },
+                { numero: 6, tema: "Práctica Regular 6", archivo: "practica-mate-6.html", resumen: "resumen-mate-6.html" }
+            ],
+            "lista-ciencias": [
+                { numero: 1, tema: "Práctica Regular 1", archivo: "practica-ciencias-1.html", resumen: "resumen-ciencias-1.html" },
+                { numero: 2, tema: "Práctica Regular 2", archivo: "practica-ciencias-2.html", resumen: "resumen-ciencias-2.html" },
+                { numero: 3, tema: "Práctica Regular 3", archivo: "practica-ciencias-3.html", resumen: "resumen-ciencias-3.html" },
+                { numero: 4, tema: "Práctica Regular 4", archivo: "practica-ciencias-4.html", resumen: "resumen-ciencias-4.html" },
+                { numero: 5, tema: "Práctica Regular 5", archivo: "practica-ciencias-5.html", resumen: "resumen-ciencias-5.html" },
+                { numero: 6, tema: "Práctica Regular 6", archivo: "practica-ciencias-6.html", resumen: "resumen-ciencias-6.html" }
+            ],
+            "lista-espanol": [
+                { numero: 1, tema: "Práctica Regular 1", archivo: "practica-espanol-1.html", resumen: "resumen-espanol-1.html" },
+                { numero: 2, tema: "Práctica Regular 2", archivo: "practica-espanol-2.html", resumen: "resumen-espanol-2.html" },
+                { numero: 3, tema: "Práctica Regular 3", archivo: "practica-espanol-3.html", resumen: "resumen-espanol-3.html" },
+                { numero: 4, tema: "Práctica Regular 4", archivo: "practica-espanol-4.html", resumen: "resumen-espanol-4.html" }
+            ],
+            "lista-sociales": [
+                { numero: 1, tema: "Práctica Regular 1", archivo: "practica-sociales-1.html", resumen: "resumen-sociales-1.html" },
+                { numero: 2, tema: "Práctica Regular 2", archivo: "practica-sociales-2.html", resumen: "resumen-sociales-2.html" },
+                { numero: 3, tema: "Práctica Regular 3", archivo: "practica-sociales-3.html", resumen: "resumen-sociales-3.html" },
+                { numero: 4, tema: "Práctica Regular 4", archivo: "practica-sociales-4.html", resumen: "resumen-sociales-4.html" }
+            ]
         function renderizarPracticas() {
             for (const [idContenedor, practicas] of Object.entries(baseDeDatosPracticas)) {
                 const contenedor = document.getElementById(idContenedor);
