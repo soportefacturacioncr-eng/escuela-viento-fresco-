@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Ciencias Estandarizada 1 - Cuerpo Humano</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #27ae60; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #2ecc71; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #d5f5e3; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        /* Contenedor para evitar que las tablas se salgan de la pantalla en móviles */
+        .table-container { width: 100%; overflow-x: auto; margin: 15px 0; -webkit-overflow-scrolling: touch; }
+        .table-q { width: 100%; max-width: 500px; border-collapse: collapse; font-weight: normal; font-size: 14px; }
+        .table-q th, .table-q td { border: 1px solid #bdc3c7; padding: 8px; text-align: center; white-space: nowrap; }
+        .table-q th { background-color: #ecf0f1; color: #2c3e50; }
+
+        .figure-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; text-align: center; font-style: italic; color: #555;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #219150; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        /* Ocultar etiquetas de citación para los estudiantes */
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Ciencias: Cuerpo Humano</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "El siguiente texto se relaciona con el tejido sanguíneo:<br><div class='figure-box'>Los tejidos están formados por un conjunto de células que realizan una o varias funciones. En el caso del tejido sanguíneo, se pueden encontrar los glóbulos rojos, los glóbulos blancos y las plaquetas. Uno de estos componentes es el responsable de <strong>producir coágulos y sellar las rupturas</strong> de los vasos sanguíneos.</div>El componente de la sangre referido en la información anterior se denomina<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "plasma.", "b": "plaqueta.", "c": "glóbulo rojo.", "d": "glóbulo blanco."}, 
+            "correcta": "b", 
+            "explicacion": "Las plaquetas son las encargadas de la coagulación de la sangre. Cuando nos cortamos, ellas forman un \"tapón\" o coágulo para detener el sangrado y sellar el vaso dañado<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "Lea la siguiente información:<br><div class='figure-box'>Las vacunas son medicamentos biológicos que se aplican a las personas sanas con el propósito de provocar la producción de defensas o anticuerpos, y para la protección de contagios en el futuro. Benefician tanto a las personas vacunadas como a las no vacunadas que viven en el mismo entorno.</div>La información anterior se refiere a<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "el proceso de fabricación de las vacunas.", 
+                "b": "el origen y descubrimiento de las vacunas.", 
+                "c": "la importancia de la vacunación para el ser humano.", 
+                "d": "estadísticas de efectividad de las vacunas en los niños."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El texto resalta los beneficios de las vacunas para proteger contra contagios futuros y cuidar tanto al individuo como a su entorno, lo que subraya su gran importancia para la salud<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Considere la siguiente información:<br><div class='figure-box'>La médula espinal es una parte del sistema nervioso central localizada dentro del conducto vertebral. Conecta el cerebro con los nervios de la mayor parte del cuerpo, posee neuronas que reciben información de los distintos órganos y otras que se encargan de enviar la información y las órdenes a distintas zonas de nuestro cuerpo.</div>De acuerdo con la información anterior, se puede concluir que la <strong>médula espinal</strong><span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "produce hormonas que regulan el crecimiento y el desarrollo del cuerpo.", 
+                "b": "controla los actos involuntarios como los latidos del corazón y la digestión.", 
+                "c": "se encarga de las facultades intelectuales: atención, memoria e inteligencia.", 
+                "d": "conduce impulsos nerviosos entre el encéfalo y los demás órganos y tejidos del cuerpo."
+            }, 
+            "correcta": "d", 
+            "explicacion": "El texto explica claramente que la función de la médula espinal es actuar como una vía de comunicación que conecta el cerebro (encéfalo) con el resto del cuerpo, conduciendo los impulsos nerviosos<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "La irritabilidad de los seres vivos es la reacción a un estímulo externo o interno. Por ejemplo: correr ante un peligro o procesar sensaciones funciona a través de los sentidos, mientras que otros cambios funcionan a través de sustancias químicas llamadas hormonas. En los seres vivos, los sistemas responsables de procesar y recibir estos estímulos corresponden a los sistemas<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "nervioso y digestivo.", 
+                "b": "excretor y endocrino.", 
+                "c": "endocrino y nervioso.", 
+                "d": "respiratorio y digestivo."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El sistema nervioso procesa los estímulos externos (a través de los sentidos), y el sistema endocrino responde a los estímulos internos mediante la producción de hormonas<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "La excreción es un proceso que le permite al cuerpo expulsar las sustancias que no sirven y pueden ser tóxicas. Se realiza por medio de varios órganos, siendo uno de ellos los riñones. Cuando los riñones fallan, se acumulan productos de desecho y exceso de agua en el cuerpo.<br><br>Con base en el texto anterior, el sistema urinario es fundamental en el proceso de excreción porque<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "filtra las toxinas y el exceso de agua para producir la orina.", 
+                "b": "mantiene dentro las toxinas necesarias para el buen funcionamiento del cuerpo.", 
+                "c": "cuando los riñones fallan, los otros órganos del sistema excretor realizan su función.", 
+                "d": "controla muchas funciones importantes en el cuerpo, como el crecimiento y desarrollo."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Los riñones son los filtros de la sangre. Su labor vital es recolectar las toxinas (desechos) y el exceso de agua para transformarlos en orina y expulsarlos del cuerpo<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "Considere la siguiente información:<br><div class='figure-box'>La sangre siempre debe circular para mantener la vida. Transporta oxígeno absorbido del aire que respiramos. El bombeo del corazón mantiene en movimiento este flujo sanguíneo a través de arterias y venas. Un grupo de vasos sanguíneos hace circular la sangre a través de los pulmones para el intercambio gaseoso.</div>¿Cuáles son los sistemas del cuerpo humano que participan directamente en el proceso descrito anteriormente?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Circulatorio y nervioso", 
+                "b": "Endocrino y reproductor", 
+                "c": "Respiratorio y endocrino", 
+                "d": "Respiratorio y circulatorio"
+            }, 
+            "correcta": "d", 
+            "explicacion": "El texto menciona el bombeo del corazón, arterias y venas (Sistema Circulatorio) trabajando junto a los pulmones y el aire que respiramos para oxigenar la sangre (Sistema Respiratorio)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Durante más de doscientos años las vacunas han reducido de forma segura enfermedades que causaron muchas muertes. Salvan más de cinco vidas cada minuto, permitiendo que los niños jueguen y aprendan. La OMS declaró que la desconfianza ante las vacunas es una amenaza principal para la salud pública.<br><br>A partir de la información anterior, se afirma que<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "la población mundial debe vacunarse solo cuando exista una pandemia.", 
+                "b": "las vacunas se consideran un invento moderno e innecesario para toda la población.", 
+                "c": "las vacunas, aplicadas desde la niñez, son importantes para garantizar la salud pública.", 
+                "d": "la población humana no se ha beneficiado en nada con la invención de las vacunas."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Las vacunas son una herramienta indispensable que previene la muerte y erradica enfermedades. Aplicarlas desde pequeños es esencial para proteger la salud de toda la comunidad (salud pública)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "En el sistema respiratorio, la entrada de gases inicia en las fosas nasales y termina en los pulmones. <strong>La tráquea</strong> es un órgano que abarca desde la laringe hasta los bronquios. Está formada por una serie de anillos cartilaginosos que evitan que se cierre y aseguran que el aire pase sin problemas.<br><br>Según la información anterior, la función principal de la tráquea es<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "evitar que los pulmones se cierren.", 
+                "b": "transportar el aire desde la laringe hasta los bronquios.", 
+                "c": "filtrar, calentar y humedecer el aire que ingresa al cuerpo.", 
+                "d": "permitir el intercambio de oxígeno y dióxido de carbono en los pulmones."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La tráquea funciona como un tubo o conducto de paso directo. Conecta la laringe con los bronquios para que el aire pueda llegar correctamente a los pulmones<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "Para repasar un tema, el docente de Ciencias muestra dos descripciones:<br><br>1. Órgano protegido por el escroto, encargado de producir espermatozoides y hormonas masculinas.<br>2. Conducto femenino por donde se desplazan los óvulos y donde ocurre normalmente la fecundación.<br><br>¿Cuáles son los nombres de los órganos descritos?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "1 Clítoris y 2 uretra", 
+                "b": "1 Próstata y 2 ovario", 
+                "c": "1 Conducto deferente y 2 vagina", 
+                "d": "1 Testículo y 2 trompas de Falopio"
+            }, 
+            "correcta": "d", 
+            "explicacion": "Los testículos (1) se ubican en el escroto y generan espermatozoides. Las trompas de Falopio (2) son los tubos por donde viaja el óvulo desde el ovario, y es allí donde se une con el espermatozoide (fecundación)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "El aparato reproductor de la mujer incluye los ovarios, las trompas de Falopio, el útero, el cuello uterino y la vagina. Este sistema permite que se produzcan óvulos y que se nutra al óvulo fertilizado hasta que el bebé se desarrolle completamente.<br><br>¿Cuál es el nombre del órgano principal con forma de pera invertida <strong>donde se nutre y desarrolla el óvulo fertilizado (el bebé)</strong> durante el embarazo?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Trompas de Falopio", 
+                "b": "Vagina", 
+                "c": "Ovario", 
+                "d": "Útero"
+            }, 
+            "correcta": "d", 
+            "explicacion": "El útero, también conocido como matriz, es el órgano musculoso y hueco encargado de alojar, proteger y nutrir al feto durante los 9 meses de gestación<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "Considere la siguiente información:<br><div class='figure-box'>La digestión es responsable de que las células reciban nutrientes. Al utilizar estos nutrientes, las células producen urea, un desecho que proviene del nitrógeno. Las toxinas y la urea son filtradas por el riñón y desechadas en forma de orina.</div>La información anterior describe cómo se interrelacionan los sistemas<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "digestivo y urinario, en el proceso de la nutrición y en el desecho de sustancias.", 
+                "b": "hormonal y digestivo, en la formación de la urea a partir de nitrógeno.", 
+                "c": "reproductor y urinario, en la formación de la orina por los riñones.", 
+                "d": "respiratorio y nervioso, en el proceso de digestión de nutrientes."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El texto explica claramente que el sistema digestivo proporciona los nutrientes a las células, las cuales generan desechos. Luego, el sistema urinario (riñones) limpia esos desechos a través de la orina, mostrando cómo ambos sistemas trabajan en equipo<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-1.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Ciencias",
+                    nivel: "6° Grado",
+                    tema: "Cuerpo Humano",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
