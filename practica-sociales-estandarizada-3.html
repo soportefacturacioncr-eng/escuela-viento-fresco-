@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Estudios Sociales 3 - Cívica y Derechos</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #8e44ad; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #9b59b6; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #f5eef8; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #8e44ad; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #8e44ad; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #732d91; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #8e44ad; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Estudios Sociales: Cívica y Derechos Parte 3</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La Educación Cívica es una asignatura que orienta y explica el funcionamiento del sistema social en el que cada persona interactúa, permitiendo engrandecer la comunidad y la propia experiencia, entendiendo el conjunto de leyes y normas de convivencia que llevan a establecer deberes y derechos.</div>Con base en el texto, la Educación Cívica en la sociedad costarricense permite:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "fomentar el individualismo y la competencia sin considerar el bienestar colectivo.", 
+                "b": "promover exclusivamente la obediencia ciega a las autoridades sin cuestionar.", 
+                "c": "comprender y ejercer derechos y deberes para fortalecer la convivencia y la participación ciudadana.", 
+                "d": "limitar la participación ciudadana al cumplimiento pasivo de órdenes."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La Educación Cívica nos enseña a conocer nuestros derechos y deberes para vivir en armonía, participar activamente y mejorar nuestra convivencia en sociedad<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "En Costa Rica, esta institución protege los derechos e intereses de la población en general ante las actuaciones irregulares que puedan cometer las instituciones públicas cuando brindan sus servicios. ¿A cuál institución promotora de derechos pueden recurrir los ciudadanos?<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "Contraloría General de la República", 
+                "b": "Ministerio de Educación Pública", 
+                "c": "Instituto Mixto de Ayuda Social", 
+                "d": "Defensoría de los Habitantes"
+            }, 
+            "correcta": "d", 
+            "explicacion": "La <strong>Defensoría de los Habitantes</strong> es la entidad encargada de velar por los derechos de las personas cuando alguna institución del Estado les falla o actúa de forma irregular<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Lea la siguiente información:<br><div class='figure-box'>En Costa Rica, la disposición a cambiar comportamientos para la protección y conservación del ambiente a veces se dificulta por la resistencia cultural de las personas a asumir compromisos que representan un mayor esfuerzo individual.</div>A partir del texto, una práctica ciudadana que ayuda a la protección del ambiente consiste en:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "desestimar la responsabilidad individual, confiando únicamente en las autoridades.", 
+                "b": "adoptar prácticas sostenibles como el reciclaje, la participación y el ahorro de recursos en iniciativas comunitarias.", 
+                "c": "mantener conductas tradicionales sin modificar hábitos debido a la resistencia cultural.", 
+                "d": "apoyar solo campañas simbólicas sin cambiar hábitos de consumo."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Para cuidar el ambiente no basta con esperar al gobierno; cada ciudadano debe poner de su parte adoptando prácticas sostenibles cotidianas como reciclar y ahorrar recursos<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "La existencia de los pueblos originarios en Costa Rica se remonta a miles de años atrás. Su cultura es dinámica, una herencia sociocultural que se transmite y renueva constantemente a través de la memoria histórica. Un aporte de los pueblos originarios a la identidad costarricense consiste en la:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "olvido progresivo de su historia, lo que debilita su aporte nacional.", 
+                "b": "sustitución de sus costumbres debido a la modernización.", 
+                "c": "preservación y transmisión constante de su memoria histórica como base de la identidad cultural nacional.", 
+                "d": "imposición de tradiciones que limitan la integración."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La herencia y la memoria histórica de nuestros pueblos indígenas son pilares fundamentales que enriquecen y definen la identidad multiétnica y pluricultural de Costa Rica<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "Durante el periodo colonial en Costa Rica, la población indígena disminuyó debido a las guerras, el retiro a las montañas y las enfermedades traídas por los españoles. Los pocos que quedaron debieron realizar trabajos forzosos para los peninsulares. De acuerdo con el texto, los pueblos originarios durante la Colonia:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "mantuvieron su población invariable y conservaron su total autonomía.", 
+                "b": "fueron reducidos en número y obligados a trabajos forzosos para sostener la economía colonial.", 
+                "c": "se integraron voluntariamente a la sociedad colonial sin sufrir desplazamientos ni enfermedades.", 
+                "d": "aumentaron su población gracias a las buenas condiciones de los españoles."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La colonización española causó un terrible impacto demográfico (disminución de población por enfermedades) y sometió a los sobrevivientes a duros trabajos forzosos. *(Nota: El solucionario oficial del MEP tenía un error de dedo marcando la opción C, pero la respuesta real e histórica es la B)*<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "La idea de Costa Rica libre, soberana e independiente se ejemplifica mediante los distintos símbolos nacionales. El conocimiento de dichos símbolos contribuye a que los costarricenses se identifiquen con ellos desde jóvenes, incorporando normas y valores. Los símbolos nacionales cumplen un papel en la consolidación del Estado Nación con lo cual:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "fomenta el respeto histórico sin influir en la participación ciudadana.", 
+                "b": "limita la diversidad cultural al enfocarse únicamente en valores tradicionales.", 
+                "c": "fortalece la identidad nacional y promueve la unidad entre los ciudadanos desde edades tempranas.", 
+                "d": "debilita la identidad común al centrarse solo en diferencias regionales."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Nuestros símbolos patrios (la Bandera, el Escudo, el Himno) nos unen como nación y despiertan el orgullo y la identidad costarricense desde que somos niños<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Las manifestaciones artísticas son fundamentales para las sociedades porque crean espacios apropiados para analizar y entender la vida de las personas; por esta razón la Constitución Política de Costa Rica establece el derecho al arte y la cultura. Se puede afirmar que el desarrollo del arte propicia en las personas:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "el desarrollo de la creatividad, la capacidad de reflexión crítica y el fortalecimiento de la identidad y cohesión social.", 
+                "b": "la tendencia a imitar expresiones extranjeras debilitando lo nacional.", 
+                "c": "el interés por el entretenimiento superficial sin análisis profundo.", 
+                "d": "el rechazo de expresiones culturales propias."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El arte y la cultura estimulan el pensiero crítico, la imaginación y nos unen como comunidad al valorar nuestras raíces y expresiones locales<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "En opinión de la Sala Constitucional (Sala IV), los derechos constitucionales representan la principal garantía con que cuenta la ciudadanía, debiendo velar por el respeto a la persona y la constante divulgación de las libertades públicas. La existencia de estos derechos posibilita:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "permitir que las autoridades ejerzan su poder sin limitaciones.", 
+                "b": "garantizar la protección efectiva de los derechos fundamentales al promover el desarrollo integral y la defensa ciudadana.", 
+                "c": "facilitar el control exclusivo del Poder Ejecutivo sobre las libertades.", 
+                "d": "asegurar privilegios especiales solo para grupos específicos."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Los derechos constitucionales y los tribunales de justicia (como la Sala IV) son el escudo protector de los ciudadanos frente a cualquier abuso, garantizando nuestras libertades fundamentales<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q9", 
+            "type": "mc", 
+            "pregunta": "Una de las disciplinas más importantes de los Estudios Sociales es la Historia. Su objetivo principal es entender y explicar, a través del análisis de fuentes (documentos, fotografías, registros), los sucesos históricos, sus causas y consecuencias. La importancia de la Historia radica en:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "memorizar fechas y eventos sin profundizar en el contexto.", 
+                "b": "priorizar relatos tradicionales sin utilizar diversas fuentes.", 
+                "c": "comprender y analizar críticamente los hechos históricos, sus causas y consecuencias para entender la sociedad actual.", 
+                "d": "estudiar biografías de personajes famosos omitiendo a la colectividad."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Estudiar historia no es aprenderse fechas de memoria; es analizar el pasado de forma crítica para comprender por qué nuestra sociedad actual es como es y cómo podemos mejorarla<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q10", 
+            "type": "mc", 
+            "pregunta": "El nuevo panorama internacional nos impulsa a adoptar una 'nueva forma de pensar y vivir en Centroamérica' para enfrentar los retos actuales mediante la coordinación de acciones conjuntas. Costa Rica está estrechamente vinculada con la región. De acuerdo con el texto, las relaciones políticas y sociales con los países centroamericanos permiten:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {
+                "a": "el fortalecimiento de la cooperación política y social regional, lo cual facilita soluciones conjuntas a retos comunes.", 
+                "b": "la competencia y desconfianza entre países que obstaculizan la integración.", 
+                "c": "el aislamiento de Costa Rica al enfocarse solo en intereses nacionales.", 
+                "d": "la desaparición de los vínculos históricos entre los países."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Ningún país puede resolver sus problemas solo. La cooperación y la unión entre las naciones de Centroamérica son indispensables para alcanzar el desarrollo sostenible y la paz regional<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q11", 
+            "type": "mc", 
+            "pregunta": "Costa Rica presenta diferentes formas de relieve. Una de ellas es el área donde las aguas oceánicas o marítimas se encuentran con los continentes o islas, pudiendo presentar playas, acantilados o estuarios, influenciada por la erosión y la actividad tectónica. El texto hace referencia a:<span class='cite-hidden'>[cite: 6]</span>", 
+            "opciones": {"a": "costa.", "b": "meseta.", "c": "valle fluvial.", "d": "cordillera."}, 
+            "correcta": "a", 
+            "explicacion": "La <strong>costa</strong> es la franja de terreno donde la tierra firme se une con el mar u océano, caracterizándose por la presencia de playas, acantilados y manglares<span class='cite-hidden'>[cite: 6]</span>.<br><a href='resumen-sociales-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Estudios Sociales",
+                    nivel: "6° Grado",
+                    tema: "Cívica y Derechos (P3)",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
