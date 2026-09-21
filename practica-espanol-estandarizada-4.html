@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Español Estandarizada 4 - Comprensión Lectora</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #f39c12; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #d68910; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #fdf2e9; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #f39c12; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #d68910; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Español: Comprensión Lectora Parte 4</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q37", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Las abejas son fundamentales para la supervivencia del planeta. Su labor de polinización permite que las plantas se reproduzcan y produzcan alimentos. Si las abejas desaparecieran, miles de cultivos se perderían, amenazando la seguridad alimentaria de toda la humanidad.</div>¿Cuál es la idea fundamental del texto anterior?<span class='cite-hidden'></span>", 
+            "opciones": {
+                "a": "Las abejas son indispensables para la producción mundial de alimentos y la supervivencia del planeta.", 
+                "b": "Las abejas producen miel que sirve para alimentar a la humanidad en tiempos de escasez.", 
+                "c": "La polinización es un proceso donde las plantas se reproducen sin ayuda de los insectos.", 
+                "d": "Si las abejas desaparecen, solo algunos cultivos locales se perderían."
+            }, 
+            "correcta": "a", 
+            "explicacion": "La idea principal o fundamental resume el propósito del texto: recalcar que las abejas son vitales para la polinización, los alimentos y, por tanto, la supervivencia del planeta.<span class='cite-hidden'></span><br><a href='resumen-espanol-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q38", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Los antiguos egipcios construyeron monumentales pirámides como tumbas sagradas para sus faraones, las cuales estaban llenas de tesoros para el más allá. Entre todas ellas, la Gran Pirámide de Guiza es la más grande y famosa, siendo una de las maravillas del mundo antiguo.</div>En el texto anterior, ¿cuál es una idea complementaria?<span class='cite-hidden'></span>", 
+            "opciones": {
+                "a": "Los antiguos egipcios no creían en el más allá.", 
+                "b": "Los faraones se encargaban de construir las pirámides con sus propias manos.", 
+                "c": "La Gran Pirámide de Guiza destaca por ser la de mayor tamaño y fama.", 
+                "d": "Las pirámides fueron construidas para esconderse de los enemigos."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Mientras que el tema central es la construcción de tumbas para faraones, el hecho de que la Pirámide de Guiza sea la más grande es un dato o ejemplo complementario.<span class='cite-hidden'></span><br><a href='resumen-espanol-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q39", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>El uso excesivo de plásticos de un solo uso está ahogando los océanos y destruyendo la fauna. Muchos animales marinos, como las tortugas, confunden las bolsas plásticas transparentes con medusas, lo que provoca que se asfixien gravemente al intentar tragarlas.</div>Según la información anterior, ¿cuál es la causa de que las tortugas marinas se asfixien?<span class='cite-hidden'></span>", 
+            "opciones": {
+                "a": "La sobrepoblación de tortugas marinas en el océano.", 
+                "b": "La confusión de las bolsas de plástico con medusas al intentar comerlas.", 
+                "c": "El comportamiento agresivo de las medusas en el mar.", 
+                "d": "La falta de alimento natural en las costas y playas."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La causa es la razón por la que ocurre el evento. Las tortugas se asfixian *porque* confunden las bolsas con medusas, que es su alimento natural.<span class='cite-hidden'></span><br><a href='resumen-espanol-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q40", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La falta de sueño adecuado en los niños en edad escolar reduce su capacidad de concentración. Al no dormir las horas necesarias, el cerebro no descansa, y al día siguiente los niños presentan irritabilidad, fatiga constante y un bajo rendimiento en sus deberes académicos.</div>Según el texto anterior, ¿cuál es el efecto de la falta de sueño en los niños?<span class='cite-hidden'></span>", 
+            "opciones": {
+                "a": "El aumento de la energía durante el día escolar.", 
+                "b": "La mejora en sus relaciones sociales y familiares.", 
+                "c": "La disminución de la concentración y un bajo rendimiento académico.", 
+                "d": "El incremento en su deseo de jugar con videojuegos."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El efecto es la consecuencia de la falta de descanso. El texto indica que esto provoca fatiga, irritabilidad y un bajo rendimiento escolar (disminución de concentración).<span class='cite-hidden'></span><br><a href='resumen-espanol-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q41", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>El viejo leñador compartía su pequeño trozo de pan con los pajarillos y las ardillas del bosque, aunque él mismo apenas tenía qué comer. Un día de invierno muy crudo, cuando el leñador cayó enfermo, los animales del bosque llegaron a su puerta trayéndole frutas secas, miel y nueces para cuidarlo.</div>En el texto anterior, ¿cuál es el tema principal tratado?<span class='cite-hidden'></span>", 
+            "opciones": {
+                "a": "Los peligros de vivir solo en el bosque invernal.", 
+                "b": "La solidaridad, el amor y el agradecimiento entre los seres vivos.", 
+                "c": "El trabajo duro de un leñador a lo largo de su vida.", 
+                "d": "La recolección de alimentos que hacen las ardillas en el invierno."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El cuento narra cómo la bondad del leñador (dar su comida) fue devuelta por los animales cuando él más lo necesitaba. El tema moral de fondo es la solidaridad y el agradecimiento.<span class='cite-hidden'></span><br><a href='resumen-espanol-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q42", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La liebre se paseaba de un lado al otro, riéndose constantemente de la lentitud de su compañera. \"Nunca llegarás a tiempo a ningún lado con ese caparazón pesado\", le decía a la tortuga con tono de burla, mientras presumía sus largas patas dando saltos.</div>En el texto anterior, ¿cuál es el comportamiento evidenciado por la liebre?<span class='cite-hidden'></span>", 
+            "opciones": {
+                "a": "Comprensivo, pues intenta ayudar a la tortuga a caminar más rápido.", 
+                "b": "Tímido, porque le da miedo competir contra otros animales.", 
+                "c": "Inseguro, porque siente que sus piernas no son lo suficientemente largas.", 
+                "d": "Arrogante y burlón, al presumir sus cualidades y menospreciar a la tortuga."
+            }, 
+            "correcta": "d", 
+            "explicacion": "La actitud de reírse de los demás, presumir sus propias cualidades y hacer sentir menos a los otros es un claro ejemplo de un comportamiento arrogante y burlón.<span class='cite-hidden'></span><br><a href='resumen-espanol-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 37}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Español",
+                    nivel: "6° Grado",
+                    tema: "Comprensión Lectora (P4)",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
