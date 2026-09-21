@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Ciencias Estandarizada 4 - Geofísica</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #27ae60; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #2ecc71; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #d5f5e3; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .table-container { width: 100%; overflow-x: auto; margin: 15px 0; -webkit-overflow-scrolling: touch; }
+        .table-q { width: 100%; max-width: 500px; border-collapse: collapse; font-weight: normal; font-size: 14px; }
+        .table-q th, .table-q td { border: 1px solid #bdc3c7; padding: 8px; text-align: center; white-space: nowrap; }
+        .table-q th { background-color: #ecf0f1; color: #2c3e50; }
+
+        .figure-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 15px; font-style: italic; color: #555;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #219150; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Ciencias: Geofísica</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q1", 
+            "type": "mc", 
+            "pregunta": "Para que se produzca un desequilibrio ecológico deben darse perturbaciones externas al medio, ya sean de origen natural o producidas por actividades humanas. ¿Cuál opción corresponde a un factor <strong>natural</strong> que altera el equilibrio ecológico?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "El uso de los combustibles fósiles.", 
+                "b": "Los plaguicidas que producen contaminación del agua y suelos.", 
+                "c": "La construcción de represas hidroeléctricas que modifican el cauce de los ríos.", 
+                "d": "La ceniza producto del vulcanismo que obstruye las corrientes de agua."
+            }, 
+            "correcta": "d", 
+            "explicacion": "Los combustibles, plaguicidas y represas son creados por el ser humano (origen antrópico). El vulcanismo y la ceniza son fenómenos propios de la naturaleza (factor natural)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        }, 
+        {
+            "id": "q2", 
+            "type": "mc", 
+            "pregunta": "¿Cuál de las siguientes opciones se refiere a la capa de la Tierra denominada <strong>hidrósfera</strong>?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Es la parte de la Tierra conformada por todas las masas de agua sobre y debajo de la superficie.", 
+                "b": "Es la capa de donde provienen los materiales expulsados en erupciones (entre núcleo y corteza).", 
+                "c": "Es la capa sólida y rígida, formada por rocas y silicatos.", 
+                "d": "Es la envoltura gaseosa que rodea la Tierra y permite la respiración."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El prefijo \"hidro\" significa agua. Por lo tanto, la hidrósfera engloba todas las masas de agua del planeta (océanos, ríos, aguas subterráneas)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q3", 
+            "type": "mc", 
+            "pregunta": "Considere la siguiente información:<br>1. El <strong>viento</strong> actúa sobre la superficie, arranca trocitos de roca y los transporta.<br>2. Posterior al <strong>terremoto</strong> de Limón en 1991 la costa se levantó y se produjeron deslizamientos.<br>3. El <strong>agua de lluvia</strong> erosiona las laderas generando pérdida de suelo.<br><br>¿Cuál opción hace referencia a efectos provocados por los agentes <strong>internos</strong> sobre el relieve?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "Solo 1", "b": "Solo 2", "c": "1 y 3 solamente", "d": "2 y 3 solamente"}, 
+            "correcta": "b", 
+            "explicacion": "Los agentes internos ocurren dentro de la Tierra (terremotos y vulcanismo). El viento (1) y la lluvia (3) ocurren por fuera, en la atmósfera, siendo agentes externos<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q4", 
+            "type": "mc", 
+            "pregunta": "La Luna es el único satélite natural de la Tierra. Esta completa una vuelta <strong>alrededor de la Tierra</strong> aproximadamente una vez al mes. La información anterior se refiere al movimiento de la Luna denominado:<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "eclipse.", "b": "rotación.", "c": "giratorio.", "d": "traslación."}, 
+            "correcta": "d", 
+            "explicacion": "El movimiento que realiza un astro al desplazarse y darle la vuelta a otro cuerpo (como la Luna girando alrededor de la Tierra, o la Tierra alrededor del Sol) se llama traslación<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q5", 
+            "type": "mc", 
+            "pregunta": "El 10 de junio del 2021 se generó un fenómeno cuando la Luna se interpuso entre la Tierra y el Sol. Al estar tan alejada, no tapó por completo al Sol, dejando ver un anillo brillante conocido como \"anillo de fuego\". ¿Con cuál opción tiene relación este proceso?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Es un tipo de eclipse solar, ya que la Luna al interponerse no tapa por completo la luz solar.", 
+                "b": "Es efecto de las erupciones solares, también conocidas como auroras.", 
+                "c": "Es un eclipse lunar, ya que la Luna cubre el Sol.", 
+                "d": "Es un eclipse solar, ya que la Tierra cubre casi todo el Sol al interponerse."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Cuando la Luna se interpone entre nosotros y el Sol, se llama Eclipse Solar. Como la luna estaba lejos y no lo tapó todo, formó el famoso \"anillo de fuego\" (eclipse solar anular)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q6", 
+            "type": "mc", 
+            "pregunta": "La mamá de Damaris le comentó un mito de su abuela: \"el cabello dañado es mejor cortarlo cuando la Luna se hace visible completamente y se ve como un <strong>disco iluminado</strong>\". ¿Cuál es la fase de la Luna a la que se refiere?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {"a": "Llena", "b": "Nueva", "c": "Cuarto creciente", "d": "Cuarto menguante"}, 
+            "correcta": "a", 
+            "explicacion": "La fase donde la Luna está recibiendo la luz del sol de frente y nosotros la vemos redonda, totalmente visible y brillante en el cielo, es la Luna Llena<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q7", 
+            "type": "mc", 
+            "pregunta": "Observe la figura de la \"Osa menor\", la cual está formada por líneas imaginarias que unen diferentes estrellas en el cielo. ¿Cuál afirmación describe a este cuerpo celeste?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Son sistemas cósmicos enormes que constan de miles de millones de estrellas.", 
+                "b": "Son agrupaciones aparentes de estrellas en el cielo nocturno, que forman patrones reconocibles.", 
+                "c": "Son concentraciones de gas en las que predomina el hidrógeno.", 
+                "d": "Son cuerpos rocosos que orbitan alrededor del Sol."
+            }, 
+            "correcta": "b", 
+            "explicacion": "La Osa Menor es una <strong>constelación</strong>. Las constelaciones son grupos de estrellas que parecen formar figuras en el cielo cuando las conectamos con la imaginación (como dibujos de osos, cazadores o herramientas)<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q8", 
+            "type": "mc", 
+            "pregunta": "Los cuerpos celestes son objetos naturales que forman parte del universo. ¿Cuál de las siguientes opciones describe al cuerpo celeste denominado <strong>Vía Láctea</strong>?<span class='cite-hidden'>[cite: 8]</span>", 
+            "opciones": {
+                "a": "Es una agrupación aparente de estrellas que forman figuras en el cielo nocturno.", 
+                "b": "Son pequeños objetos rocosos que orbitan alrededor del Sol (Marte y Júpiter).", 
+                "c": "Es una galaxia en forma de espiral formada por miles de millones de estrellas y masas solares.", 
+                "d": "Son enormes bolas de gases ardientes hechas de hidrógeno que producen luz."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La Vía Láctea es nuestra <strong>Galaxia</strong>. Es un gigantesco remolino (espiral) que contiene miles de millones de estrellas, planetas (incluyendo la Tierra) y polvo cósmico unidos por la gravedad<span class='cite-hidden'>[cite: 8]</span>.<br><a href='resumen-ciencias-estandarizada-4.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 1}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Ciencias",
+                    nivel: "6° Grado",
+                    tema: "Geofísica",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
