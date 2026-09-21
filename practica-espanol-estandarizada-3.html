@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Español Estandarizada 3 - Comprensión Lectora</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; background-color: #f39c12; color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-bottom: 5px solid #d68910; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0; font-size: 16px; color: #fdf2e9; }
+        
+        .question-block { margin-bottom: 25px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; background: #fff; transition: all 0.3s; }
+        .question-block.correct { border-color: #27ae60; background: #f0fdf4; }
+        .question-block.incorrect { border-color: #e74c3c; }
+        .question-text { font-weight: bold; margin-bottom: 15px; font-size: 16px; color: #2c3e50; line-height: 1.5; }
+        
+        .figure-box { background: #f4f6f6; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; margin-bottom: 15px; font-style: italic; color: #555; line-height: 1.6;}
+
+        .options label { display: block; margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+        
+        .btn-submit { width: 100%; padding: 15px; background: #f39c12; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #d68910; }
+        
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; line-height: 1.5;}
+        .feedback.show { display: block; }
+        .feedback-error { background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; }
+        .feedback-correct { background: #d4edda; color: #155724; border-left: 5px solid #28a745; }
+        .feedback-warning { background: #fff3cd; color: #856404; border-left: 5px solid #ffc107; }
+        
+        .btn-review { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #f39c12; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .btn-nav { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2c3e50; font-weight: bold; padding: 10px 15px; background: #e0e0e0; border-radius: 6px; }
+        
+        .cite-hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="btn-nav">⬅️ Volver al Menú Principal</a>
+    <div class="header">
+        <h1>Español: Comprensión Lectora Parte 3</h1>
+        <p>Escuela Viento Fresco | 6° Grado 2026 | Prof. Hillary Molina</p>
+    </div>
+    
+    <div id="quiz-container"></div>
+    <button id="btn-grade" class="btn-submit" onclick="calificarPrueba()">Revisar Respuestas</button>
+</div>
+
+<script src="controlador-firebase.js" type="module"></script>
+
+<script>
+    const dbPreguntas = [
+        {
+            "id": "q25", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>-Wendy, me escapé el día en que nací [...]. Fue porque oí a papá y mamá -explicó él en voz baja-, hablar sobre lo que iba a ser yo cuando fuera mayor... -No quiero ser mayor jamás -dijo con vehemencia-. Quiero ser siempre un niño y divertirme.</div>Según el texto anterior, ¿cuál es el pensamiento evidenciado por Peter?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La vida adulta no es divertida.", 
+                "b": "Los adultos no entienden a los niños.", 
+                "c": "La edad para los niños no es importante.", 
+                "d": "Los jardines son más divertidos que la casa familiar."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Al afirmar que quiere ser un niño \"y divertirme\" en contraposición a crecer, Peter evidencia que en su mente la vida de un adulto carece de diversión <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q26", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Si a una persona mayor le decimos: \"Hay una casa preciosa de ladrillos rosas, con geranios en las ventanas...\", no pueden imaginarse cómo es. Es preciso decir: \"Hay una casa que vale tantos millones de pesos\". Entonces exclaman entusiasmados: \"¡Oh, qué hermosa es!\"</div>Según el texto anterior, ¿cuál es el pensamiento evidenciado por el personaje?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Los mayores perciben lo hermoso mejor que los niños.", 
+                "b": "Las personas mayores no se fijan en detalles pequeños.", 
+                "c": "Los adultos relacionan la belleza con el valor económico.", 
+                "d": "Las personas mayores necesitan datos concretos para imaginar una casa."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El narrador critica que los adultos solo exclaman que algo es hermoso si antes les dicen que cuesta muchos \"millones de pesos\", relacionando la belleza directamente con el dinero <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q27", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>El pobre Pinocho se acercó al fuego donde estaba aquella olla que hervía... pero ya se acordarán que estaba pintada en la pared. Entonces empezó a recorrer la habitación buscando... un poco de pan, aunque fuera muy duro... un pedazo de pescado... pero no encontró nada, ¡nada!</div>En el texto anterior, ¿cuál conflicto enfrenta el personaje?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Sentirse muy solo.", 
+                "b": "No tener qué comer.", 
+                "c": "Ver una olla pintada.", 
+                "d": "Tener la nariz demasiado larga."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El problema central que sufre Pinocho en este fragmento es el hambre desesperada; busca pan duro, un hueso o cualquier cosa, pero el conflicto es no tener absolutamente nada de alimento <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q28", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>-Ese Gepetto parece un buen hombre; pero es muy cruel con los muchachos. Si le dejan a ese pobre muñeco en sus manos, es capaz de hacerle pedazos... el guardia, dejando en libertad al muñeco, se llevó preso al pobre Gepetto... lloraba como un becerro; cuando iba camino de la cárcel...</div>Según el texto anterior, ¿cuál es el conflicto sufrido por Gepetto?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La pérdida de su libertad.", 
+                "b": "Hacer pedazos al muñeco.", 
+                "c": "El dolor por castigar a Pinocho.", 
+                "d": "Las críticas injustas del vecindario."
+            }, 
+            "correcta": "a", 
+            "explicacion": "El mayor problema que vive Gepetto en el relato es ser arrestado por el guardia (\"se llevó preso al pobre Gepetto\") y caminar hacia la cárcel, es decir, perder su libertad <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q29", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Campanilla no era toda maldad; o, más bien, era toda maldad en ese momento... Por el momento estaba celosísima de Wendy. Por supuesto, Wendy no entendía lo que le decía con su precioso tintineo y estoy convencido de que parte eran palabrotas...</div>En el texto anterior, ¿cuál es el comportamiento evidenciado por Campanilla?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Amistoso: verdaderamente quería ser amiga de Wendy.", 
+                "b": "Malvado: actuaba de una muy mala manera con Wendy.", 
+                "c": "Temeroso: sentía miedo y quería la compañía de Wendy.", 
+                "d": "Cambiante: variaba totalmente según su sentimiento."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El texto indica explícitamente que \"era toda maldad en ese momento\", actuando por los celos y diciéndole palabrotas a Wendy <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q30", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Aunque Gepetto estaba haciendo esfuerzos para poner cara de fiera, tenía los ojos llenos de lágrimas y el corazón en un puño por ver en aquel estado tan lamentable a su pobre Pinocho. Y sin decir nada, tomó sus herramientas... y se puso a trabajar con gran entusiasmo.</div>En el texto anterior, ¿cuál es el comportamiento evidenciado por Gepetto?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Rencoroso: ayuda a Pinocho, pero realmente está muy molesto con él.", 
+                "b": "Sentimental: se conmueve y cede ante la condición en que está Pinocho.", 
+                "c": "Inocente: es engañado por Pinocho para que le fabrique unos pies nuevos.", 
+                "d": "Diligente: trabaja con cuidado y entusiasmo en la tarea encomendada."
+            }, 
+            "correcta": "b", 
+            "explicacion": "Aunque intentó verse furioso, su corazón se ablandó (se conmovió), sus ojos se llenaron de lágrimas al ver a su hijo mal, y terminó ayudándolo. Esto demuestra un comportamiento altamente sentimental y compasivo <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q31", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>...según el análisis del doctor Biro, el índice de masa corporal es el factor más importante a la hora de explicar este fenómeno [pubertad temprana]. Esto es porque la grasa es una glándula hormonal muy activa... Cuanto más tejido graso tiene una niña, mayor es su probabilidad de comenzar la pubertad antes.</div>Según la idea fundamental del texto anterior, el análisis del doctor Biro destaca que:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "los químicos del estrógeno alteran la estructura celular en las menores de edad.", 
+                "b": "el índice de masa corporal se asocia principalmente con la pubertad temprana en las niñas.", 
+                "c": "la exposición a elementos químicos aumenta la probabilidad de despertar la pubertad.", 
+                "d": "la grasa corporal convierte hormonas en estrógeno para activar la pubertad precoz."
+            }, 
+            "correcta": "b", 
+            "explicacion": "El texto plantea claramente en su idea central la conclusión del doctor Biro: el índice de masa corporal (peso/grasa) está directamente ligado con iniciar la pubertad más temprano <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q32", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La bioluminiscencia es un fenómeno fascinante que se observa en muchos animales marinos. Este proceso implica la producción de luz por organismos vivos, y se cree que tiene varias funciones en el mundo marino... para atraer presas, comunicarse... e incluso camuflarse... o como mecanismo de defensa.</div>Según la idea fundamental del texto anterior, la bioluminiscencia:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "se presenta en ciertos animales marinos y es de poca importancia científica.", 
+                "b": "es una característica presente en los peces que habitan en las zonas más profundas.", 
+                "c": "es una propiedad que permite a algunas especies marinas producir su propia luz para diversas funciones.", 
+                "d": "es un fenómeno exclusivo que solo ocurre en ciertos organismos terrestres."
+            }, 
+            "correcta": "c", 
+            "explicacion": "La idea principal es la definición y utilidad del concepto: los seres marinos producen su propia luz (bioluminiscencia) y esto les sirve para diversas funciones de supervivencia (defenderse, comer, camuflarse) <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q33", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>La historia del grafiti en el campo de las artes empieza en la ciudad de Nueva York durante los años 60, fue grandemente influenciado por la música hip-hop del momento... Ya para el año 70, la técnica empezó a alcanzar un punto importante y se empezaron a incluir diferentes tipos de iconografías...</div>La idea fundamental del texto anterior expone que, en el ámbito de las artes, el grafiti:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "muestra los gustos y preferencias de artistas jóvenes.", 
+                "b": "logró mucho éxito con los diseños complejos de gran tamaño.", 
+                "c": "inició en los años 60 en Nueva York influenciado por la música hip-hop.", 
+                "d": "expresó su evolución en los años 70 mediante el uso de colores vibrantes."
+            }, 
+            "correcta": "c", 
+            "explicacion": "El foco central del párrafo (su idea fundamental) es contextualizar los orígenes del grafiti: nos indica dónde nació (Nueva York), cuándo (años 60) y bajo qué influencia (hip-hop) <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q34", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Para lograrlo se debe aprender con el \"corazón\", han descubierto científicos... El cerebro juega su importante papel, pero de forma secundaria. ¿De qué hablamos? De una ciencia aplicada tanto al aprendizaje como a la enseñanza, llamada neurodidáctica... La neuroeducación demuestra que emoción y conocimiento van juntos.</div>¿Cuál es una idea complementaria presente en el texto anterior?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "La neurodidáctica es una ciencia aplicada al aprendizaje.", 
+                "b": "Las mejores universidades estudian en conjunto la neurodidáctica.", 
+                "c": "El cerebro cumple la función principal en el aprendizaje neurodidáctico.", 
+                "d": "La neuroeducación integra emoción con el conocimiento humano."
+            }, 
+            "correcta": "a", 
+            "explicacion": "Una idea complementaria sirve para aclarar conceptos; en este caso, el texto agrega como detalle que de lo que estamos hablando es de \"una ciencia aplicada tanto al aprendizaje como a la enseñanza, llamada neurodidáctica\" <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q35", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Los perros son animales inteligentes y a la mayoría les encanta aprender. Si le enseñamos al perro cosas simples, como sentarse, esperar y venir cuando lo llamen, podremos tenerlo siempre seguro y bajo control. Además, enseñarle a un perro puede ser una excelente manera para que no se aburra.</div>Según el texto anterior, una idea complementaria destaca que un perro:<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "es uno de los animales más inteligentes.", 
+                "b": "recibe únicamente instrucciones de su amo.", 
+                "c": "puede estar bajo control si se le enseñan cosas simples.", 
+                "d": "puede evitar el aburrimiento si se le enseñan trucos."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Mientras que la idea principal es la inteligencia del perro y su gusto por aprender, una idea complementaria o resultado de ello es que, al enseñarle cosas básicas, podremos tenerlo bajo control <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        },
+        {
+            "id": "q36", 
+            "type": "mc", 
+            "pregunta": "Lea el siguiente texto:<br><div class='figure-box'>Los asirios fueron los primeros en desarrollar armas y elementos de protección de hierro... También estuvieron entre los primeros en construir carruajes, que proporcionaron una mayor protección en el campo de batalla... Pero mucho se perdió durante su conquista...</div>¿Cuál opción identifica una idea complementaria presente en el texto anterior?<span class='cite-hidden'>[cite: 5]</span>", 
+            "opciones": {
+                "a": "Los asirios poseían la mejor tecnología de la época.", 
+                "b": "Los túneles que hacían los asirios les permitía obtener victorias.", 
+                "c": "Los asirios construyeron carruajes para protegerse en las batallas.", 
+                "d": "Los asirios crearon una biblioteca para preservar su conocimiento."
+            }, 
+            "correcta": "c", 
+            "explicacion": "Como detalle secundario al tema de las armas y la tecnología militar de los asirios, el texto señala textualmente que construyeron carruajes para protegerse en la batalla <span class='cite-hidden'>[cite: 5]</span>.<br><a href='resumen-espanol-estandarizada-3.html' class='btn-review'>📖 Leer Resumen</a>"
+        }
+    ];
+
+    let intentosPorPregunta = {};
+
+    function renderizarExamen() {
+        const container = document.getElementById('quiz-container');
+        let html = '';
+        dbPreguntas.forEach((q, index) => {
+            intentosPorPregunta[q.id] = 0;
+            html += `<div class="question-block" id="block-${q.id}">
+                        <div class="question-text">${index + 25}. ${q.pregunta}</div>`;
+            
+            if (q.type === 'mc') {
+                html += `<div class="options" id="opts-${q.id}">`;
+                for (const [key, value] of Object.entries(q.opciones)) {
+                    html += `<label id="lbl-${q.id}-${key}"><input type="radio" name="${q.id}" value="${key}"> ${key.toUpperCase()}) ${value}</label>`;
+                }
+                html += `</div>`;
+            }
+            html += `<div id="feedback-${q.id}" class="feedback"></div></div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function calificarPrueba() {
+        let respuestasCorrectasTotales = 0;
+        let preguntasCompletadas = 0;
+
+        dbPreguntas.forEach(q => {
+            const block = document.getElementById(`block-${q.id}`);
+            const fb = document.getElementById(`feedback-${q.id}`);
+            
+            if (block.classList.contains('correct') || block.classList.contains('locked')) {
+                if (block.classList.contains('correct')) respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+                return;
+            }
+
+            let esCorrecta = false;
+            let respondida = false;
+
+            const seleccion = document.querySelector(`input[name="${q.id}"]:checked`);
+            if (seleccion) { 
+                respondida = true; 
+                if (seleccion.value === q.correcta) esCorrecta = true; 
+            }
+
+            if (!respondida) return;
+
+            if (esCorrecta) {
+                block.classList.add('correct');
+                fb.className = 'feedback show feedback-correct';
+                fb.innerHTML = '✅ ¡Correcto! Excelente trabajo.';
+                deshabilitar(q);
+                respuestasCorrectasTotales++;
+                preguntasCompletadas++;
+            } else {
+                intentosPorPregunta[q.id]++;
+                if (intentosPorPregunta[q.id] >= 2) {
+                    block.classList.add('locked', 'incorrect');
+                    fb.className = 'feedback show feedback-error';
+                    fb.innerHTML = `❌ Agotaste tus intentos.<br><br><strong>Explicación:</strong><br>${q.explicacion}`;
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.background = '#d4edda';
+                    document.getElementById(`lbl-${q.id}-${q.correcta}`).style.borderColor = '#28a745';
+                    deshabilitar(q);
+                    preguntasCompletadas++;
+                } else {
+                    fb.className = 'feedback show feedback-warning';
+                    fb.innerHTML = '❌ Incorrecto. Tienes un intento más, revisa tu respuesta.';
+                }
+            }
+        });
+
+        if (preguntasCompletadas === dbPreguntas.length) {
+            let calificacionFinal = (respuestasCorrectasTotales / dbPreguntas.length) * 100;
+            
+            if (typeof window.registrarResultadoPrueba === "function") {
+                window.registrarResultadoPrueba({
+                    materia: "Español",
+                    nivel: "6° Grado",
+                    tema: "Comprensión Lectora (P3)",
+                    nota: calificacionFinal.toFixed(2),
+                    aciertos: respuestasCorrectasTotales,
+                    totalPreguntas: dbPreguntas.length
+                });
+            }
+
+            const btnGrade = document.getElementById("btn-grade");
+            btnGrade.textContent = `Prueba Finalizada - Nota: ${calificacionFinal.toFixed(0)}`;
+            btnGrade.disabled = true;
+            btnGrade.style.background = "#7f8c8d";
+        }
+    }
+
+    function deshabilitar(q) {
+        document.querySelectorAll(`input[name="${q.id}"]`).forEach(r => r.disabled = true);
+    }
+
+    window.onload = renderizarExamen;
+</script>
+</body>
+</html>
