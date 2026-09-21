@@ -168,7 +168,7 @@
         };
 
         // =====================================================================
-        // DIRECTORIO DE PRÁCTICAS (AQUÍ AGREGAS TODAS LAS QUE QUIERAS SIN LÍMITE)
+        // DIRECTORIO DE PRÁCTICAS (Agrega aquí las prácticas manualmente)
         // =====================================================================
         const baseDeDatosPracticas = {
             
@@ -178,33 +178,29 @@
                 { numero: 2, tema: "Geometría", archivo: "practica-mate-estandarizada-2.html", resumen: "resumen-mate-estandarizada-2.html" },
                 { numero: 3, tema: "Medidas", archivo: "practica-mate-estandarizada-3.html", resumen: "resumen-mate-estandarizada-3.html" },
                 { numero: 4, tema: "Relaciones y Álgebra", archivo: "practica-mate-estandarizada-4.html", resumen: "resumen-mate-estandarizada-4.html" },
-                { numero: 5, tema: "Estadística y Probabilidad", archivo: "practica-mate-estandarizada-5.html", resumen: "resumen-mate-estandarizada-5.html" }, 
+                { numero: 5, tema: "Estadística y Probabilidad", archivo: "practica-mate-estandarizada-5.html", resumen: "resumen-mate-estandarizada-5.html" }
             ],
             
             "lista-ciencias-estandarizada": [
-                // { numero: 1, tema: "Seres Vivos", archivo: "practica-ciencias-estandarizada-1.html", resumen: "resumen-ciencias-estandarizada-1.html" }
+                // Agrega aquí las de ciencias cuando existan
             ],
 
             "lista-espanol-estandarizada": [
-                // Ejemplo de cómo agregar cuando las hagamos:
-                // { numero: 1, tema: "Comprensión de Lectura", archivo: "practica-espanol-estandarizada-1.html", resumen: "resumen-espanol-estandarizada-1.html" }
+                // Agrega aquí las de español cuando existan
             ],
 
             "lista-sociales-estandarizada": [
-                // Vacío por ahora
+                // Agrega aquí las de sociales cuando existan
             ],
 
             // PRÁCTICAS REGULARES
-            "lista-mate": [
-                // { numero: 1, tema: "Fracciones", archivo: "practica-mate-1.html", resumen: "resumen-mate-1.html" }
-            ],
+            "lista-mate": [],
             "lista-ciencias": [],
             "lista-espanol": [],
             "lista-sociales": []
         };
 
         function renderizarPracticas() {
-            // Recorremos cada categoría en nuestro directorio
             for (const [idContenedor, practicas] of Object.entries(baseDeDatosPracticas)) {
                 const contenedor = document.getElementById(idContenedor);
                 
@@ -215,7 +211,6 @@
 
                 let htmlTarjetas = '';
                 practicas.forEach(practica => {
-                    // Determinar si es estandarizada o regular viendo el ID del contenedor
                     const tipo = idContenedor.includes('estandarizada') ? 'Estandarizada' : 'Regular';
                     
                     htmlTarjetas += `
