@@ -20,7 +20,7 @@ function getDeviceId() {
     return deviceId;
 }
 
-// 3. Verificación de Estudiante (Expuesta a window para evitar errores de módulos)
+// 3. Verificación de Estudiante (ACCESO ABIERTO Y AUTO-REGISTRO)
 window.verificarEstudiante = async function() {
     let idEstudiante = localStorage.getItem('estudianteID');
     const myDeviceId = getDeviceId();
@@ -40,24 +40,18 @@ window.verificarEstudiante = async function() {
         localStorage.setItem('estudianteID', idEstudiante);
     }
 
-    // A. VERIFICAR SI ESTÁ AUTORIZADO (Lista blanca en Firebase)
+    // REGISTRAR SESIÓN ACTUAL (Ahora deja pasar a todos los que ingresen su nombre)
     try {
-        const responseAuth = await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/usuarios_autorizados/${idEstudiante}.json`);
-        const autorizado = await responseAuth.json();
-
-        if (!autorizado) {
-            alert("❌ Acceso denegado: No estás en la lista de estudiantes. Contacta a la profesora.");
-            localStorage.removeItem('estudianteID');
-            return false;
-        }
-
-        // B. REGISTRAR SESIÓN ACTUAL
         await fetch(`https://escuela-viento-fresco-default-rtdb.firebaseio.com/sesiones/${idEstudiante}.json`, {
             method: 'PUT',
-            body: JSON.stringify({ deviceId: myDeviceId, lastLogin: new Date().toLocaleString('es-CR') })
+            body: JSON.stringify({ 
+                deviceId: myDeviceId, 
+                lastLogin: new Date().toLocaleString('es-CR'),
+                nombre_real: localStorage.getItem('estudianteNombreReal') // Respaldamos el nombre real aquí
+            })
         });
         
-        return true;
+        return true; // Acceso concedido
     } catch (error) {
         console.error("Error al verificar estudiante:", error);
         alert("Problema de conexión con la base de datos.");
